@@ -1,0 +1,120 @@
+@import "_vars.scss";
+
+.playlist-modal {
+    color: var(--theme-text-muted);
+
+    h2 {
+        margin: 0 0 8px;
+        color: var(--theme-text-strong);
+        font-size: $largest;
+    }
+
+    p {
+        margin: 0;
+    }
+}
+
+.playlist-options {
+    display: grid;
+    gap: 10px;
+    margin-top: 25px;
+    max-height: 330px;
+    overflow-y: auto;
+}
+
+.playlist-option {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid var(--theme-border);
+    border-radius: 4px;
+    background: var(--theme-foreground-raised);
+    color: inherit;
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+
+    &.selected {
+        border-color: var(--theme-action-primary);
+        background: var(--theme-foreground-selected);
+    }
+
+    &.already-added {
+        border-color: var(--theme-border);
+        background: var(--theme-foreground-subtle);
+        color: var(--theme-text-disabled);
+        cursor: not-allowed;
+        opacity: 0.8;
+
+        .playlist-copy strong {
+            color: var(--theme-text-disabled);
+        }
+    }
+
+    &:focus-visible {
+        outline: 2px solid var(--theme-focus);
+        outline-offset: 2px;
+    }
+
+    > .svg-inline--fa {
+        margin-left: auto;
+        color: var(--theme-action-primary);
+        font-size: $larger;
+    }
+}
+
+.selection-control {
+    width: 18px;
+    height: 18px;
+    border: 2px solid var(--theme-border-strong);
+    border-radius: 50%;
+    box-sizing: border-box;
+}
+
+.playlist-option.selected .selection-control {
+    border: 6px solid var(--theme-action-primary);
+}
+
+.playlist-copy {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+
+    strong {
+        color: var(--theme-text-strong);
+    }
+
+    span {
+        margin-top: 3px;
+        font-size: $small;
+    }
+}
+
+.playlist-status {
+    padding: 35px 0;
+    text-align: center;
+}
+
+.create-playlist {
+    margin-top: 20px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: var(--theme-link);
+    font: inherit;
+    cursor: pointer;
+
+    .svg-inline--fa {
+        margin-right: 6px;
+    }
+}
+
+.create-playlist {
+    margin-left: 14px;
+}
+
+.playlist-actions {
+    gap: 12px;
+}

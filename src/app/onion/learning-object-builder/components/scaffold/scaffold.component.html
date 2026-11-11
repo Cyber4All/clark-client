@@ -83,6 +83,7 @@
                 ? 'Name this learning object before adding children.'
                 : undefined
         "
+        [tipDisabled]="!!learningObject?.id"
         tipPosition="right"
         (activate)="toggleAddChild(); $event.stopPropagation()"
         *ngIf="learningObject?.length !== 'nanomodule'">

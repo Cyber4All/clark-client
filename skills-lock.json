@@ -1,0 +1,18 @@
+{
+    "version": 1,
+    "skills": {
+        "angular-developer": {
+            "source": "angular/skills",
+            "sourceType": "github",
+            "skillPath": "angular-developer/SKILL.md",
+            "computedHash": "0850aa966b6a7da1151daa9d0ef2081bf397f052573a35c1643fb92b948f0f00"
+        },
+        "scss-best-practices": {
+            "source": "Mindrally/skills",
+            "ref": "main",
+            "sourceType": "github",
+            "skillPath": "scss-best-practices/SKILL.md",
+            "computedHash": "16ac9e8bf135304254a358776c5fac043799c1c3ac40221da1338ee972506de5"
+        }
+    }
+}

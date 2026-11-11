@@ -17,6 +17,7 @@ import { NgClass, NgFor } from "@angular/common";
 import { TipDirective } from "../../../../shared/directives/tip.directive";
 import { ActivateDirective } from "../../../../shared/directives/activate.directive";
 import { RatingEditorComponent } from "../rating-editor/rating-editor.component";
+import { RatingStarsComponent } from "../../../../shared/components/rating-stars/rating-stars.component";
 
 @Component({
     selector: "clark-new-rating",
@@ -29,6 +30,7 @@ import { RatingEditorComponent } from "../rating-editor/rating-editor.component"
         TipDirective,
         ActivateDirective,
         RatingEditorComponent,
+        RatingStarsComponent,
     ],
 })
 export class NewRatingComponent implements OnInit, OnChanges {
@@ -42,11 +44,9 @@ export class NewRatingComponent implements OnInit, OnChanges {
         editing?: boolean;
     }> = new EventEmitter();
     @Output() cancelRating: EventEmitter<void> = new EventEmitter();
-    iterableCount: number[];
 
     tips = ["Poor", "Needs Work", "Average", "Good", "Excellent"];
 
-    activeHover = -1;
     activePanel = 0;
 
     oldRating: number;
@@ -65,18 +65,9 @@ export class NewRatingComponent implements OnInit, OnChanges {
         );
     }
 
-    ngOnInit() {
-        this.iterableCount = Array.from(
-            { length: this.count },
-            (_, index) => index,
-        );
-    }
+    ngOnInit() {}
 
     ngOnChanges(changes: SimpleChanges) {
-        if (changes.count) {
-            this.iterableCount = Array(changes.count.currentValue).fill(0);
-        }
-
         if (changes.rating) {
             if (!changes.rating.isFirstChange || changes.rating.currentValue) {
                 this.advance();
@@ -92,19 +83,9 @@ export class NewRatingComponent implements OnInit, OnChanges {
         this.activePanel = 1;
     }
 
-    setHover(i: number) {
-        this.activeHover = i;
-    }
-
-    reset() {
-        // reset the hover
-        this.activeHover = -1;
-    }
-
     rate(i: number) {
         this.rating.value = i;
         this.activePanel = 1;
-        this.activeHover = -1;
     }
 
     submitRating() {
@@ -121,12 +102,5 @@ export class NewRatingComponent implements OnInit, OnChanges {
 
     cancel() {
         this.cancelRating.emit();
-    }
-
-    starShouldShow(i: number): boolean {
-        return (
-            (this.activeHover !== -1 && i <= this.activeHover) ||
-            (this.activeHover === -1 && this.rating && i < this.rating.value)
-        );
     }
 }

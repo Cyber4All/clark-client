@@ -1,10 +1,10 @@
 @import "_vars.scss";
 
 .clark-pill {
-    background: white;
-    border: 1px solid $light-grey;
+    background: var(--theme-foreground);
+    border: 1px solid var(--theme-border);
     border-radius: 999px;
-    color: $dark-grey;
+    color: var(--theme-text);
     cursor: pointer;
     font-size: $normal;
     font-weight: normal;
@@ -13,20 +13,29 @@
     transition: all 0.15s ease;
     user-select: none;
 
+    i {
+        font-size: $smaller;
+        margin-right: 6px;
+    }
+
     &:hover:not(:disabled) {
-        background: $primary-white;
-        border-color: $dark-grey;
+        background: var(--theme-foreground-subtle);
+        border-color: var(--theme-border-strong);
     }
 
     &.active {
         background: rgba(28, 112, 221, 0.1);
         border-color: $light-blue;
         color: $light-blue;
+        font-weight: normal;
+    }
+
+    &.active-emphasis {
         font-weight: 600;
     }
 
     &:focus {
-        outline: 2px solid $light-blue;
+        outline: 2px solid var(--theme-focus);
         outline-offset: 2px;
     }
 

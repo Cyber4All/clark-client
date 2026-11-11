@@ -1,24 +1,19 @@
 @import "_vars.scss";
 @import "../../../collection-globals.scss";
 
-:root {
-    --background-color: white;
+:host {
+    display: block;
+    --background-color: #ffffff;
     --secondary-text: #32363f;
-    --primary-text: black;
+    --primary-text: #000000;
     --border: #672f90;
 }
 
-[data-theme="light"] {
-    --background-color: white;
-    --secondary-text: #32363f;
-    --primary-text: black;
-    --border: #672f90;
-}
-
+:host-context([data-theme="dark"]),
 [data-theme="dark"] {
     --background-color: #32363f;
     --secondary-text: #ffffff;
-    --primary-text: white;
+    --primary-text: #ffffff;
     --border: #f7ec2f;
 }
 

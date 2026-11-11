@@ -9,6 +9,6 @@ export const environment = {
     cognitoRegion: "us-east-1",
     cognitoIdentityPoolId: "",
     cognitoAdminIdentityPoolId: "",
-    downtimeUrl: "",
+    downtimeUrl: "http://localhost:3005",
     publicKey: "cxtp_pbDbZsDUdNr5Wu3GWX6emisZyfKkV9",
 };

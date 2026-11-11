@@ -5,7 +5,8 @@
         padding: 12px;
         font-size: larger;
         cursor: pointer;
-        border-bottom: solid 2px $light-grey;
+        border-bottom: solid 2px var(--theme-border);
+        color: var(--theme-text);
 
         .arrow {
             text-align: right;
@@ -17,26 +18,28 @@
             float: right;
             font-size: $normal;
             margin-top: 3px;
+            color: var(--theme-text-muted);
         }
     }
 
     .note-title-blue {
-        background-color: $light-blue;
-        border-bottom: solid 2px $light-blue;
-        color: white;
+        background-color: var(--theme-action-primary);
+        border-bottom: solid 2px var(--theme-action-primary);
+        color: var(--theme-action-on-primary);
     }
 
     .note-title:hover {
-        border-bottom: solid 2px $light-blue;
+        border-bottom: solid 2px var(--theme-action-primary);
         font-size: larger;
         cursor: pointer;
-        background-color: $light-blue;
-        color: white;
+        background-color: var(--theme-action-primary);
+        color: var(--theme-action-on-primary);
     }
 
     .note-content {
-        border-bottom: solid 2px $light-blue;
+        border-bottom: solid 2px var(--theme-border);
         font-size: medium;
         padding: 8px;
+        color: var(--theme-text);
     }
 }

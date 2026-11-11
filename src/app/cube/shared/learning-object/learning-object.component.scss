@@ -14,9 +14,10 @@ a {
 ---------------------------------------------- */
 
 .learning-object {
-    background: white;
+    color: var(--theme-text);
+    background: var(--theme-foreground-raised);
     border-radius: 6px;
-    border: 1px solid $profile-border;
+    border: 1px solid var(--theme-border);
     display: flex;
     flex-direction: row;
     max-width: 850px;
@@ -31,7 +32,7 @@ a {
     transition: all 0.15s ease-in;
 
     .image {
-        background: $primary-white;
+        background: var(--theme-foreground-subtle);
         min-width: 175px;
         flex: 0 0 175px;
         position: relative;
@@ -62,7 +63,11 @@ a {
         .framework-badge {
             position: absolute;
             top: 8px;
-            right: 8px;
+            right: var(--learning-object-badge-right, 8px);
+            max-width: var(--learning-object-badge-max-width, none);
+            transition: var(--learning-object-badge-transition, none);
+            box-sizing: border-box;
+            overflow-wrap: anywhere;
             padding: 4px 10px;
             border-radius: 4px;
             font-size: $smaller;
@@ -86,7 +91,7 @@ a {
 
         &:after {
             content: "";
-            background: white;
+            background: var(--theme-text-strong);
             position: absolute;
             top: 0;
             left: 0;
@@ -131,11 +136,11 @@ a {
 
                 .rating-value {
                     font-weight: 600;
-                    color: $darker-grey;
+                    color: var(--theme-text-strong);
                 }
 
                 .review-count {
-                    color: $medium-grey;
+                    color: var(--theme-text-muted);
                     font-size: $smaller;
                 }
             }
@@ -143,7 +148,7 @@ a {
             .downloads-indicator {
                 display: inline-flex;
                 align-items: center;
-                color: $dark-grey;
+                color: var(--theme-text);
                 font-size: $small;
 
                 i,
@@ -164,7 +169,7 @@ a {
 
         .title {
             font-size: $normal;
-            color: $darker-grey;
+            color: var(--theme-text-strong);
             font-weight: 600;
             padding-bottom: 10px;
             display: flex;
@@ -175,7 +180,7 @@ a {
 
         .date {
             font-size: $small;
-            color: $dark-grey;
+            color: var(--theme-text);
             margin-bottom: 6px;
         }
 
@@ -192,13 +197,13 @@ a {
         }
 
         .time {
-            background: $primary-white;
+            background: var(--theme-foreground-subtle);
             padding: 2px 5px;
             border-radius: 3px;
-            border: 1px solid $secondary-white;
+            border: 1px solid var(--theme-border);
             display: inline-block;
             position: relative;
-            color: $darker-grey;
+            color: var(--theme-text);
             font-size: $smaller;
             font-weight: 400;
 
@@ -209,7 +214,7 @@ a {
 
         .details {
             font-size: $small;
-            color: $dark-grey;
+            color: var(--theme-text);
             margin-bottom: 10px;
 
             .author {
@@ -225,7 +230,7 @@ a {
                 text-overflow: ellipsis;
                 width: 100%;
                 display: block;
-                color: $medium-grey;
+                color: var(--theme-text-muted);
                 font-size: $smaller;
             }
         }
@@ -270,12 +275,12 @@ a {
             gap: 6px;
 
             .tag-pill {
-                background: $primary-white;
-                border: 1px solid $light-grey;
+                background: var(--theme-foreground-subtle);
+                border: 1px solid var(--theme-border);
                 padding: 3px 8px;
                 border-radius: 12px;
                 font-size: $smaller;
-                color: $darker-grey;
+                color: var(--theme-text-strong);
                 font-weight: 400;
                 display: inline-block;
             }
@@ -470,7 +475,7 @@ a {
                     font-size: 9px;
                     padding: 2px 6px;
                     top: 6px;
-                    right: 6px;
+                    right: var(--learning-object-badge-right, 6px);
                     gap: 3px;
 
                     &.dcwf-badge i {
