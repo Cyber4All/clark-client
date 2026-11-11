@@ -47,7 +47,6 @@ export class RatingStarsComponent implements OnInit, OnChanges {
 
     @Input() loggedIn: boolean;
 
-
     @Output() selectedRating = new EventEmitter<number>();
 
     iterableCount: number[];
