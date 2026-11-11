@@ -1,0 +1,55 @@
+.playlist-metadata-content {
+    display: grid;
+    gap: 10px;
+
+    input,
+    textarea {
+        box-sizing: border-box;
+        width: 100%;
+        padding: 10px;
+        border: 1px solid var(--theme-border);
+        border-radius: 5px;
+        font: inherit;
+    }
+
+    textarea {
+        resize: vertical;
+    }
+}
+
+.playlist-metadata-actions {
+    gap: 12px;
+}
+
+button {
+    min-height: 40px;
+    padding: 8px 14px;
+    border: 0;
+    border-radius: 5px;
+    font: inherit;
+    cursor: pointer;
+
+    &:disabled {
+        opacity: 0.6;
+        cursor: default;
+    }
+
+    &:focus-visible {
+        outline: 2px solid var(--theme-focus);
+        outline-offset: 3px;
+    }
+}
+
+.primary-button {
+    background: var(--theme-action-primary);
+    color: var(--theme-action-on-primary);
+}
+
+.cancel-button {
+    background: var(--theme-foreground-subtle);
+    color: var(--theme-text-muted);
+}
+
+.form-error {
+    color: var(--theme-status-error);
+}

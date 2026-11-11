@@ -80,7 +80,7 @@ export class ScaffoldComponent implements OnInit {
     childrenConfirmation: boolean;
     isAddingChild: boolean;
     // boolean to indicate if edit is selected for the list
-    @Input() editContent: boolean;
+    @Input() editContent = true;
 
     @ViewChild("addChildButton") addChildButton: ElementRef;
     @ViewChild("teleporterPayload") teleporterPayload: ElementRef;
@@ -190,9 +190,7 @@ export class ScaffoldComponent implements OnInit {
         this.deleteIndex = index;
         this.childrenConfirmationMessage = `Remove '${
             this.children[index].name
-        }' as a child of '${
-            this.learningObject.name
-        }'?`;
+        }' as a child of '${this.learningObject.name}'?`;
 
         this.toggleConfirmationModal(true);
     }

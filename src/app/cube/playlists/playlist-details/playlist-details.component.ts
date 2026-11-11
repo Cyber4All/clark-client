@@ -1,16 +1,48 @@
 import { NgFor, NgIf } from "@angular/common";
-import { Component, OnDestroy, OnInit } from "@angular/core";
-import { ActivatedRoute, RouterLink } from "@angular/router";
+import {
+    Component,
+    OnDestroy,
+    OnInit,
+    TemplateRef,
+    ViewChild,
+} from "@angular/core";
+import {
+    MatDialog,
+    MatDialogModule,
+    MatDialogRef,
+} from "@angular/material/dialog";
+import { FormsModule } from "@angular/forms";
+import { MatSlideToggle } from "@angular/material/slide-toggle";
+import { MatTooltipModule } from "@angular/material/tooltip";
+import { ActivatedRoute, Router, RouterLink } from "@angular/router";
+import { AuthService } from "app/core/auth-module/auth.service";
 import { LearningObject } from "@entity";
 import { LearningObjectService } from "app/core/learning-object-module/learning-object/learning-object.service";
+import { SearchService } from "app/core/learning-object-module/search/search.service";
 import { PlaylistService } from "app/core/playlist-module/playlist.service";
-import { Playlist } from "app/core/playlist-module/playlist.types";
+import {
+    Playlist,
+    PlaylistUpdate,
+    PlaylistVisibility,
+} from "app/core/playlist-module/playlist.types";
 import { LearningObjectListingComponent } from "app/cube/shared/learning-object/learning-object.component";
 import { LearningObjectCardDirective } from "app/shared/directives/learning-object-card.directive";
+import { TipDirective } from "app/shared/directives/tip.directive";
+import {
+    createPlaylistMetadataForm,
+    PlaylistMetadataFormComponent,
+} from "../components/playlist-metadata-form/playlist-metadata-form.component";
 import { forkJoin, Observable, of, Subject } from "rxjs";
-import { catchError, map, switchMap, takeUntil } from "rxjs/operators";
+import {
+    catchError,
+    debounceTime,
+    distinctUntilChanged,
+    map,
+    switchMap,
+    takeUntil,
+} from "rxjs/operators";
 
-interface PlaylistLearningObjectView {
+interface PlaylistLearningObject {
     cuid: string;
     object: LearningObject | null;
 }
@@ -23,26 +55,59 @@ interface PlaylistLearningObjectView {
     imports: [
         NgFor,
         NgIf,
+        FormsModule,
+        MatDialogModule,
+        PlaylistMetadataFormComponent,
+        MatSlideToggle,
+        MatTooltipModule,
         RouterLink,
         LearningObjectListingComponent,
         LearningObjectCardDirective,
+        TipDirective,
     ],
 })
 export class PlaylistDetailsComponent implements OnInit, OnDestroy {
     playlist?: Playlist;
-    learningObjects: PlaylistLearningObjectView[] = [];
+    learningObjects: PlaylistLearningObject[] = [];
     loading = true;
     hasError = false;
+    errorMessage = "";
+    readonly editForm = createPlaylistMetadataForm();
+    savingMetadata = false;
+    editError = "";
+    @ViewChild("editPlaylistDialog") editPlaylistDialog!: TemplateRef<unknown>;
+    private editDialogRef?: MatDialogRef<unknown>;
+    draftVisibility: PlaylistVisibility = "private";
+    readonly visibilityOptions = PlaylistVisibility;
+    saving = false;
+    deleting = false;
+    confirmDelete = false;
+    searchText = "";
+    searchResults: LearningObject[] = [];
+    searchLoading = false;
+    searchError = false;
+    searchHasMore = false;
+    cuidToBeAdded = "";
+    returnUserId = "";
+    private searchPage = 1;
+    private readonly searchPageSize = 4;
+    private readonly searchChanges = new Subject<string>();
 
     private readonly destroy$ = new Subject<void>();
 
     constructor(
         private readonly route: ActivatedRoute,
+        private readonly router: Router,
         private readonly playlistService: PlaylistService,
         private readonly learningObjectService: LearningObjectService,
+        private readonly searchService: SearchService,
+        public readonly auth: AuthService,
+        private readonly dialog: MatDialog,
     ) {}
 
     ngOnInit(): void {
+        this.returnUserId =
+            this.route.snapshot?.queryParamMap.get("returnUserId") || "";
         this.route.paramMap
             .pipe(
                 takeUntil(this.destroy$),
@@ -57,6 +122,7 @@ export class PlaylistDetailsComponent implements OnInit, OnDestroy {
                 }),
                 switchMap((playlist) => {
                     this.playlist = playlist;
+                    this.draftVisibility = playlist.visibility;
                     return this.loadLearningObjects(playlist);
                 }),
             )
@@ -70,16 +136,290 @@ export class PlaylistDetailsComponent implements OnInit, OnDestroy {
                     this.loading = false;
                 },
             });
+
+        this.searchChanges
+            .pipe(
+                debounceTime(500),
+                distinctUntilChanged(),
+                takeUntil(this.destroy$),
+            )
+            .subscribe((value) => void this.search(value));
     }
 
     ngOnDestroy(): void {
+        this.editDialogRef?.close();
         this.destroy$.next();
         this.destroy$.complete();
     }
 
+    get isOwner(): boolean {
+        return (
+            Boolean(this.playlist) &&
+            this.playlist?.userId === this.auth.user?.userId
+        );
+    }
+
+    onSearchChange(value: string): void {
+        this.searchText = value;
+        this.searchError = false;
+        if (value.trim().length < 3) {
+            this.searchResults = [];
+            this.searchHasMore = false;
+            this.searchLoading = false;
+        }
+        this.searchChanges.next(value);
+    }
+
+    async search(value = this.searchText, append = false): Promise<void> {
+        const text = value.trim();
+        if (text.length < 3) {
+            this.searchResults = [];
+            this.searchHasMore = false;
+            this.searchLoading = false;
+            return;
+        }
+
+        let page = append ? this.searchPage + 1 : 1;
+        if (!append) {
+            this.searchResults = [];
+        }
+        this.searchLoading = true;
+        this.searchError = false;
+        const minimumLoading = new Promise<void>((resolve) =>
+            setTimeout(resolve, 333),
+        );
+        try {
+            do {
+                const { learningObjects, total } =
+                    await this.searchService.getLearningObjects({
+                        text,
+                        status: ["released"],
+                        currPage: page,
+                        limit: this.searchPageSize,
+                        orderBy: "date",
+                        sortType: -1,
+                    });
+                const existingCuids = new Set(
+                    (this.playlist?.learningObjectCuids || []).map((cuid) =>
+                        cuid.toLowerCase(),
+                    ),
+                );
+                const candidates = learningObjects.filter(
+                    (object) =>
+                        object.cuid &&
+                        !existingCuids.has(object.cuid.toLowerCase()),
+                );
+                await minimumLoading;
+                this.searchResults = append
+                    ? [...this.searchResults, ...candidates]
+                    : candidates;
+                this.searchPage = page;
+                this.searchHasMore = page * this.searchPageSize < total;
+                page++;
+            } while (!this.searchResults.length && this.searchHasMore);
+        } catch {
+            this.searchError = true;
+        } finally {
+            await minimumLoading;
+            this.searchLoading = false;
+        }
+    }
+
+    savePlaylist(updates: PlaylistUpdate): void {
+        if (!this.playlist || this.saving) {
+            return;
+        }
+        this.saving = true;
+        this.errorMessage = "";
+        this.playlistService
+            .updatePlaylist(this.playlist._id, updates)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: (playlist) => {
+                    this.playlist = {
+                        ...this.playlist,
+                        visibility: playlist.visibility,
+                    };
+                    this.draftVisibility = playlist.visibility;
+                    this.saving = false;
+                },
+                error: () => {
+                    this.errorMessage =
+                        "We couldn't save your changes. Please try again.";
+                    this.draftVisibility = this.playlist.visibility;
+                    this.saving = false;
+                },
+            });
+    }
+
+    openEditPlaylist(): void {
+        if (!this.isOwner || !this.playlist || this.savingMetadata) {
+            return;
+        }
+        this.editForm.reset({
+            name: this.playlist.name,
+            description: this.playlist.description || "",
+        });
+        this.editError = "";
+        this.editDialogRef = this.dialog.open(this.editPlaylistDialog, {
+            width: "420px",
+            maxWidth: "calc(100vw - 36px)",
+            ariaLabelledBy: "playlist-metadata-title",
+        });
+    }
+
+    cancelEditPlaylist(): void {
+        if (!this.savingMetadata) {
+            this.editDialogRef?.close();
+        }
+    }
+
+    saveMetadata(): void {
+        if (
+            !this.isOwner ||
+            !this.playlist ||
+            this.savingMetadata ||
+            this.editForm.invalid
+        ) {
+            return;
+        }
+        const { name, description } = this.editForm.getRawValue();
+        this.savingMetadata = true;
+        this.editError = "";
+        this.editForm.disable();
+        if (this.editDialogRef) {
+            this.editDialogRef.disableClose = true;
+        }
+        this.playlistService
+            .updatePlaylist(this.playlist._id, {
+                name: name.trim(),
+                description: description.trim(),
+            })
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: (playlist) => {
+                    this.playlist = {
+                        ...this.playlist,
+                        name: playlist.name,
+                        description: playlist.description,
+                    };
+                    this.savingMetadata = false;
+                    this.editForm.enable();
+                    this.editDialogRef?.close();
+                },
+                error: () => {
+                    this.editError =
+                        "We couldn't save your changes. Please try again.";
+                    this.savingMetadata = false;
+                    this.editForm.enable();
+                    if (this.editDialogRef) {
+                        this.editDialogRef.disableClose = false;
+                    }
+                },
+            });
+    }
+
+    saveVisibility(visibility: PlaylistVisibility): void {
+        if (!this.isOwner || !this.playlist || this.saving) {
+            return;
+        }
+        this.draftVisibility = visibility;
+        if (visibility !== this.playlist.visibility) {
+            this.savePlaylist({ visibility });
+        }
+    }
+
+    deletePlaylist(): void {
+        if (!this.isOwner || !this.playlist || this.deleting) {
+            return;
+        }
+        this.deleting = true;
+        this.playlistService
+            .deletePlaylist(this.playlist._id)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: () => {
+                    void this.router.navigate(["/playlists"], {
+                        queryParams: this.returnUserId
+                            ? { userId: this.returnUserId }
+                            : {},
+                    });
+                },
+                error: () => {
+                    this.errorMessage =
+                        "We couldn't delete this playlist. Please try again.";
+                    this.deleting = false;
+                    this.confirmDelete = false;
+                },
+            });
+    }
+
+    addLearningObject(learningObject: LearningObject): void {
+        if (
+            !this.playlist ||
+            !this.isOwner ||
+            !learningObject.cuid ||
+            this.cuidToBeAdded
+        ) {
+            return;
+        }
+        this.cuidToBeAdded = learningObject.cuid;
+        this.errorMessage = "";
+        this.playlistService
+            .addLearningObject(this.playlist._id, learningObject.cuid)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: (playlist) => {
+                    this.playlist = playlist;
+                    this.learningObjects = [
+                        ...this.learningObjects,
+                        { cuid: learningObject.cuid, object: learningObject },
+                    ];
+                    this.searchResults = this.searchResults.filter(
+                        (candidate) => candidate.cuid !== learningObject.cuid,
+                    );
+                    this.cuidToBeAdded = "";
+                    if (
+                        !this.searchResults.length &&
+                        this.searchHasMore &&
+                        !this.searchLoading
+                    ) {
+                        void this.search(this.searchText, true);
+                    }
+                },
+                error: () => {
+                    this.errorMessage =
+                        "We couldn't add this learning object. Please try again.";
+                    this.cuidToBeAdded = "";
+                },
+            });
+    }
+
+    removeLearningObject(entry: PlaylistLearningObject): void {
+        if (!this.playlist || !this.isOwner || !entry) {
+            return;
+        }
+        this.errorMessage = "";
+        this.playlistService
+            .removeLearningObject(this.playlist._id, entry.cuid)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: (playlist) => {
+                    this.playlist = playlist;
+                    this.learningObjects = this.learningObjects.filter(
+                        (learningObject) => learningObject.cuid !== entry.cuid,
+                    );
+                },
+                error: () => {
+                    this.errorMessage =
+                        "We couldn't remove this learning object. Please try again.";
+                },
+            });
+    }
+
     private loadLearningObjects(
         playlist: Playlist,
-    ): Observable<PlaylistLearningObjectView[]> {
+    ): Observable<PlaylistLearningObject[]> {
         if (!playlist.learningObjectCuids.length) {
             return of([]);
         }

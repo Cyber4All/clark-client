@@ -19,49 +19,14 @@
         }
     }
 
-    .stars-wrapper {
-        position: relative;
-        max-width: 200px;
+    clark-rating-stars {
+        display: block;
+        width: 200px;
+        max-width: 100%;
         margin: auto;
-
-        .stars {
-            display: flex;
-            flex-direction: row;
-            justify-content: space-between;
-            font-size: 30px;
-            width: 200px;
-            color: $blue-accent;
-            z-index: 1;
-            position: relative;
-
-            &.full-stars {
-                position: absolute;
-                top: 0;
-                left: 0;
-                width: 100%;
-                z-index: 0;
-            }
-
-            .star {
-                cursor: pointer;
-                transition: all 0.2s ease;
-
-                &.show {
-                    visibility: visible;
-                    transform: scale(1);
-                }
-            }
-        }
-
-        .full-stars .star {
-            visibility: hidden;
-            transform: scale(0);
-            transition: all 0.2s ease;
-        }
-
-        &.active .stars {
-            color: $light-blue;
-        }
+        --rating-stars-width: 200px;
+        --rating-stars-color: #{$light-blue};
+        --rating-stars-hover-color: #{$light-blue};
     }
 
     .comment-wrapper {
@@ -76,15 +41,32 @@
         flex-direction: column;
         justify-content: space-between;
 
+        textarea {
+            resize: none;
+            appearance: none;
+            outline: 0;
+            background: var(--theme-foreground);
+            color: var(--theme-text);
+            border: 1px solid var(--theme-border);
+            border-radius: 4px;
+            padding: 10px;
+            height: 150px;
+            width: 350px;
+
+            &:focus {
+                border-color: var(--theme-focus);
+            }
+        }
+
         .character-count {
             font-size: $small;
             text-align: right;
             margin-bottom: 10px;
-            color: $medium-grey;
+            color: var(--theme-text-muted);
         }
 
         .over-limit {
-            color: $error-red;
+            color: var(--theme-status-error);
         }
 
         .btn-group {

@@ -11,7 +11,13 @@ import {
     ViewChild,
     ChangeDetectionStrategy,
     ChangeDetectorRef,
+    TemplateRef,
 } from "@angular/core";
+import {
+    MatDialog,
+    MatDialogModule,
+    MatDialogRef,
+} from "@angular/material/dialog";
 import { LearningObject } from "../../../../../entity/learning-object/learning-object";
 import { AuthService } from "app/core/auth-module/auth.service";
 import { TOOLTIP_TEXT } from "@env/tooltip-text";
@@ -33,6 +39,7 @@ import { ReviewerPanelComponent } from "../reviewer-panel/reviewer-panel.compone
 import { PopupComponent } from "../../../../shared/modules/popups/popup.component";
 import { DownloadNoticePopupComponent } from "../../../../shared/modules/popup-templates/download-notice-popup/download-notice-popup.component";
 import { ContextMenuComponent } from "../../../../shared/modules/contextmenu/context-menu/context-menu.component";
+import { AddToPlaylistModalComponent } from "../../../playlists/components/add-to-playlist-modal/add-to-playlist-modal.component";
 
 @Component({
     selector: "cube-details-action-panel",
@@ -52,6 +59,8 @@ import { ContextMenuComponent } from "../../../../shared/modules/contextmenu/con
         PopupComponent,
         DownloadNoticePopupComponent,
         ContextMenuComponent,
+        AddToPlaylistModalComponent,
+        MatDialogModule,
     ],
 })
 export class ActionPanelComponent implements OnInit, OnDestroy {
@@ -77,6 +86,8 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
     windowWidth: number;
     loggedin = false;
     showDownloadModal = false;
+    @ViewChild("playlistDialog") playlistDialog!: TemplateRef<unknown>;
+    private playlistDialogRef?: MatDialogRef<unknown>;
     userCanRevise = false;
     userDropdown: boolean;
 
@@ -100,6 +111,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
         private dropdowns: NavbarDropdownService,
         private bundlingService: BundlingService,
         private editorialService: EditorialService,
+        private readonly dialog: MatDialog,
     ) {}
 
     async ngOnInit(): Promise<void> {
@@ -203,6 +215,35 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
 
     toggleDownloadModal(val?: boolean) {
         this.showDownloadModal = val;
+    }
+
+    openPlaylistDialog(): void {
+        if (!this.auth.user || !this.isReleased || this.playlistDialogRef) {
+            return;
+        }
+        this.playlistDialogRef = this.dialog.open(this.playlistDialog, {
+            width: "420px",
+            maxWidth: "calc(100vw - 36px)",
+            ariaLabel: "Add to playlist",
+        });
+        this.playlistDialogRef
+            .afterClosed()
+            .pipe(takeUntil(this.destroyed$))
+            .subscribe(() => {
+                this.playlistDialogRef = undefined;
+            });
+    }
+
+    closePlaylistDialog(): void {
+        if (!this.playlistDialogRef?.disableClose) {
+            this.playlistDialogRef?.close();
+        }
+    }
+
+    setPlaylistSaving(saving: boolean): void {
+        if (this.playlistDialogRef) {
+            this.playlistDialogRef.disableClose = saving;
+        }
     }
 
     shareButton(event, type) {
@@ -365,6 +406,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
+        this.playlistDialogRef?.close();
         this.destroyed$.next();
         this.destroyed$.unsubscribe();
     }

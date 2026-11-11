@@ -12,6 +12,16 @@
             [ngClass]="{ 'review-pending': !isReleased }">
             <ng-container
                 *ngTemplateOutlet="downloadButtonsTemplate"></ng-container>
+            <button
+                *ngIf="auth.user && isReleased"
+                class="button neutral"
+                id="add-to-playlist-button"
+                (activate)="openPlaylistDialog()">
+                <span class="playlist-icon" aria-hidden="true">
+                    <i class="far fa-list-ul"></i><i class="fas fa-plus"></i>
+                </span>
+                Add to Playlist
+            </button>
             <clark-editorial-action-pad
                 *ngIf="userCanRevise"
                 [userIsAuthor]="userIsAuthor"
@@ -137,6 +147,15 @@
             (close)="toggleDownloadModal(false)"></clark-download-notice-popup>
     </div>
 </clark-popup>
+
+<ng-template #playlistDialog>
+    <clark-add-to-playlist-modal
+        [learningObjectCuid]="learningObject.cuid"
+        [userId]="auth.user.userId"
+        (savingChange)="setPlaylistSaving($event)"
+        (added)="closePlaylistDialog()"
+        (closed)="closePlaylistDialog()"></clark-add-to-playlist-modal>
+</ng-template>
 
 <ng-template #downloadButtonsTemplate>
     <button

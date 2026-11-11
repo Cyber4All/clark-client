@@ -1,0 +1,97 @@
+<section
+    *ngIf="!creating; else createPlaylistForm"
+    class="playlist-modal"
+    aria-labelledby="playlist-modal-title">
+    <h2 mat-dialog-title id="playlist-modal-title">Add to playlist</h2>
+    <mat-dialog-content>
+        <p>Select a playlist to add this learning object to.</p>
+
+        <div class="playlist-options" *ngIf="!loading && !loadFailed">
+            <button
+                type="button"
+                class="playlist-option"
+                *ngFor="let playlist of playlists"
+                [disabled]="
+                    saving ||
+                    playlist.learningObjectCuids.includes(learningObjectCuid)
+                "
+                [class.already-added]="
+                    playlist.learningObjectCuids.includes(learningObjectCuid)
+                "
+                [class.selected]="selectedPlaylistId === playlist._id"
+                [attr.aria-pressed]="selectedPlaylistId === playlist._id"
+                (click)="togglePlaylist(playlist._id)">
+                <span class="selection-control" aria-hidden="true"></span>
+                <span class="playlist-copy">
+                    <strong>{{ playlist.name }}</strong>
+                    <span>
+                        <ng-container
+                            *ngIf="
+                                playlist.learningObjectCuids.includes(
+                                    learningObjectCuid
+                                );
+                                else playlistCount
+                            ">
+                            Current learning object is already in this playlist.
+                        </ng-container>
+                        <ng-template #playlistCount>
+                            {{ playlist.learningObjectCuids.length }} learning
+                            object{{
+                                playlist.learningObjectCuids.length === 1
+                                    ? ""
+                                    : "s"
+                            }}
+                        </ng-template>
+                    </span>
+                </span>
+                <i class="far fa-layer-group" aria-hidden="true"></i>
+            </button>
+        </div>
+
+        <p class="playlist-status" *ngIf="loading">Loading playlists...</p>
+        <p class="playlist-status" *ngIf="loadFailed" role="alert">
+            We couldn't load your playlists. You can still create a new one.
+        </p>
+        <p
+            class="playlist-status"
+            *ngIf="!loading && !loadFailed && !playlists.length">
+            You don't have any playlists yet.
+        </p>
+
+        <button
+            *ngIf="!loading"
+            type="button"
+            class="create-playlist"
+            [disabled]="saving"
+            (click)="showCreateForm()">
+            <i class="far fa-plus" aria-hidden="true"></i>
+            Create new playlist
+        </button>
+    </mat-dialog-content>
+    <mat-dialog-actions align="end" class="playlist-actions">
+        <button
+            type="button"
+            class="button neutral"
+            [disabled]="saving"
+            (click)="closed.emit()">
+            Cancel
+        </button>
+        <button
+            type="button"
+            class="button good"
+            [class.disabled]="!selectedPlaylistId || saving"
+            [disabled]="!selectedPlaylistId || saving"
+            (click)="addToPlaylist()">
+            {{ saving ? "Adding..." : "Add to Playlist" }}
+        </button>
+    </mat-dialog-actions>
+</section>
+
+<ng-template #createPlaylistForm>
+    <clark-playlist-metadata-form
+        [form]="createForm"
+        [saving]="saving"
+        [error]="createError"
+        (submitted)="createAndAdd()"
+        (cancelled)="showPlaylistList()"></clark-playlist-metadata-form>
+</ng-template>
