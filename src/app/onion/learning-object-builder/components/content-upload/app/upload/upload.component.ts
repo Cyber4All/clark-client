@@ -16,6 +16,7 @@ import { ToastrOvenService } from "app/shared/modules/toaster/notification.servi
 import { TOOLTIP_TEXT } from "@env/tooltip-text";
 import { LearningObject } from "@entity";
 import { BehaviorSubject, fromEvent, Observable, Subject } from "rxjs";
+import * as Sentry from "@sentry/angular";
 
 import { FileManagementService } from "../services/file-management.service";
 import {
@@ -207,6 +208,9 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
 
     uploadQueue: EnqueuedFile[] = [];
     uploadQueueMap: { [path: string]: number } = {};
+    // Number of upload batches (fileManager.upload calls) still in flight.
+    // Shared queue state must only be reset once every batch has finished.
+    activeUploadBatches = 0;
     uploadProgress = 0;
 
     totalUploaded = 0;
@@ -590,10 +594,13 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
         this.uploadComplete.emit("false");
         this.warnForLongPaths(files);
         this.enqueueFiles(files);
+        let batchStarted = false;
         try {
             const learningObject = await this.learningObject$
                 .pipe(take(1))
                 .toPromise();
+            this.activeUploadBatches++;
+            batchStarted = true;
             this.fileManager
                 .upload({
                     authorUsername: learningObject.author.username,
@@ -603,6 +610,12 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
                 })
                 .subscribe((update) => this.handleUploadUpdates(update));
         } catch (e) {
+            if (batchStarted) {
+                this.activeUploadBatches = Math.max(
+                    0,
+                    this.activeUploadBatches - 1,
+                );
+            }
             if (e.name === UploadErrorReason.Credentials) {
                 this.handleCredentialsError();
             } else if (e.message.includes("File name contains")) {
@@ -666,6 +679,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
      * @memberof UploadComponent
      */
     private resetUploadStatuses() {
+        this.activeUploadBatches = 0;
         this.uploadQueue = [];
         this.uploadQueueMap = {};
         this.uploadProgress = 0;
@@ -714,10 +728,36 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
      * @param {UploadProgressUpdate} update [Progress update object from file manager]
      * @memberof UploadComponent
      */
+    /**
+     * Returns the queued file for the given path, or undefined (and reports to Sentry)
+     * if the path is not tracked in the current upload queue.
+     */
+    private getQueueEntry(
+        fullPath: string,
+        updateType: UploadUpdate["type"],
+    ): EnqueuedFile | undefined {
+        const entry = this.uploadQueue[this.uploadQueueMap[fullPath]];
+        if (!entry) {
+            Sentry.captureMessage("Upload update for untracked file path", {
+                level: "warning",
+                extra: {
+                    fullPath,
+                    updateType,
+                    queueLength: this.uploadQueue.length,
+                    activeUploadBatches: this.activeUploadBatches,
+                },
+            });
+        }
+        return entry;
+    }
+
     private updateUploadProgress(update: UploadProgressUpdate) {
-        const index = this.uploadQueueMap[update.data.fullPath];
-        const lastTotalUploaded = this.uploadQueue[index].totalUploaded || 0;
-        this.uploadQueue[index].totalUploaded = update.data.totalUploaded;
+        const entry = this.getQueueEntry(update.data.fullPath, update.type);
+        if (!entry) {
+            return;
+        }
+        const lastTotalUploaded = entry.totalUploaded || 0;
+        entry.totalUploaded = update.data.totalUploaded;
         this.totalUploaded += update.data.totalUploaded - lastTotalUploaded;
         this.uploadProgress = (this.totalUploaded / this.totalUploadSize) * 100;
     }
@@ -730,8 +770,11 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
      * @memberof UploadComponent
      */
     private handleFileUploadComplete(update: UploadCompleteUpdate) {
-        const index = this.uploadQueueMap[update.data.fullPath];
-        this.uploadQueue[index].success = true;
+        const entry = this.getQueueEntry(update.data.fullPath, update.type);
+        if (entry) {
+            entry.success = true;
+        }
+        // The file did upload successfully, so always record its metadata
         this.newFileMeta.push(update.data);
     }
 
@@ -747,6 +790,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
      * @memberof UploadComponent
      */
     private handleQueueComplete(update: UploadQueueCompleteUpdate) {
+        this.activeUploadBatches = Math.max(0, this.activeUploadBatches - 1);
         if ((update as UploadQueueCompleteUpdate).data.failed) {
             const unUploadedFiles = this.uploadQueue.filter(
                 (file) => !file.success,
@@ -756,11 +800,19 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
                 .join(", ");
             this.error$.next(UPLOAD_ERRORS.FILES_FAILED(fileNames));
             // TODO: Prompt user and Attempt retry?
-            this.resetUploadStatuses();
-        } else {
-            this.uploadProgress = 100;
-            setTimeout(() => {
+            // Only reset shared state if no other upload batch is still running
+            if (this.activeUploadBatches === 0) {
                 this.resetUploadStatuses();
+            }
+        } else {
+            if (this.activeUploadBatches === 0) {
+                this.uploadProgress = 100;
+            }
+            setTimeout(() => {
+                // Another batch may have started during the timeout
+                if (this.activeUploadBatches === 0) {
+                    this.resetUploadStatuses();
+                }
             }, 500);
         }
         this.filesUploaded.emit(this.newFileMeta);
@@ -779,8 +831,10 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
         if (update.error.name === UploadErrorReason.Credentials) {
             this.handleCredentialsError();
         } else {
-            const index = this.uploadQueueMap[update.data.fullPath];
-            this.uploadQueue[index].success = false;
+            const entry = this.getQueueEntry(update.data.fullPath, update.type);
+            if (entry) {
+                entry.success = false;
+            }
         }
     }
 
