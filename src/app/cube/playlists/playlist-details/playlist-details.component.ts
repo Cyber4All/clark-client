@@ -89,6 +89,7 @@ export class PlaylistDetailsComponent implements OnInit, OnDestroy {
     searchHasMore = false;
     cuidToBeAdded = "";
     returnUserId = "";
+    shareStatus = "";
     private searchPage = 1;
     private readonly searchPageSize = 4;
     private readonly searchChanges = new Subject<string>();
@@ -157,6 +158,23 @@ export class PlaylistDetailsComponent implements OnInit, OnDestroy {
             Boolean(this.playlist) &&
             this.playlist?.userId === this.auth.user?.userId
         );
+    }
+
+    async sharePlaylist(): Promise<void> {
+        if (
+            !this.playlist ||
+            this.playlist.visibility !== PlaylistVisibility.PUBLIC
+        ) {
+            return;
+        }
+
+        try {
+            await navigator.clipboard.writeText(window.location.href);
+            this.shareStatus = "Playlist link copied to clipboard.";
+        } catch {
+            this.shareStatus =
+                "We couldn't copy the playlist link. Please copy it from your browser's address bar.";
+        }
     }
 
     onSearchChange(value: string): void {

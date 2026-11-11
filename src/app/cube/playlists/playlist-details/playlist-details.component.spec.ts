@@ -187,6 +187,94 @@ describe("PlaylistDetailsComponent", () => {
         component.ngOnDestroy();
     });
 
+    describe("sharing", () => {
+        const originalClipboard = Object.getOwnPropertyDescriptor(
+            navigator,
+            "clipboard",
+        );
+
+        afterEach(() => {
+            if (originalClipboard) {
+                Object.defineProperty(
+                    navigator,
+                    "clipboard",
+                    originalClipboard,
+                );
+            } else {
+                Reflect.deleteProperty(navigator, "clipboard");
+            }
+        });
+
+        it("copies the current playlist URL and confirms it", async () => {
+            const writeText = jest.fn().mockResolvedValue(undefined);
+            Object.defineProperty(navigator, "clipboard", {
+                configurable: true,
+                value: { writeText },
+            });
+            const component = new PlaylistDetailsComponent(
+                {} as ActivatedRoute,
+                {} as Router,
+                {} as PlaylistService,
+                {} as LearningObjectService,
+                {} as SearchService,
+                {} as AuthService,
+                {} as MatDialog,
+            );
+            component.playlist = { ...playlist };
+
+            await component.sharePlaylist();
+
+            expect(writeText).toHaveBeenCalledWith(window.location.href);
+            expect(component.shareStatus).toBe(
+                "Playlist link copied to clipboard.",
+            );
+        });
+
+        it("explains how to share when clipboard access is unavailable", async () => {
+            Object.defineProperty(navigator, "clipboard", {
+                configurable: true,
+                value: { writeText: jest.fn().mockRejectedValue(new Error()) },
+            });
+            const component = new PlaylistDetailsComponent(
+                {} as ActivatedRoute,
+                {} as Router,
+                {} as PlaylistService,
+                {} as LearningObjectService,
+                {} as SearchService,
+                {} as AuthService,
+                {} as MatDialog,
+            );
+            component.playlist = { ...playlist };
+
+            await component.sharePlaylist();
+
+            expect(component.shareStatus).toContain("browser's address bar");
+        });
+
+        it("does not share a private playlist", async () => {
+            const writeText = jest.fn().mockResolvedValue(undefined);
+            Object.defineProperty(navigator, "clipboard", {
+                configurable: true,
+                value: { writeText },
+            });
+            const component = new PlaylistDetailsComponent(
+                {} as ActivatedRoute,
+                {} as Router,
+                {} as PlaylistService,
+                {} as LearningObjectService,
+                {} as SearchService,
+                {} as AuthService,
+                {} as MatDialog,
+            );
+            component.playlist = { ...playlist, visibility: "private" };
+
+            await component.sharePlaylist();
+
+            expect(writeText).not.toHaveBeenCalled();
+            expect(component.shareStatus).toBe("");
+        });
+    });
+
     describe("metadata dialog", () => {
         it("keeps the edit tooltip hidden when the dialog restores focus", fakeAsync(() => {
             TestBed.configureTestingModule({
