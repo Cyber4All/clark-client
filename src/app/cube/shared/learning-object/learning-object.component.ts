@@ -60,7 +60,9 @@ export class LearningObjectListingComponent implements OnDestroy {
     @Input()
     set learningObject(value: LearningObject) {
         this._learningObject = value;
-        void this.refresh();
+        this.refresh().catch((error) =>
+            console.warn("Failed to refresh learning object card:", error),
+        );
     }
     get learningObject(): LearningObject {
         return this._learningObject!;
@@ -172,11 +174,25 @@ export class LearningObjectListingComponent implements OnDestroy {
         this.setImageFromTopics();
         this.cd.markForCheck();
 
-        // Fetch ratings + total downloads + recent downloads (in parallel)
+        // Fetch ratings + total downloads + recent downloads (in parallel).
+        // Each request falls back to null on failure (e.g. gateway 504) so a
+        // single failed fetch doesn't reject the whole refresh.
         const [ratings, totalMetrics, recentDownloads] = await Promise.all([
-            this.ratingService.getLearningObjectRatings(lo.cuid, lo.version),
-            this.metricService.getLearningObjectMetrics(lo.cuid),
-            this.getRecentDownloads(lo.cuid, 30),
+            this.safely(
+                this.ratingService.getLearningObjectRatings(
+                    lo.cuid,
+                    lo.version,
+                ),
+                "ratings",
+            ),
+            this.safely(
+                this.metricService.getLearningObjectMetrics(lo.cuid),
+                "metrics",
+            ),
+            this.safely(
+                this.getRecentDownloads(lo.cuid, 30),
+                "recent downloads",
+            ),
         ]);
         if (this.destroyed || token !== this.refreshToken) return;
 
@@ -279,6 +295,21 @@ export class LearningObjectListingComponent implements OnDestroy {
                     ?.toLowerCase()
                     .includes("dod cyber workforce"),
         );
+    }
+
+    private async safely<T>(
+        promise: Promise<T>,
+        label: string,
+    ): Promise<T | null> {
+        try {
+            return await promise;
+        } catch (error) {
+            console.warn(
+                `Failed to load ${label} for learning object card:`,
+                error,
+            );
+            return null;
+        }
     }
 
     private async getRecentDownloads(
