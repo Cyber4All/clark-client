@@ -525,14 +525,14 @@ export class DetailsComponent implements OnInit, OnDestroy {
         }
     }
 
-    openAddRatingModal() {
+    openAddRatingModal(value?: number) {
         if (!this.auth.user?.emailVerified) {
             return;
         }
 
         this.editRating = false;
         this.userRating = {
-            value: undefined,
+            value,
             comment: undefined,
         };
         this.showAddRating = true;

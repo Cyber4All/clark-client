@@ -19,49 +19,14 @@
         }
     }
 
-    .stars-wrapper {
-        position: relative;
-        max-width: 200px;
+    clark-rating-stars {
+        display: block;
+        width: 200px;
+        max-width: 100%;
         margin: auto;
-
-        .stars {
-            display: flex;
-            flex-direction: row;
-            justify-content: space-between;
-            font-size: 30px;
-            width: 200px;
-            color: var(--theme-border-strong, var(--theme-border));
-            z-index: 1;
-            position: relative;
-
-            &.full-stars {
-                position: absolute;
-                top: 0;
-                left: 0;
-                width: 100%;
-                z-index: 0;
-            }
-
-            .star {
-                cursor: pointer;
-                transition: all 0.2s ease;
-
-                &.show {
-                    visibility: visible;
-                    transform: scale(1);
-                }
-            }
-        }
-
-        .full-stars .star {
-            visibility: hidden;
-            transform: scale(0);
-            transition: all 0.2s ease;
-        }
-
-        &.active .stars {
-            color: var(--theme-action-primary);
-        }
+        --rating-stars-width: 200px;
+        --rating-stars-color: #{$light-blue};
+        --rating-stars-hover-color: #{$light-blue};
     }
 
     .comment-wrapper {

@@ -28,6 +28,9 @@
                 <clark-rating-stars
                     [color]="starColor"
                     [rating]="averageRating"
+                    [interactive]="canRate"
+                    [loggedIn]="loggedIn"
+                    (selectedRating)="selectedRating.emit($event)"
                     [reviewsCount]="reviewsCount"></clark-rating-stars>
             </span>
             <div
