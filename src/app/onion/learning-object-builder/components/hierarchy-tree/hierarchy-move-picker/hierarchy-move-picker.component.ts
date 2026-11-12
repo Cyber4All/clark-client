@@ -116,7 +116,12 @@ export class HierarchyMovePickerComponent {
                     inherited: linkedAncestor,
                     isMoving,
                     movesWithSource: movingAncestor,
-                    selectable: !!destination && !isMoving && !movingAncestor,
+                    selectable:
+                        !!destination &&
+                        !isMoving &&
+                        !movingAncestor &&
+                        (this.allowCurrentParent ||
+                            !destination.isCurrentParent),
                     isCurrentParent: !!destination?.isCurrentParent,
                     reason: isMoving
                         ? "An object cannot be moved into itself."
@@ -157,6 +162,14 @@ export class HierarchyMovePickerComponent {
     }
 
     /**
+     * Whether the node's current parent can be chosen (a reorder inside the
+     * parent). The tree turns this off while the API cannot persist child order
+     * (sc-40642), so the parent stays listed as "Current parent" but cannot be
+     * selected.
+     */
+    @Input() allowCurrentParent = true;
+
+    /**
      * Inline error to show while the picker stays open, e.g. when the tree
      * coordinator reports that a confirmed move could not be applied.
      * `null` hides the message.
@@ -176,7 +189,10 @@ export class HierarchyMovePickerComponent {
 
     /** True when there is at least one destination to offer. */
     get hasDestinations(): boolean {
-        return this.destinations.length > 0;
+        return this.destinations.some(
+            (destination) =>
+                this.allowCurrentParent || !destination.isCurrentParent,
+        );
     }
 
     /** True once a destination is selected; gates the confirm control. */

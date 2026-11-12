@@ -1,9 +1,10 @@
 import { ComponentFixture, TestBed } from "@angular/core/testing";
 import { LiveAnnouncer } from "@angular/cdk/a11y";
 import { NoopAnimationsModule } from "@angular/platform-browser/animations";
-import { BehaviorSubject } from "rxjs";
+import { BehaviorSubject, of } from "rxjs";
 import { LearningObject } from "@entity";
 import { ToastrOvenService } from "../../../../shared/modules/toaster/notification.service";
+import { HierarchyEditService } from "./hierarchy-edit.service";
 import { HierarchyLoaderService } from "./hierarchy-loader.service";
 import { HierarchyLoadStatus } from "./hierarchy-tree.types";
 import { HierarchyTreeComponent } from "./hierarchy-tree.component";
@@ -37,8 +38,13 @@ describe("HierarchyTreeComponent load states", () => {
                 HierarchyViewService,
                 { provide: HierarchyLoaderService, useValue: loader },
                 {
+                    // Editing is covered by hierarchy-edit.service.spec.ts.
+                    provide: HierarchyEditService,
+                    useValue: { saving: false, saving$: of(false) },
+                },
+                {
                     provide: ToastrOvenService,
-                    useValue: { success: jest.fn() },
+                    useValue: { success: jest.fn(), error: jest.fn() },
                 },
                 { provide: LiveAnnouncer, useValue: { announce: jest.fn() } },
             ],

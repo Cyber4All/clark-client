@@ -82,9 +82,10 @@ export type AddChildAction = "create-new" | "add-existing";
  *
  * Each action has a unique id so additional actions (e.g. the future
  * "add-child" Add Child Object action) can be added to the same menu structure
- * without identifier collision. `"move"` is the only working action this phase.
+ * without identifier collision. `"move"` and `"remove"` (sc-40642) are the
+ * working actions; `"remove"` only unlinks the child from its parent.
  */
-export type NodeActionId = "move" | "add-child";
+export type NodeActionId = "move" | "remove" | "add-child";
 
 /** A single rendered Action_Menu item for a node row. */
 export interface NodeAction {

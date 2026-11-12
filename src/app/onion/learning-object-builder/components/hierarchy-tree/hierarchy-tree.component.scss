@@ -2,18 +2,10 @@
 
 .hierarchy-tree {
     display: block;
-}
 
-.hierarchy-tree__hint {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-top: 14px;
-    color: $medium-grey;
-    font-size: $small;
-
-    i {
-        color: $medium-grey;
+    // A change is being saved; nothing can be moved or removed until it ends.
+    &.is-saving {
+        cursor: progress;
     }
 }
 
