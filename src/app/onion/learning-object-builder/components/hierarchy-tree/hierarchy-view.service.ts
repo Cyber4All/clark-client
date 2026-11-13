@@ -11,8 +11,8 @@ import { canHaveChildren, isValidChildLength } from "./hierarchy-length.util";
  * `BuilderStore`). It performs NO API calls: `HierarchyLoaderService`
  * (sc-40640) fetches the real hierarchy and publishes it through `setTree`,
  * and `HierarchyEditService` (sc-40642) saves removes and moves around the
- * local changes made here. Creating and linking children come later:
- *   - sc-40236 create-new-child
+ * local changes made here. A newly created child is added with `addChild`
+ * (sc-40236) once the API has saved it. Linking an existing object comes later:
  *   - sc-40237 link-existing
  *
  * It is NOT provided in root; the Hierarchy page provides it so its lifetime
@@ -294,6 +294,75 @@ export class HierarchyViewService {
         this.treeSubject.next(removeNode(tree, nodeId));
 
         return true;
+    }
+
+    /**
+     * Whether a new child learning object may be created under `nodeId`: the
+     * node must be editable (never read-only or inside a linked subtree) and
+     * its length must be able to hold children (not a Nanomodule).
+     */
+    canAddChild(nodeId: string): boolean {
+        const node = findNode(this.treeSubject.value, nodeId);
+
+        return !!node && node.editable && canHaveChildren(node.length);
+    }
+
+    /**
+     * Append a NEW child under the node `parentNodeId` and expand the parent.
+     * Returns the node that was added, or undefined when it was refused.
+     *
+     * Used after the API has saved a newly created learning object (sc-40236).
+     * The occurrence `id` is assigned here as `${parent.id}/${learningObjectId}`,
+     * the same path key the loader uses, so a reload produces the same id.
+     *
+     * Refused when the parent is unknown, read-only (this also covers anything
+     * inside a linked subtree), cannot hold children, the child is not
+     * strictly shorter, or the parent already holds that learning object.
+     */
+    addChild(
+        parentNodeId: string,
+        child: Omit<HierarchyNode, "id" | "children">,
+    ): HierarchyNode | undefined {
+        const tree = this.treeSubject.value;
+        const parent = findNode(tree, parentNodeId);
+        if (
+            !parent ||
+            !parent.editable ||
+            !canHaveChildren(parent.length) ||
+            !isValidChildLength(parent.length, child.length)
+        ) {
+            return undefined;
+        }
+        const learningObjectId = child.learningObjectId;
+        if (!learningObjectId) {
+            return undefined;
+        }
+        if (
+            parent.children.some(
+                (existing) => learningObjectIdOf(existing) === learningObjectId,
+            )
+        ) {
+            return undefined;
+        }
+
+        const added: HierarchyNode = {
+            ...child,
+            id: `${parent.id}/${learningObjectId}`,
+            children: [],
+        };
+        this.treeSubject.next(
+            mapNodes(tree, (node) =>
+                node.id === parentNodeId
+                    ? {
+                          ...node,
+                          expanded: true,
+                          children: [...node.children, added],
+                      }
+                    : node,
+            ),
+        );
+
+        return added;
     }
 }
 

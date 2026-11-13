@@ -324,4 +324,120 @@ describe("HierarchyViewService (example-based)", () => {
             expect(service.unavailableReasons("micro-detection")).toEqual({});
         });
     });
+    describe("canAddChild", () => {
+        it("is true for an editable node that can hold children", () => {
+            expect(service.canAddChild("root")).toBe(true);
+            expect(service.canAddChild("micro-cia-triad")).toBe(true);
+        });
+        it("is false for a Nanomodule, which cannot have children", () => {
+            expect(service.canAddChild("nano-glossary")).toBe(false);
+        });
+        it("is false for a linked root and anything inside it", () => {
+            expect(service.canAddChild("incident-response")).toBe(false);
+            expect(service.canAddChild("micro-detection")).toBe(false);
+        });
+        it("is false for an unknown id", () => {
+            expect(service.canAddChild("missing")).toBe(false);
+        });
+    });
+    describe("addChild", () => {
+        const child = (
+            overrides: Partial<Omit<HierarchyNode, "id" | "children">> = {},
+        ): Omit<HierarchyNode, "id" | "children"> => ({
+            learningObjectId: "new-1",
+            cuid: "cuid-1",
+            version: 0,
+            name: "New child",
+            length: LearningObject.Length.MODULE,
+            editable: true,
+            ...overrides,
+        });
+        it("appends the child as the last child, keyed by the parent path", () => {
+            const added = service.addChild("unit-foundations", child());
+            expect(added).toMatchObject({
+                id: "unit-foundations/new-1",
+                learningObjectId: "new-1",
+                cuid: "cuid-1",
+                version: 0,
+                name: "New child",
+                editable: true,
+                children: [],
+            });
+            const kids = find("unit-foundations")!.children;
+            expect(kids[kids.length - 1].id).toBe("unit-foundations/new-1");
+        });
+        it("expands a collapsed parent so the new child is visible", () => {
+            service.toggleExpanded("unit-foundations");
+            expect(find("unit-foundations")!.expanded).toBe(false);
+            service.addChild("unit-foundations", child());
+            expect(find("unit-foundations")!.expanded).toBe(true);
+        });
+        it("leaves the rest of the tree as it was", () => {
+            const before = find("mod-cryptography");
+            service.addChild("unit-foundations", child());
+            expect(find("mod-cryptography")).toEqual(before);
+        });
+        it("makes the new child movable and a valid parent for shorter objects", () => {
+            const added = service.addChild("unit-foundations", child())!;
+            expect(service.canMove(added.id)).toBe(true);
+            expect(service.canAddChild(added.id)).toBe(true);
+        });
+        it("refuses an unknown parent", () => {
+            const before = service.tree;
+            expect(service.addChild("missing", child())).toBeUndefined();
+            expect(service.tree).toBe(before);
+        });
+        it("refuses a read-only parent and one inside a linked subtree", () => {
+            expect(
+                service.addChild(
+                    "incident-response",
+                    child({ length: LearningObject.Length.NANOMODULE }),
+                ),
+            ).toBeUndefined();
+            expect(
+                service.addChild(
+                    "micro-detection",
+                    child({ length: LearningObject.Length.NANOMODULE }),
+                ),
+            ).toBeUndefined();
+        });
+        it("refuses a Nanomodule parent", () => {
+            expect(
+                service.addChild(
+                    "nano-glossary",
+                    child({ length: LearningObject.Length.NANOMODULE }),
+                ),
+            ).toBeUndefined();
+        });
+        it("refuses a child that is not strictly shorter than its parent", () => {
+            expect(
+                service.addChild(
+                    "mod-core-concepts",
+                    child({ length: LearningObject.Length.MODULE }),
+                ),
+            ).toBeUndefined();
+            expect(
+                service.addChild(
+                    "mod-core-concepts",
+                    child({ length: LearningObject.Length.UNIT }),
+                ),
+            ).toBeUndefined();
+        });
+        it("refuses a child with no learning object id", () => {
+            expect(
+                service.addChild(
+                    "unit-foundations",
+                    child({ learningObjectId: undefined }),
+                ),
+            ).toBeUndefined();
+        });
+        it("refuses a learning object the parent already holds", () => {
+            expect(
+                service.addChild(
+                    "unit-foundations",
+                    child({ learningObjectId: "mod-cryptography" }),
+                ),
+            ).toBeUndefined();
+        });
+    });
 });

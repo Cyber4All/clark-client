@@ -1,5 +1,6 @@
 import { LearningObject } from "@entity";
 import {
+    HierarchyCreateOutcome,
     HierarchyEditError,
     HierarchyEditOutcome,
     HierarchyEditService,
@@ -532,6 +533,410 @@ describe("HierarchyEditService", () => {
             expect(service.saving).toBe(false);
             finish();
             await settle();
+        });
+    });
+    describe("create", () => {
+        let checkNameAvailability: jest.Mock;
+        let create: jest.Mock;
+        let save: jest.Mock;
+        let deleteObject: jest.Mock;
+        /** What the API returns for a created object. */
+        const created = {
+            id: "new-1",
+            cuid: "cuid-new-1",
+            version: 0,
+            length: LearningObject.Length.NANOMODULE,
+        };
+        const request = { name: "  My Module  ", length: MODULE };
+
+        async function runCreate(
+            parentNodeId: string,
+            req: { name: string; length: LearningObject.Length } = request,
+        ): Promise<{
+            outcome?: HierarchyCreateOutcome;
+            error?: HierarchyEditError;
+        }> {
+            const result: {
+                outcome?: HierarchyCreateOutcome;
+                error?: HierarchyEditError;
+            } = {};
+            service.create(parentNodeId, req).subscribe({
+                next: (outcome) => (result.outcome = outcome),
+                error: (error) => (result.error = error),
+            });
+            await settle();
+
+            return result;
+        }
+
+        beforeEach(() => {
+            checkNameAvailability = jest.fn().mockResolvedValue(true);
+            create = jest.fn().mockResolvedValue(created);
+            save = jest.fn().mockResolvedValue({});
+            deleteObject = jest.fn().mockResolvedValue({});
+            service = new HierarchyEditService(
+                {
+                    setChildren,
+                    checkNameAvailability,
+                    create,
+                    save,
+                    delete: deleteObject,
+                } as any,
+                view,
+            );
+        });
+
+        it("checks the name, creates, sets the length, then attaches, in that order", async () => {
+            const calls: string[] = [];
+            checkNameAvailability.mockImplementation(async () => {
+                calls.push("check");
+                return true;
+            });
+            create.mockImplementation(async () => {
+                calls.push("create");
+                return created;
+            });
+            save.mockImplementation(async () => {
+                calls.push("save");
+                return {};
+            });
+            setChildren.mockImplementation(async () => {
+                calls.push("attach");
+            });
+            const { error } = await runCreate("root/u1");
+            expect(error).toBeUndefined();
+            expect(calls).toEqual(["check", "create", "save", "attach"]);
+        });
+
+        it("sends the trimmed name, the Dashboard's unreleased status, then the length and the attach", async () => {
+            await runCreate("root/u1");
+            expect(checkNameAvailability).toHaveBeenCalledWith("My Module");
+            expect(create).toHaveBeenCalledWith({
+                name: "My Module",
+                length: MODULE,
+                status: LearningObject.Status.UNRELEASED,
+            });
+            expect(save).toHaveBeenCalledWith("new-1", { length: MODULE });
+            expect(setChildren).toHaveBeenCalledWith("u1", ["new-1"], false);
+            expect(deleteObject).not.toHaveBeenCalled();
+        });
+
+        it("adds the new editable child as the parent's last child and reports it", async () => {
+            const { outcome, error } = await runCreate("root/u1");
+            expect(error).toBeUndefined();
+            expect(idsUnder("root/u1")).toEqual([
+                "root/u1/m1",
+                "root/u1/new-1",
+            ]);
+            expect(outcome?.node).toMatchObject({
+                id: "root/u1/new-1",
+                learningObjectId: "new-1",
+                cuid: "cuid-new-1",
+                version: 0,
+                name: "My Module",
+                length: MODULE,
+                editable: true,
+            });
+            expect(outcome).toMatchObject({
+                name: "My Module",
+                parentName: "name-u1",
+                reloadRecommended: false,
+            });
+            expect(find(view.tree, "root/u1")!.expanded).toBe(true);
+        });
+
+        it("can add to the root", async () => {
+            const { error } = await runCreate("root", {
+                name: "A unit",
+                length: UNIT,
+            });
+            expect(error).toBeUndefined();
+            expect(setChildren).toHaveBeenCalledWith("root", ["new-1"], false);
+            expect(find(view.tree, "root/new-1")).toBeDefined();
+        });
+
+        it("leaves the tree untouched until every call has succeeded", async () => {
+            let finish!: () => void;
+            setChildren.mockReturnValueOnce(
+                new Promise<void>((resolve) => (finish = resolve)),
+            );
+            service.create("root/u1", request).subscribe();
+            await settle();
+            expect(service.saving).toBe(true);
+            expect(find(view.tree, "root/u1/new-1")).toBeUndefined();
+            finish();
+            await settle();
+            expect(service.saving).toBe(false);
+            expect(find(view.tree, "root/u1/new-1")).toBeDefined();
+        });
+
+        it("reports a reload when the parent appears more than once in the tree", async () => {
+            view.setTree([
+                node("root", COURSE, {
+                    children: [
+                        node("u1", UNIT, {
+                            id: "root/u1",
+                            learningObjectId: "u1",
+                        }),
+                        node("u2", UNIT, {
+                            id: "root/u2",
+                            learningObjectId: "u2",
+                            children: [
+                                node("u1", UNIT, {
+                                    id: "root/u2/u1",
+                                    learningObjectId: "u1",
+                                }),
+                            ],
+                        }),
+                    ],
+                }),
+            ]);
+            const { outcome } = await runCreate("root/u1");
+            expect(outcome?.reloadRecommended).toBe(true);
+        });
+
+        describe("name problems (nothing is created)", () => {
+            it("refuses a name that is already used, without creating", async () => {
+                checkNameAvailability.mockResolvedValue(false);
+                const { error } = await runCreate("root/u1");
+                expect(error?.reason).toBe("name-taken");
+                expect(create).not.toHaveBeenCalled();
+                expect(idsUnder("root/u1")).toEqual(["root/u1/m1"]);
+                expect(service.saving).toBe(false);
+            });
+
+            it("lets the create call decide when the availability check itself fails", async () => {
+                checkNameAvailability.mockRejectedValue(new Error("500"));
+                const { outcome, error } = await runCreate("root/u1");
+                expect(error).toBeUndefined();
+                expect(outcome).toBeDefined();
+                expect(create).toHaveBeenCalledTimes(1);
+            });
+
+            it.each(["a/b", "a\\b", 'a"b', "a*b", "a|b"])(
+                "refuses %s without any request",
+                async (name) => {
+                    const { error } = await runCreate("root/u1", {
+                        name,
+                        length: MODULE,
+                    });
+                    expect(error?.reason).toBe("name-invalid");
+                    expect(checkNameAvailability).not.toHaveBeenCalled();
+                    expect(create).not.toHaveBeenCalled();
+                },
+            );
+
+            it("refuses a blank name without any request", async () => {
+                const { error } = await runCreate("root/u1", {
+                    name: "   ",
+                    length: MODULE,
+                });
+                expect(error?.reason).toBe("name-invalid");
+                expect(create).not.toHaveBeenCalled();
+            });
+
+            it("maps a 409 from create to name-taken", async () => {
+                create.mockRejectedValue({ status: 409 });
+                const { error } = await runCreate("root/u1");
+                expect(error?.reason).toBe("name-taken");
+                expect(deleteObject).not.toHaveBeenCalled();
+            });
+
+            it("maps a 400 from create to name-invalid", async () => {
+                create.mockRejectedValue({ status: 400 });
+                const { error } = await runCreate("root/u1");
+                expect(error?.reason).toBe("name-invalid");
+            });
+        });
+
+        describe("failures", () => {
+            it("fails without cleanup when create fails, and leaves the tree as it was", async () => {
+                const before = view.tree;
+                create.mockRejectedValue({ status: 500 });
+                const { outcome, error } = await runCreate("root/u1");
+                expect(outcome).toBeUndefined();
+                expect(error).toBeInstanceOf(HierarchyEditError);
+                expect(error).toMatchObject({
+                    reason: "failed",
+                    reloadRequired: false,
+                    leftInLibrary: false,
+                });
+                expect(save).not.toHaveBeenCalled();
+                expect(setChildren).not.toHaveBeenCalled();
+                expect(deleteObject).not.toHaveBeenCalled();
+                expect(view.tree).toBe(before);
+            });
+
+            it("deletes the new object when setting its length fails", async () => {
+                const before = view.tree;
+                save.mockRejectedValue({ status: 500 });
+                const { error } = await runCreate("root/u1");
+                expect(error).toMatchObject({
+                    reason: "failed",
+                    reloadRequired: false,
+                    leftInLibrary: false,
+                });
+                expect(setChildren).not.toHaveBeenCalled();
+                expect(deleteObject).toHaveBeenCalledWith("new-1");
+                expect(view.tree).toBe(before);
+                expect(service.saving).toBe(false);
+            });
+
+            it("deletes the new object when attaching it fails", async () => {
+                const before = view.tree;
+                setChildren.mockRejectedValue({ status: 403 });
+                const { error } = await runCreate("root/u1");
+                expect(error).toMatchObject({
+                    reason: "failed",
+                    reloadRequired: false,
+                    leftInLibrary: false,
+                });
+                expect(deleteObject).toHaveBeenCalledTimes(1);
+                expect(deleteObject).toHaveBeenCalledWith("new-1");
+                expect(view.tree).toBe(before);
+            });
+
+            it("says the object is left in the library when the cleanup also fails after the length step", async () => {
+                save.mockRejectedValue({ status: 500 });
+                deleteObject.mockRejectedValue({ status: 500 });
+                const { error } = await runCreate("root/u1");
+                expect(error).toMatchObject({
+                    reason: "failed",
+                    reloadRequired: false,
+                    leftInLibrary: true,
+                });
+            });
+
+            it("also asks for a reload when the attach failed and the cleanup failed", async () => {
+                setChildren.mockRejectedValue({ status: 500 });
+                deleteObject.mockRejectedValue({ status: 500 });
+                const { error } = await runCreate("root/u1");
+                expect(error).toMatchObject({
+                    reason: "failed",
+                    reloadRequired: true,
+                    leftInLibrary: true,
+                });
+                expect(find(view.tree, "root/u1/new-1")).toBeUndefined();
+            });
+
+            it("accepts a new edit after a failed create", async () => {
+                create.mockRejectedValueOnce({ status: 500 });
+                await runCreate("root/u1");
+                const { outcome, error } = await runCreate("root/u1");
+                expect(error).toBeUndefined();
+                expect(outcome).toBeDefined();
+            });
+
+            it("releases the lock when the subscriber leaves before the save ends", async () => {
+                let finish!: () => void;
+                create.mockReturnValueOnce(
+                    new Promise((resolve) => (finish = () => resolve(created))),
+                );
+                const subscription = service
+                    .create("root/u1", request)
+                    .subscribe();
+                await settle();
+                expect(service.saving).toBe(true);
+                subscription.unsubscribe();
+                expect(service.saving).toBe(false);
+                finish();
+                await settle();
+            });
+        });
+
+        describe("refused up front (nothing is sent)", () => {
+            const expectNoRequests = () => {
+                expect(checkNameAvailability).not.toHaveBeenCalled();
+                expect(create).not.toHaveBeenCalled();
+                expect(save).not.toHaveBeenCalled();
+                expect(setChildren).not.toHaveBeenCalled();
+            };
+
+            it("refuses an unknown parent", async () => {
+                const { error } = await runCreate("nope");
+                expect(error?.reason).toBe("invalid");
+                expectNoRequests();
+            });
+
+            it("refuses a read-only (linked) parent", async () => {
+                const { error } = await runCreate("root/linked", {
+                    name: "x",
+                    length: MODULE,
+                });
+                expect(error?.reason).toBe("invalid");
+                expectNoRequests();
+            });
+
+            it("refuses a parent inside a linked subtree", async () => {
+                const { error } = await runCreate("root/linked/lm", {
+                    name: "x",
+                    length: MICROMODULE,
+                });
+                expect(error?.reason).toBe("invalid");
+                expectNoRequests();
+            });
+
+            it("refuses a Nanomodule parent", async () => {
+                view.setTree([
+                    node("root", COURSE, {
+                        children: [
+                            node("n1", LearningObject.Length.NANOMODULE, {
+                                id: "root/n1",
+                                learningObjectId: "n1",
+                            }),
+                        ],
+                    }),
+                ]);
+                const { error } = await runCreate("root/n1", {
+                    name: "x",
+                    length: LearningObject.Length.NANOMODULE,
+                });
+                expect(error?.reason).toBe("invalid");
+                expectNoRequests();
+            });
+
+            it("refuses a length that is not shorter than the parent", async () => {
+                const same = await runCreate("root/u1", {
+                    name: "x",
+                    length: UNIT,
+                });
+                const longer = await runCreate("root/u1", {
+                    name: "x",
+                    length: COURSE,
+                });
+                expect(same.error?.reason).toBe("invalid");
+                expect(longer.error?.reason).toBe("invalid");
+                expectNoRequests();
+            });
+
+            it("refuses while another edit is saving", async () => {
+                let finish!: () => void;
+                setChildren.mockReturnValueOnce(
+                    new Promise<void>((resolve) => (finish = resolve)),
+                );
+                service.remove("root/u1/m1").subscribe();
+                const { error } = await runCreate("root/u2", {
+                    name: "x",
+                    length: MODULE,
+                });
+                expect(error?.reason).toBe("busy");
+                expect(create).not.toHaveBeenCalled();
+                finish();
+                await settle();
+            });
+
+            it("blocks other edits while a create is saving", async () => {
+                let finish!: () => void;
+                create.mockReturnValueOnce(
+                    new Promise((resolve) => (finish = () => resolve(created))),
+                );
+                service.create("root/u1", request).subscribe();
+                await settle();
+                const { error } = await run(service.remove("root/u2"));
+                expect(error?.reason).toBe("busy");
+                finish();
+                await settle();
+            });
         });
     });
 });
