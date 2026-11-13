@@ -809,8 +809,21 @@ describe("HierarchyTreeComponent (integration)", () => {
     });
 
     describe("removing a child", () => {
-        /** Select "Remove from Hierarchy" in the open Action Menu of `nodeId`. */
-        function removeViaMenu(nodeId: string): void {
+        /** The open remove-confirmation dialog, or null. */
+        function confirmDialog(): HTMLElement | null {
+            return document.querySelector<HTMLElement>(
+                ".cdk-overlay-container .hierarchy-remove-confirm",
+            );
+        }
+
+        function confirmDialogButton(kind: "danger" | "ghost"): HTMLElement {
+            return document.querySelector<HTMLElement>(
+                `.cdk-overlay-container .hierarchy-remove-confirm__button--${kind}`,
+            )!;
+        }
+
+        /** Select "Remove from Hierarchy" in the Action Menu of `nodeId`. */
+        function chooseRemove(nodeId: string): void {
             triggerFor(nodeId).click();
             flush();
             fixture.detectChanges();
@@ -825,9 +838,88 @@ describe("HierarchyTreeComponent (integration)", () => {
             fixture.detectChanges();
         }
 
+        /** Choose Remove, then press Remove in the confirmation. */
+        function removeViaMenu(nodeId: string): void {
+            chooseRemove(nodeId);
+            confirmDialogButton("danger").click();
+            flush();
+            fixture.detectChanges();
+        }
+
+        it("asks first and sends nothing until the author confirms", fakeAsync(() => {
+            const before = JSON.stringify(viewService.tree);
+
+            chooseRemove("nano-glossary");
+
+            const dialog = confirmDialog()!;
+            expect(dialog).toBeTruthy();
+            expect(dialog.getAttribute("role")).toBe("alertdialog");
+            expect(dialog.textContent).toContain("Security Glossary");
+            expect(dialog.textContent).toContain("Intro to Cybersecurity");
+            expect(dialog.textContent).toContain("stays in your library");
+            expect(setChildren).not.toHaveBeenCalled();
+            expect(JSON.stringify(viewService.tree)).toBe(before);
+            // Cancel is focused first because Remove is the riskier choice.
+            expect(document.activeElement).toBe(confirmDialogButton("ghost"));
+        }));
+
+        it("mentions how many objects leave with it when the child has its own children", fakeAsync(() => {
+            chooseRemove("unit-foundations");
+
+            // Foundations Unit > Core Concepts > CIA Triad
+            expect(confirmDialog()!.textContent).toContain(
+                "2 objects inside it will leave this hierarchy with it",
+            );
+        }));
+
+        it("does not mention contents for a child without children", fakeAsync(() => {
+            chooseRemove("nano-glossary");
+
+            expect(confirmDialog()!.textContent).not.toContain("inside it");
+        }));
+
+        it.each([
+            ["Cancel", () => confirmDialogButton("ghost").click()],
+            [
+                "Escape",
+                () =>
+                    document
+                        .querySelector(
+                            ".cdk-overlay-container .cdk-overlay-pane",
+                        )!
+                        .dispatchEvent(
+                            new KeyboardEvent("keydown", {
+                                key: "Escape",
+                                keyCode: 27,
+                                bubbles: true,
+                            }),
+                        ),
+            ],
+            ["a backdrop click", () => backdrop()!.click()],
+        ])(
+            "%s closes the dialog, changes nothing, and returns focus to the row",
+            fakeAsync((_label, dismiss) => {
+                const before = JSON.stringify(viewService.tree);
+                chooseRemove("nano-glossary");
+
+                dismiss();
+                flush();
+                fixture.detectChanges();
+
+                expect(confirmDialog()).toBeNull();
+                expect(setChildren).not.toHaveBeenCalled();
+                expect(JSON.stringify(viewService.tree)).toBe(before);
+                expect(notifications.success).not.toHaveBeenCalled();
+                expect(document.activeElement).toBe(
+                    triggerFor("nano-glossary"),
+                );
+            }),
+        );
+
         it("unlinks the child from its parent, keeps the object, and says so", fakeAsync(() => {
             removeViaMenu("nano-glossary");
 
+            expect(confirmDialog()).toBeNull();
             expect(setChildren.mock.calls).toEqual([
                 ["root", ["nano-glossary"], true],
             ]);
@@ -876,6 +968,17 @@ describe("HierarchyTreeComponent (integration)", () => {
             );
         }));
 
+        it("closes an open dialog when the tree is destroyed", fakeAsync(() => {
+            chooseRemove("nano-glossary");
+            expect(confirmDialog()).toBeTruthy();
+
+            fixture.destroy();
+            flush();
+
+            expect(confirmDialog()).toBeNull();
+            expect(backdrop()).toBeNull();
+        }));
+
         it("does not offer removal for the root or inside a linked subtree", fakeAsync(() => {
             for (const nodeId of ["root", "micro-detection"]) {
                 triggerFor(nodeId).click();
@@ -889,6 +992,7 @@ describe("HierarchyTreeComponent (integration)", () => {
                 flush();
                 fixture.detectChanges();
             }
+            expect(confirmDialog()).toBeNull();
             expect(setChildren).not.toHaveBeenCalled();
         }));
     });

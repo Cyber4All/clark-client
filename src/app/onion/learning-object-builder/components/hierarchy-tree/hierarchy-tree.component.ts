@@ -32,6 +32,7 @@ import { take, takeUntil } from "rxjs/operators";
 import { LearningObject } from "@entity";
 import { HierarchyNodeComponent } from "./hierarchy-node/hierarchy-node.component";
 import { HierarchyMovePickerComponent } from "./hierarchy-move-picker/hierarchy-move-picker.component";
+import { HierarchyRemoveConfirmComponent } from "./hierarchy-remove-confirm/hierarchy-remove-confirm.component";
 import { HierarchyViewService } from "./hierarchy-view.service";
 import { HierarchyLoaderService } from "./hierarchy-loader.service";
 import {
@@ -356,6 +357,7 @@ export class HierarchyTreeComponent implements OnInit, OnChanges, OnDestroy {
             this.pendingMoveTimer = null;
         }
         this.closeMovePicker(false);
+        this.closeRemoveConfirm(false);
     }
 
     /**
@@ -388,15 +390,98 @@ export class HierarchyTreeComponent implements OnInit, OnChanges, OnDestroy {
         );
     }
 
+    /** The live remove-confirmation overlay, or null when it is closed. */
+    private removeOverlayRef: OverlayRef | null = null;
+
+    /** Subscriptions tied to the open confirmation; torn down on close. */
+    private removeSubscriptions: Subscription[] = [];
+
+    /** The row whose Remove action opened the confirmation (focus restore). */
+    private removeOriginNodeId: string | null = null;
+
     /**
-     * Unlink `nodeId` from its parent and save it. The learning object itself
-     * stays in the author's library. Focus moves to the parent's menu button
-     * because the removed row (and its button) no longer exists.
+     * Ask the author to confirm removing `nodeId` from its parent. Nothing is
+     * sent until they confirm; Cancel, Escape, and a backdrop click leave the
+     * hierarchy untouched and return focus to the row's menu button.
      */
     private removeChild(nodeId: string): void {
         if (!this.canMove(nodeId)) {
             return;
         }
+        const node = findInTree(this.viewService.tree, nodeId);
+        const parent = this.viewService.getParent(nodeId);
+        if (!node || !parent) {
+            return;
+        }
+
+        // Replace any confirmation that is already open.
+        this.closeRemoveConfirm(false);
+        this.removeOriginNodeId = nodeId;
+
+        const overlayRef = this.overlay.create({
+            hasBackdrop: true,
+            disposeOnNavigation: true,
+            scrollStrategy: this.overlay.scrollStrategies.block(),
+            positionStrategy: this.overlay
+                .position()
+                .global()
+                .centerHorizontally()
+                .centerVertically(),
+        });
+        this.removeOverlayRef = overlayRef;
+
+        const confirmRef = overlayRef.attach(
+            new ComponentPortal(HierarchyRemoveConfirmComponent, this.vcr),
+        );
+        confirmRef.setInput("nodeName", node.name ?? "");
+        confirmRef.setInput("parentName", parent.name ?? "");
+        confirmRef.setInput("descendantCount", countDescendants(node));
+        confirmRef.changeDetectorRef.detectChanges();
+
+        this.removeSubscriptions.push(
+            confirmRef.instance.confirm.subscribe(() => {
+                // The removed row (and its button) will be gone, so do not
+                // restore focus to it; the success handler focuses the parent.
+                this.closeRemoveConfirm(false);
+                this.saveRemoval(nodeId);
+            }),
+            confirmRef.instance.cancel.subscribe(() =>
+                this.closeRemoveConfirm(),
+            ),
+            overlayRef
+                .backdropClick()
+                .subscribe(() => this.closeRemoveConfirm()),
+            overlayRef.detachments().subscribe(() => this.closeRemoveConfirm()),
+            overlayRef.keydownEvents().subscribe((keyEvent) => {
+                if (keyEvent.keyCode === ESCAPE) {
+                    keyEvent.preventDefault();
+                    this.closeRemoveConfirm();
+                }
+            }),
+        );
+    }
+
+    /** Single close path for the confirmation, mirroring the Move picker. */
+    private closeRemoveConfirm(restoreFocus = true): void {
+        const originNodeId = this.removeOriginNodeId;
+        this.removeOriginNodeId = null;
+        this.removeSubscriptions.forEach((sub) => sub.unsubscribe());
+        this.removeSubscriptions = [];
+        if (this.removeOverlayRef) {
+            this.removeOverlayRef.dispose();
+            this.removeOverlayRef = null;
+        }
+        if (restoreFocus && !this.destroyed && originNodeId) {
+            this.restoreNodeFocus(originNodeId);
+        }
+    }
+
+    /**
+     * Unlink `nodeId` from its parent and save it. The learning object itself
+     * stays in the author's library. Focus moves to the parent's menu button
+     * because the removed row (and its button) no longer exists.
+     */
+    private saveRemoval(nodeId: string): void {
         const parentId = this.viewService.parentIdOf(nodeId);
         this.persist(this.editService.remove(nodeId), {
             onSuccess: (outcome) => {
@@ -630,4 +715,12 @@ function findInTree(
     }
 
     return undefined;
+}
+
+/** How many nodes sit below `node` (all levels, not counting `node`). */
+function countDescendants(node: HierarchyNode): number {
+    return node.children.reduce(
+        (total, child) => total + 1 + countDescendants(child),
+        0,
+    );
 }
