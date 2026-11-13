@@ -27,12 +27,19 @@ import { ToastrOvenService } from "../../../../shared/modules/toaster/notificati
 import { Overlay, OverlayRef } from "@angular/cdk/overlay";
 import { ComponentPortal } from "@angular/cdk/portal";
 import { ESCAPE } from "@angular/cdk/keycodes";
-import { Observable, Subscription } from "rxjs";
+import { Observable, Subject, Subscription } from "rxjs";
+import { take, takeUntil } from "rxjs/operators";
 import { LearningObject } from "@entity";
 import { HierarchyNodeComponent } from "./hierarchy-node/hierarchy-node.component";
 import { HierarchyMovePickerComponent } from "./hierarchy-move-picker/hierarchy-move-picker.component";
+import { HierarchyRemoveConfirmComponent } from "./hierarchy-remove-confirm/hierarchy-remove-confirm.component";
 import { HierarchyViewService } from "./hierarchy-view.service";
 import { HierarchyLoaderService } from "./hierarchy-loader.service";
+import {
+    HierarchyEditError,
+    HierarchyEditOutcome,
+    HierarchyEditService,
+} from "./hierarchy-edit.service";
 import {
     HierarchyLoadStatus,
     HierarchyNode,
@@ -46,8 +53,10 @@ import {
  * linked/read-only treatment, and drag-and-drop with invalid-drop gating.
  * The hierarchy is loaded from the API by {@link HierarchyLoaderService}
  * (sc-40640) and held by {@link HierarchyViewService}; this component renders
- * the loading, error, empty and ready states. The `+` menu actions are
- * surfaced but inert (wired in sc-40236 / sc-40237).
+ * the loading, error, empty and ready states. Moving and removing children is
+ * saved immediately through {@link HierarchyEditService} (sc-40642): the tree
+ * updates first, and on a failed save it is restored and an error is shown.
+ * Creating and linking children are wired in sc-40236 / sc-40237.
  *
  * Drag-and-drop model (rebuilt in sc-40233): the WHOLE tree is a single
  * `cdkDropList` (`cdkDropListSortingDisabled`) rather than a group of per-node
@@ -78,10 +87,15 @@ export class HierarchyTreeComponent implements OnInit, OnChanges, OnDestroy {
 
     tree$: Observable<HierarchyNode[]>;
     status$: Observable<HierarchyLoadStatus>;
+    saving$: Observable<boolean>;
+
+    /** Ends in-flight edit subscriptions when the tree is destroyed. */
+    private readonly destroy$ = new Subject<void>();
 
     constructor(
         private viewService: HierarchyViewService,
         private loader: HierarchyLoaderService,
+        private editService: HierarchyEditService,
         private host: ElementRef<HTMLElement>,
         private overlay: Overlay,
         private vcr: ViewContainerRef,
@@ -96,6 +110,7 @@ export class HierarchyTreeComponent implements OnInit, OnChanges, OnDestroy {
     ngOnInit(): void {
         this.tree$ = this.viewService.tree$;
         this.status$ = this.loader.status$;
+        this.saving$ = this.editService.saving$;
         this.loadHierarchy();
     }
 
@@ -129,9 +144,13 @@ export class HierarchyTreeComponent implements OnInit, OnChanges, OnDestroy {
         target: HierarchyNode,
     ): boolean => this.viewService.canDrop(dragged, target);
 
-    /** Movability predicate handed to each node; delegates to the view service. */
+    /**
+     * Movability predicate handed to each node; delegates to the view service.
+     * Nothing can be picked up, moved, or removed while a change is saving, so
+     * a failed save can be rolled back to a tree nothing else touched.
+     */
     readonly canMove = (nodeId: string): boolean =>
-        this.viewService.canMove(nodeId);
+        !this.editService.saving && this.viewService.canMove(nodeId);
 
     onToggleExpanded(id: string): void {
         this.viewService.toggleExpanded(id);
@@ -220,11 +239,66 @@ export class HierarchyTreeComponent implements OnInit, OnChanges, OnDestroy {
         }
 
         // Dropping ONTO a node appends the dragged node to that node's children,
-        // nesting it UNDER the target (not inserted beside it). Omit the index
-        // so the view service appends.
-        if (this.viewService.moveNode(dragged.id, targetId)) {
-            this.notifyMove(dragged.id, targetId);
+        // nesting it UNDER the target (not inserted beside it). The edit service
+        // applies the move, saves it, and restores the tree if the save fails.
+        // An invalid or busy drop is a silent no-op (CDK reverts the card).
+        this.persist(this.editService.move(dragged.id, targetId), {
+            onSuccess: (outcome) => this.announceMoved(outcome),
+            onFailure: (error) => this.toastFailure(error, "move"),
+        });
+    }
+
+    /**
+     * Run one edit and route its result. A reload is requested when the edit
+     * was only half applied on the server, or when the edited parent appears
+     * more than once in the tree (the server changed every occurrence).
+     */
+    private persist(
+        edit$: Observable<HierarchyEditOutcome>,
+        handlers: {
+            onSuccess: (outcome: HierarchyEditOutcome) => void;
+            onFailure: (error: HierarchyEditError) => void;
+        },
+    ): void {
+        edit$.pipe(take(1), takeUntil(this.destroy$)).subscribe({
+            next: (outcome) => {
+                handlers.onSuccess(outcome);
+                if (outcome.reloadRecommended) {
+                    this.loader.retry();
+                }
+            },
+            error: (error: unknown) => {
+                const failure =
+                    error instanceof HierarchyEditError
+                        ? error
+                        : new HierarchyEditError("failed", false, error);
+                if (failure.reloadRequired) {
+                    this.loader.retry();
+                }
+                handlers.onFailure(failure);
+            },
+        });
+    }
+
+    /** Toast for a save that failed; refused (invalid or busy) edits stay silent. */
+    private toastFailure(
+        error: HierarchyEditError,
+        action: "move" | "remove",
+    ): void {
+        if (error.reason !== "failed") {
+            return;
         }
+        const message =
+            action === "move"
+                ? "The object could not be moved, so your hierarchy was left as it was."
+                : "The object could not be removed, so your hierarchy was left as it was.";
+        this.notifications.error(
+            action === "move" ? "Move failed" : "Remove failed",
+            error.reloadRequired
+                ? `${message} The hierarchy was reloaded to show what is saved.`
+                : message,
+        );
+        void this.liveAnnouncer.announce(message, "assertive");
     }
 
     /**
@@ -276,16 +350,26 @@ export class HierarchyTreeComponent implements OnInit, OnChanges, OnDestroy {
 
     ngOnDestroy(): void {
         this.destroyed = true;
+        this.destroy$.next();
+        this.destroy$.complete();
         if (this.pendingMoveTimer !== null) {
             clearTimeout(this.pendingMoveTimer);
             this.pendingMoveTimer = null;
         }
         this.closeMovePicker(false);
+        this.closeRemoveConfirm(false);
     }
 
-    /** Let MatMenu finish its click handling before attaching the picker. */
+    /**
+     * Let MatMenu finish its click handling before acting. Opening the picker
+     * or removing the row (which destroys the menu's own trigger) both wait one
+     * tick.
+     */
     onMenuAction(payload: { actionId: NodeActionId; nodeId: string }): void {
-        if (payload.actionId !== "move" || this.destroyed) {
+        if (
+            (payload.actionId !== "move" && payload.actionId !== "remove") ||
+            this.destroyed
+        ) {
             return;
         }
         if (this.pendingMoveTimer !== null) {
@@ -294,11 +378,123 @@ export class HierarchyTreeComponent implements OnInit, OnChanges, OnDestroy {
         this.pendingMoveTimer = this.zone.run(() =>
             setTimeout(() => {
                 this.pendingMoveTimer = null;
-                if (!this.destroyed) {
+                if (this.destroyed) {
+                    return;
+                }
+                if (payload.actionId === "move") {
                     this.openMovePicker(payload.nodeId);
+                } else {
+                    this.removeChild(payload.nodeId);
                 }
             }, 0),
         );
+    }
+
+    /** The live remove-confirmation overlay, or null when it is closed. */
+    private removeOverlayRef: OverlayRef | null = null;
+
+    /** Subscriptions tied to the open confirmation; torn down on close. */
+    private removeSubscriptions: Subscription[] = [];
+
+    /** The row whose Remove action opened the confirmation (focus restore). */
+    private removeOriginNodeId: string | null = null;
+
+    /**
+     * Ask the author to confirm removing `nodeId` from its parent. Nothing is
+     * sent until they confirm; Cancel, Escape, and a backdrop click leave the
+     * hierarchy untouched and return focus to the row's menu button.
+     */
+    private removeChild(nodeId: string): void {
+        if (!this.canMove(nodeId)) {
+            return;
+        }
+        const node = findInTree(this.viewService.tree, nodeId);
+        const parent = this.viewService.getParent(nodeId);
+        if (!node || !parent) {
+            return;
+        }
+
+        // Replace any confirmation that is already open.
+        this.closeRemoveConfirm(false);
+        this.removeOriginNodeId = nodeId;
+
+        const overlayRef = this.overlay.create({
+            hasBackdrop: true,
+            disposeOnNavigation: true,
+            scrollStrategy: this.overlay.scrollStrategies.block(),
+            positionStrategy: this.overlay
+                .position()
+                .global()
+                .centerHorizontally()
+                .centerVertically(),
+        });
+        this.removeOverlayRef = overlayRef;
+
+        const confirmRef = overlayRef.attach(
+            new ComponentPortal(HierarchyRemoveConfirmComponent, this.vcr),
+        );
+        confirmRef.setInput("nodeName", node.name ?? "");
+        confirmRef.setInput("parentName", parent.name ?? "");
+        confirmRef.setInput("descendantCount", countDescendants(node));
+        confirmRef.changeDetectorRef.detectChanges();
+
+        this.removeSubscriptions.push(
+            confirmRef.instance.confirm.subscribe(() => {
+                // The removed row (and its button) will be gone, so do not
+                // restore focus to it; the success handler focuses the parent.
+                this.closeRemoveConfirm(false);
+                this.saveRemoval(nodeId);
+            }),
+            confirmRef.instance.cancel.subscribe(() =>
+                this.closeRemoveConfirm(),
+            ),
+            overlayRef
+                .backdropClick()
+                .subscribe(() => this.closeRemoveConfirm()),
+            overlayRef.detachments().subscribe(() => this.closeRemoveConfirm()),
+            overlayRef.keydownEvents().subscribe((keyEvent) => {
+                if (keyEvent.keyCode === ESCAPE) {
+                    keyEvent.preventDefault();
+                    this.closeRemoveConfirm();
+                }
+            }),
+        );
+    }
+
+    /** Single close path for the confirmation, mirroring the Move picker. */
+    private closeRemoveConfirm(restoreFocus = true): void {
+        const originNodeId = this.removeOriginNodeId;
+        this.removeOriginNodeId = null;
+        this.removeSubscriptions.forEach((sub) => sub.unsubscribe());
+        this.removeSubscriptions = [];
+        if (this.removeOverlayRef) {
+            this.removeOverlayRef.dispose();
+            this.removeOverlayRef = null;
+        }
+        if (restoreFocus && !this.destroyed && originNodeId) {
+            this.restoreNodeFocus(originNodeId);
+        }
+    }
+
+    /**
+     * Unlink `nodeId` from its parent and save it. The learning object itself
+     * stays in the author's library. Focus moves to the parent's menu button
+     * because the removed row (and its button) no longer exists.
+     */
+    private saveRemoval(nodeId: string): void {
+        const parentId = this.viewService.parentIdOf(nodeId);
+        this.persist(this.editService.remove(nodeId), {
+            onSuccess: (outcome) => {
+                this.changeDetector.detectChanges();
+                if (parentId) {
+                    this.restoreNodeFocus(parentId);
+                }
+                const message = `“${outcome.name}” was removed from “${outcome.parentName}”. It is still in your library.`;
+                this.notifications.success("Object removed", message);
+                void this.liveAnnouncer.announce(message, "polite");
+            },
+            onFailure: (error) => this.toastFailure(error, "remove"),
+        });
     }
 
     /**
@@ -386,6 +582,9 @@ export class HierarchyTreeComponent implements OnInit, OnChanges, OnDestroy {
             "unavailableReasons",
             this.viewService.unavailableReasons(nodeId),
         );
+        // The API cannot save the order of children yet (sc-40642), so moving a
+        // node "within" its current parent is not offered.
+        pickerRef.setInput("allowCurrentParent", false);
         pickerRef.changeDetectorRef.detectChanges();
 
         this.moveSubscriptions.push(
@@ -408,57 +607,69 @@ export class HierarchyTreeComponent implements OnInit, OnChanges, OnDestroy {
     private static readonly MOVE_FAILED_MESSAGE =
         "That move could not be completed.";
 
+    /** Inline error surfaced in the open picker when the API did not save a move. */
+    private static readonly MOVE_NOT_SAVED_MESSAGE =
+        "That move could not be saved, so nothing changed. Try again.";
+
     /**
-     * Apply the author's confirmed move through the single source of truth.
+     * Apply the author's confirmed move: the edit service moves the node,
+     * saves it, and restores the tree if the save fails.
      *
-     * On success (`moveNode` returns true) the updated `tree$` already reflects
-     * the new parent/position; we close the picker, which restores focus to the
-     * originating Action Menu button.
+     * On success the picker closes and focus returns to the moved row's Action
+     * Menu button; the toast and announcement follow the save, not the click.
      *
-     * On failure (`moveNode` returns false) the hierarchy is left unchanged; we
-     * keep the picker OPEN and surface an inline error on the attached picker so
-     * the author can retry or cancel. Confirmed moves append as the last child.
+     * On failure the hierarchy is back to what it was; we keep the picker OPEN
+     * with an inline error so the author can retry or cancel. The exception is
+     * a half-applied save, where the hierarchy is reloaded from the server and
+     * the picker (now showing a stale tree) is closed. Confirmed moves append
+     * as the last child.
      */
     private applyMove(nodeId: string, targetId: string): void {
-        const applied = this.viewService.moveNode(nodeId, targetId);
-        if (applied) {
-            this.closeMovePicker(false);
-            // A different parent creates a new row instance. Render first so
-            // focus is restored to its live trigger, not the removed button.
-            // A destination can live under a collapsed ancestor. Reveal the
-            // moved row so keyboard users can continue from its new location.
-            let parentId = this.viewService.parentIdOf(nodeId);
-            while (parentId) {
-                const parent = findInTree(this.viewService.tree, parentId);
-                if (parent && !parent.expanded) {
-                    this.viewService.toggleExpanded(parentId);
+        this.persist(this.editService.move(nodeId, targetId), {
+            onSuccess: (outcome) => {
+                this.closeMovePicker(false);
+                // A different parent creates a new row instance. Render first so
+                // focus is restored to its live trigger, not the removed button.
+                // A destination can live under a collapsed ancestor. Reveal the
+                // moved row so keyboard users can continue from its new location.
+                let parentId = this.viewService.parentIdOf(nodeId);
+                while (parentId) {
+                    const parent = findInTree(this.viewService.tree, parentId);
+                    if (parent && !parent.expanded) {
+                        this.viewService.toggleExpanded(parentId);
+                    }
+                    parentId = this.viewService.parentIdOf(parentId);
                 }
-                parentId = this.viewService.parentIdOf(parentId);
-            }
-            this.changeDetector.detectChanges();
-            this.restoreNodeFocus(nodeId);
-            this.notifyMove(nodeId, targetId);
+                this.changeDetector.detectChanges();
+                this.restoreNodeFocus(nodeId);
+                this.announceMoved(outcome);
+            },
+            onFailure: (error) => {
+                if (error.reason === "busy") {
+                    return;
+                }
+                if (error.reloadRequired) {
+                    this.closeMovePicker(false);
+                    this.toastFailure(error, "move");
 
-            return;
-        }
-
-        // Rejected move: hierarchy untouched, picker stays open with an error.
-        if (this.movePickerRef) {
-            this.movePickerRef.instance.errorMessage =
-                HierarchyTreeComponent.MOVE_FAILED_MESSAGE;
-            this.movePickerRef.changeDetectorRef.detectChanges();
-        }
+                    return;
+                }
+                // Rejected or unsaved move: hierarchy untouched, picker stays
+                // open with an error.
+                if (this.movePickerRef) {
+                    this.movePickerRef.instance.errorMessage =
+                        error.reason === "failed"
+                            ? HierarchyTreeComponent.MOVE_NOT_SAVED_MESSAGE
+                            : HierarchyTreeComponent.MOVE_FAILED_MESSAGE;
+                    this.movePickerRef.changeDetectorRef.detectChanges();
+                }
+            },
+        });
     }
 
-    /** Both interaction paths report success only after the move engine accepts it. */
-    private notifyMove(nodeId: string, targetId: string): void {
-        const name =
-            findInTree(this.viewService.tree, nodeId)?.name?.trim() ||
-            "Unnamed object";
-        const parentName =
-            findInTree(this.viewService.tree, targetId)?.name?.trim() ||
-            "Unnamed object";
-        const message = `“${name}” moved under “${parentName}”.`;
+    /** Both interaction paths report success only after the move was saved. */
+    private announceMoved(outcome: HierarchyEditOutcome): void {
+        const message = `“${outcome.name}” moved under “${outcome.parentName}”.`;
         this.notifications.success("Object moved", message);
         void this.liveAnnouncer.announce(message, "polite");
     }
@@ -504,4 +715,12 @@ function findInTree(
     }
 
     return undefined;
+}
+
+/** How many nodes sit below `node` (all levels, not counting `node`). */
+function countDescendants(node: HierarchyNode): number {
+    return node.children.reduce(
+        (total, child) => total + 1 + countDescendants(child),
+        0,
+    );
 }

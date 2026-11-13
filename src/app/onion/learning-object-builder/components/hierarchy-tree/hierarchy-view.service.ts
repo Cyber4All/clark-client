@@ -9,9 +9,10 @@ import { canHaveChildren, isValidChildLength } from "./hierarchy-length.util";
  * This service holds the hierarchy as a presentation view-model in a
  * BehaviorSubject, mirroring the repo's custom-RxJS store pattern (see
  * `BuilderStore`). It performs NO API calls: `HierarchyLoaderService`
- * (sc-40640) fetches the real hierarchy and publishes it through `setTree`.
- * Moves are still local-only; persistence is wired in later stories:
- *   - sc-40236 create-new-child and reorder/re-parent persistence
+ * (sc-40640) fetches the real hierarchy and publishes it through `setTree`,
+ * and `HierarchyEditService` (sc-40642) saves removes and moves around the
+ * local changes made here. Creating and linking children come later:
+ *   - sc-40236 create-new-child
  *   - sc-40237 link-existing
  *
  * It is NOT provided in root; the Hierarchy page provides it so its lifetime
@@ -263,11 +264,47 @@ export class HierarchyViewService {
     parentIdOf(nodeId: string): string | undefined {
         return parentIdOf(this.treeSubject.value, nodeId);
     }
+
+    /** The node (occurrence) with `nodeId`, or undefined. */
+    getNode(nodeId: string): HierarchyNode | undefined {
+        return findNode(this.treeSubject.value, nodeId);
+    }
+
+    /** The direct parent node of `nodeId`, or undefined for a root or unknown id. */
+    getParent(nodeId: string): HierarchyNode | undefined {
+        const parentId = this.parentIdOf(nodeId);
+
+        return parentId === undefined ? undefined : this.getNode(parentId);
+    }
+
+    /**
+     * Remove the node (occurrence) `nodeId`, with its subtree, from the local
+     * view-model. Returns true when it was removed.
+     *
+     * Only a node that {@link canMove} can be removed: a root, a descendant of
+     * a linked root, or an unknown id is refused. A linked root is removed as a
+     * whole unit. Removing an occurrence leaves every other occurrence of the
+     * same learning object in place.
+     */
+    removeChild(nodeId: string): boolean {
+        const tree = this.treeSubject.value;
+        if (this.parentIdOf(nodeId) === undefined || !this.canMove(nodeId)) {
+            return false;
+        }
+        this.treeSubject.next(removeNode(tree, nodeId));
+
+        return true;
+    }
+}
+
+/** The learning object id a node stands for (`learningObjectId ?? id`). */
+function learningObjectIdOf(node: HierarchyNode): string {
+    return node.learningObjectId ?? node.id;
 }
 
 /** Whether two nodes are occurrences of the same learning object. */
 function sameLearningObject(a: HierarchyNode, b: HierarchyNode): boolean {
-    return (a.learningObjectId ?? a.id) === (b.learningObjectId ?? b.id);
+    return learningObjectIdOf(a) === learningObjectIdOf(b);
 }
 
 /** Immutably map over every node in the forest, preserving structure. */

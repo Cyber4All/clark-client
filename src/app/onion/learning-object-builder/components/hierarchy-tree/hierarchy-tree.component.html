@@ -43,6 +43,8 @@
             cdkDropList
             cdkDropListSortingDisabled
             [class.is-dragging]="!!draggingNode"
+            [class.is-saving]="saving$ | async"
+            [attr.aria-busy]="(saving$ | async) ? 'true' : null"
             (cdkDropListDropped)="onTreeDrop($event)"
             role="tree"
             aria-label="Learning object hierarchy">
@@ -65,11 +67,6 @@
 
         <p *ngIf="status === 'empty'" class="hierarchy-state__empty">
             This learning object has no children yet.
-        </p>
-
-        <p class="hierarchy-tree__hint">
-            <i class="far fa-info-circle"></i>
-            Linked objects keep their original name and length.
         </p>
     </ng-container>
 </ng-container>

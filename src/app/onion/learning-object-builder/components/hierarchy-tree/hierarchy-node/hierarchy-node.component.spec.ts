@@ -208,50 +208,73 @@ describe("HierarchyNodeComponent", () => {
     });
 
     describe("menuActions composition", () => {
-        it("enables Move for a movable node and omits the future Add Child action", () => {
+        it("enables Move and Remove for a movable node and omits the future Add Child action", () => {
             host.isRoot = false;
             host.canMovePredicate = () => true;
             render();
             openMenu();
 
             const items = overlayMenuItems();
-            expect(items.length).toBe(1);
+            expect(
+                items.map((item) => item.getAttribute("data-action-id")),
+            ).toEqual(["move", "remove"]);
 
-            const move = items[0];
-            expect(move.getAttribute("data-action-id")).toBe("move");
+            const [move, remove] = items;
             expect(move.textContent).toContain("Move Object");
-            expect(move.disabled).toBe(false);
-            expect(move.getAttribute("aria-disabled")).not.toBe("true");
+            expect(remove.textContent).toContain("Remove from Hierarchy");
+            for (const item of items) {
+                expect(item.disabled).toBe(false);
+                expect(item.getAttribute("aria-disabled")).not.toBe("true");
+            }
 
             expect(
                 document.querySelector('[data-action-id="add-child"]'),
             ).toBeNull();
         });
 
-        it("renders Move present-but-disabled when the predicate says not movable", () => {
+        it("renders Move and Remove present-but-disabled when the predicate says not movable", () => {
             host.isRoot = false;
             host.canMovePredicate = () => false;
             render();
             openMenu();
 
             const items = overlayMenuItems();
-            expect(items.length).toBe(1);
-
-            const move = items[0];
-            expect(move.getAttribute("data-action-id")).toBe("move");
-            expect(move.disabled).toBe(true);
+            expect(
+                items.map((item) => item.getAttribute("data-action-id")),
+            ).toEqual(["move", "remove"]);
+            expect(items.every((item) => item.disabled)).toBe(true);
         });
 
-        it("renders Move present-but-disabled for the root even when the predicate allows it", () => {
+        it("renders Move and Remove present-but-disabled for the root even when the predicate allows it", () => {
             host.isRoot = true;
             host.canMovePredicate = () => true;
             render();
             openMenu();
 
             const items = overlayMenuItems();
-            expect(items.length).toBe(1);
-            expect(items[0].getAttribute("data-action-id")).toBe("move");
-            expect(items[0].disabled).toBe(true);
+            expect(
+                items.map((item) => item.getAttribute("data-action-id")),
+            ).toEqual(["move", "remove"]);
+            expect(items.every((item) => item.disabled)).toBe(true);
+        });
+    });
+
+    describe("selecting Remove emits the intent", () => {
+        it("emits the remove action with this node's id", () => {
+            host.isRoot = false;
+            host.canMovePredicate = () => true;
+            render();
+            openMenu();
+
+            const remove = overlayMenuItems().find(
+                (item) => item.getAttribute("data-action-id") === "remove",
+            )!;
+            remove.click();
+            fixture.detectChanges();
+
+            expect(host.emitted).toEqual([
+                { actionId: "remove", nodeId: host.node.id },
+            ]);
         });
     });
 

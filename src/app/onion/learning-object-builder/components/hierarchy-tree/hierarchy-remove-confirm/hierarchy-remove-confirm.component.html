@@ -1,0 +1,41 @@
+<section
+    class="hierarchy-remove-confirm"
+    role="alertdialog"
+    aria-modal="true"
+    aria-labelledby="remove-confirm-title"
+    aria-describedby="remove-confirm-text"
+    cdkTrapFocus
+    [cdkTrapFocusAutoCapture]="true">
+    <h2 class="hierarchy-remove-confirm__heading" id="remove-confirm-title">
+        Remove from hierarchy?
+    </h2>
+    <div class="hierarchy-remove-confirm__body" id="remove-confirm-text">
+        <p>
+            Remove <strong>{{ displayNodeName }}</strong> as a child of
+            <strong>{{ displayParentName }}</strong
+            >?
+        </p>
+        <p *ngIf="descendantCount > 0" class="hierarchy-remove-confirm__note">
+            The {{ descendantLabel }} inside it will leave this hierarchy with
+            it.
+        </p>
+        <p class="hierarchy-remove-confirm__note">
+            This only unlinks it. The learning object stays in your library.
+        </p>
+    </div>
+    <footer class="hierarchy-remove-confirm__actions">
+        <button
+            type="button"
+            class="hierarchy-remove-confirm__button hierarchy-remove-confirm__button--ghost"
+            cdkFocusInitial
+            (click)="onCancel()">
+            Cancel
+        </button>
+        <button
+            type="button"
+            class="hierarchy-remove-confirm__button hierarchy-remove-confirm__button--danger"
+            (click)="onConfirm()">
+            Remove
+        </button>
+    </footer>
+</section>

@@ -205,7 +205,9 @@ export class HierarchyNodeComponent {
     }
 
     /**
-     * Keep Move Object visible, enabling it only when this node can move.
+     * Keep Move Object and Remove from Hierarchy visible, enabling them only
+     * when this node can move (never the root, never inside a linked subtree).
+     * Remove only unlinks the child; the learning object stays in the library.
      * Add Child Object is reserved in the action type but is not rendered yet.
      */
     get menuActions(): NodeAction[] {
@@ -214,6 +216,12 @@ export class HierarchyNodeComponent {
                 id: "move",
                 label: "Move Object",
                 icon: "far fa-arrows-alt",
+                disabled: !this.canMove,
+            },
+            {
+                id: "remove",
+                label: "Remove from Hierarchy",
+                icon: "far fa-unlink",
                 disabled: !this.canMove,
             },
         ];

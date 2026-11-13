@@ -14,6 +14,8 @@ import { CdkDragDrop } from "@angular/cdk/drag-drop";
 import { HierarchyTreeComponent } from "./hierarchy-tree.component";
 import { HierarchyViewService } from "./hierarchy-view.service";
 import { HierarchyLoaderService } from "./hierarchy-loader.service";
+import { HierarchyEditService } from "./hierarchy-edit.service";
+import { LearningObjectService } from "../../../../core/learning-object-module/learning-object/learning-object.service";
 import { LearningObject } from "@entity";
 import { of } from "rxjs";
 import { HierarchyNode } from "./hierarchy-tree.types";
@@ -50,8 +52,10 @@ describe("HierarchyTreeComponent (integration)", () => {
     let viewService: HierarchyViewService;
     let originalGetComputedStyle: typeof window.getComputedStyle;
     let rectsSpy: jest.SpyInstance;
-    let notifications: { success: jest.Mock };
+    let notifications: { success: jest.Mock; error: jest.Mock };
     let liveAnnouncer: { announce: jest.Mock };
+    let setChildren: jest.Mock;
+    let loaderRetry: jest.Mock;
 
     beforeAll(() => {
         // jsdom has no layout; expose rendered controls to CDK's visibility checks.
@@ -207,12 +211,21 @@ describe("HierarchyTreeComponent (integration)", () => {
     }
 
     beforeEach(waitForAsync(() => {
-        notifications = { success: jest.fn() };
+        notifications = { success: jest.fn(), error: jest.fn() };
         liveAnnouncer = { announce: jest.fn() };
+        setChildren = jest.fn().mockResolvedValue(undefined);
+        loaderRetry = jest.fn();
         TestBed.configureTestingModule({
             imports: [HierarchyTreeComponent, NoopAnimationsModule],
             providers: [
                 HierarchyViewService,
+                HierarchyEditService,
+                // The API layer is stubbed; persistence rules are covered by
+                // hierarchy-edit.service.spec.ts.
+                {
+                    provide: LearningObjectService,
+                    useValue: { setChildren },
+                },
                 {
                     // Loading is covered by hierarchy-loader.service.spec.ts;
                     // here the loader publishes a fixed tree so the move
@@ -221,7 +234,7 @@ describe("HierarchyTreeComponent (integration)", () => {
                     useFactory: (view: HierarchyViewService) => ({
                         status$: of("ready"),
                         load: () => view.setTree(buildSpecTree()),
-                        retry: jest.fn(),
+                        retry: loaderRetry,
                     }),
                     deps: [HierarchyViewService],
                 },
@@ -409,28 +422,6 @@ describe("HierarchyTreeComponent (integration)", () => {
         }),
     );
 
-    it("clears programmatic focus styling when a pointer move reuses the same row", fakeAsync(() => {
-        const trigger = triggerFor("unit-foundations");
-        openMovePickerFor("unit-foundations");
-        selectDestination("root");
-        const confirm = confirmButton()!;
-        confirm.dispatchEvent(
-            new MouseEvent("mousedown", {
-                bubbles: true,
-                buttons: 1,
-                detail: 1,
-            }),
-        );
-        confirm.click();
-        flush();
-        fixture.detectChanges();
-        expect(triggerFor("unit-foundations")).toBe(trigger);
-        expect(document.activeElement).toBe(trigger);
-        expect(trigger.classList.contains("cdk-mouse-focused")).toBe(true);
-        expect(trigger.classList.contains("cdk-program-focused")).toBe(false);
-        expect(trigger.classList.contains("cdk-keyboard-focused")).toBe(false);
-    }));
-
     it("reveals a collapsed destination branch before restoring focus", fakeAsync(() => {
         viewService.toggleExpanded("unit-foundations");
         fixture.detectChanges();
@@ -478,51 +469,74 @@ describe("HierarchyTreeComponent (integration)", () => {
     }));
 
     describe("confirming a move", () => {
-        it("calls moveNode with the selected target and closes the picker on success", fakeAsync(() => {
+        it("saves the move, then closes the picker and announces it", fakeAsync(() => {
             const moveSpy = jest.spyOn(viewService, "moveNode");
 
-            openMovePickerFor("unit-foundations");
+            openMovePickerFor("nano-glossary");
             expect(pickerElement()).toBeTruthy();
-
-            // `root` is a valid destination for the Foundations unit (its
-            // current parent — a reorder — which validDestinations includes).
-            selectDestination("root");
+            selectDestination("network-security");
 
             const confirm = confirmButton();
             expect(confirm).toBeTruthy();
             expect(confirm!.disabled).toBe(false);
 
             confirm!.click();
+            // Applied locally at once, but nothing is announced until saved.
+            expect(moveSpy).toHaveBeenCalledWith(
+                "nano-glossary",
+                "network-security",
+            );
+            expect(notifications.success).not.toHaveBeenCalled();
             flush();
             fixture.detectChanges();
 
-            expect(moveSpy).toHaveBeenCalledWith("unit-foundations", "root");
-            // Success closes the picker and identifies the completed move.
+            // Add to the new parent first, then remove from the old one.
+            expect(setChildren.mock.calls).toEqual([
+                ["network-security", ["nano-glossary"], false],
+                ["root", ["nano-glossary"], true],
+            ]);
             expect(pickerElement()).toBeNull();
             expect(notifications.success).toHaveBeenCalledWith(
                 "Object moved",
-                "“Foundations Unit” moved under “Intro to Cybersecurity”.",
+                "“Security Glossary” moved under “Network Security”.",
             );
             expect(liveAnnouncer.announce).toHaveBeenCalledWith(
-                "“Foundations Unit” moved under “Intro to Cybersecurity”.",
+                "“Security Glossary” moved under “Network Security”.",
                 "polite",
             );
+            expect(loaderRetry).not.toHaveBeenCalled();
+        }));
+
+        it("lists the current parent but does not let it be chosen", fakeAsync(() => {
+            openMovePickerFor("unit-foundations");
+
+            const current = pickerOptions().find(
+                (option) =>
+                    option.getAttribute("data-destination-id") === "root",
+            )!;
+            // Order cannot be saved yet, so "move within the same parent" is out.
+            expect(current.textContent).toContain("Current parent");
+            expect(current.getAttribute("aria-disabled")).toBe("true");
+            current.click();
+            currentPickerDetectChanges();
+            expect(confirmButton()).toBeNull();
         }));
     });
 
-    describe("a rejected move keeps the picker open", () => {
-        it("shows the inline error and leaves the picker attached when moveNode returns false", fakeAsync(() => {
+    describe("a move that cannot be completed keeps the picker open", () => {
+        it("shows the inline error and leaves the picker attached when the move engine refuses", fakeAsync(() => {
             // Force the move engine to reject regardless of the chosen target.
             jest.spyOn(viewService, "moveNode").mockReturnValue(false);
 
-            openMovePickerFor("unit-foundations");
-            selectDestination("root");
+            openMovePickerFor("nano-glossary");
+            selectDestination("network-security");
 
             confirmButton()!.click();
             flush();
             fixture.detectChanges();
             currentPickerDetectChanges();
 
+            expect(setChildren).not.toHaveBeenCalled();
             expect(notifications.success).not.toHaveBeenCalled();
             expect(liveAnnouncer.announce).not.toHaveBeenCalled();
             // Picker stays open and surfaces the failure message.
@@ -531,6 +545,46 @@ describe("HierarchyTreeComponent (integration)", () => {
             expect(alert).toBeTruthy();
             expect(alert!.textContent).toContain(
                 "That move could not be completed.",
+            );
+        }));
+
+        it("rolls the tree back and keeps the picker open when the API fails", fakeAsync(() => {
+            const before = JSON.stringify(viewService.tree);
+            setChildren.mockRejectedValue(new Error("boom"));
+
+            openMovePickerFor("nano-glossary");
+            selectDestination("network-security");
+            confirmButton()!.click();
+            flush();
+            fixture.detectChanges();
+            currentPickerDetectChanges();
+
+            expect(JSON.stringify(viewService.tree)).toBe(before);
+            expect(notifications.success).not.toHaveBeenCalled();
+            expect(pickerElement()).toBeTruthy();
+            expect(errorAlert()!.textContent).toContain(
+                "could not be saved, so nothing changed",
+            );
+        }));
+
+        it("closes the picker, toasts, and reloads when a half-saved move cannot be undone", fakeAsync(() => {
+            // Added to the new parent, then removing from the old parent and
+            // the compensating removal both fail.
+            setChildren
+                .mockResolvedValueOnce(undefined)
+                .mockRejectedValue(new Error("boom"));
+
+            openMovePickerFor("nano-glossary");
+            selectDestination("network-security");
+            confirmButton()!.click();
+            flush();
+            fixture.detectChanges();
+
+            expect(pickerElement()).toBeNull();
+            expect(loaderRetry).toHaveBeenCalledTimes(1);
+            expect(notifications.error).toHaveBeenCalledWith(
+                "Move failed",
+                expect.stringContaining("reloaded"),
             );
         }));
     });
@@ -610,61 +664,135 @@ describe("HierarchyTreeComponent (integration)", () => {
         /**
          * The drop handler resolves its target by hit-testing `event.dropPoint`
          * against rendered rows via `getBoundingClientRect`, which jsdom does
-         * not lay out — so geometry-driven simulation is unreliable here.
-         * Instead we assert the invariant two ways:
-         *   1. `onTreeDrop` for a valid drop delegates to `viewService.moveNode`
-         *      (we stub the dragged row's rect so the point lands on a target);
-         *   2. the picker-confirm path and the equivalent direct drag-path
-         *      `moveNode` call produce an identical tree.
+         * not lay out, so the target row gets a stubbed rect and the drop event
+         * is built by hand.
          */
-        it.each([true, false])(
-            "notifies only when a valid drop is applied (applied: %s)",
-            (applied) => {
-                const moveSpy = jest.spyOn(viewService, "moveNode");
-                if (!applied) {
-                    moveSpy.mockReturnValue(false);
-                }
+        function dropOnto(draggedId: string, targetId: string): void {
+            const dragged = findNode(viewService.tree, draggedId)!;
+            const targetRow = fixture.nativeElement.querySelector(
+                `.node-row[data-node-id="${targetId}"]`,
+            ) as HTMLElement;
+            targetRow.getBoundingClientRect = () =>
+                ({
+                    left: 0,
+                    right: 500,
+                    top: 100,
+                    bottom: 140,
+                    width: 500,
+                    height: 40,
+                }) as DOMRect;
 
-                const dragged = findNode(viewService.tree, "nano-glossary")!;
-                const targetRow = fixture.nativeElement.querySelector(
-                    '.node-row[data-node-id="network-security"]',
-                ) as HTMLElement;
-                // Give the target row a deterministic rect so the hit-test resolves.
-                targetRow.getBoundingClientRect = () =>
-                    ({
-                        left: 0,
-                        right: 500,
-                        top: 100,
-                        bottom: 140,
-                        width: 500,
-                        height: 40,
-                    }) as DOMRect;
+            component.onTreeDrop({
+                item: { data: dragged },
+                dropPoint: { x: 10, y: 120 },
+            } as unknown as CdkDragDrop<HierarchyNode>);
+        }
 
-                const event = {
-                    item: { data: dragged },
-                    dropPoint: { x: 10, y: 120 },
-                } as unknown as CdkDragDrop<HierarchyNode>;
+        it("saves a valid drop and reports it only after the save", fakeAsync(() => {
+            const moveSpy = jest.spyOn(viewService, "moveNode");
 
-                component.onTreeDrop(event);
+            dropOnto("nano-glossary", "network-security");
+            expect(moveSpy).toHaveBeenCalledWith(
+                "nano-glossary",
+                "network-security",
+            );
+            expect(notifications.success).not.toHaveBeenCalled();
+            flush();
 
-                expect(moveSpy).toHaveBeenCalledWith(
-                    "nano-glossary",
-                    "network-security",
-                );
-                expect(notifications.success).toHaveBeenCalledTimes(
-                    applied ? 1 : 0,
-                );
-                expect(liveAnnouncer.announce).toHaveBeenCalledTimes(
-                    applied ? 1 : 0,
-                );
-                if (applied) {
-                    expect(notifications.success).toHaveBeenCalledWith(
-                        "Object moved",
-                        "“Security Glossary” moved under “Network Security”.",
-                    );
-                }
-            },
-        );
+            expect(setChildren.mock.calls).toEqual([
+                ["network-security", ["nano-glossary"], false],
+                ["root", ["nano-glossary"], true],
+            ]);
+            expect(notifications.success).toHaveBeenCalledTimes(1);
+            expect(notifications.success).toHaveBeenCalledWith(
+                "Object moved",
+                "“Security Glossary” moved under “Network Security”.",
+            );
+            expect(liveAnnouncer.announce).toHaveBeenCalledTimes(1);
+            expect(
+                findNode(viewService.tree, "network-security")!.children.map(
+                    (c) => c.id,
+                ),
+            ).toEqual(["nano-glossary"]);
+        }));
+
+        it("ignores a drop the move engine refuses, with no request and no toast", fakeAsync(() => {
+            jest.spyOn(viewService, "moveNode").mockReturnValue(false);
+
+            dropOnto("nano-glossary", "network-security");
+            flush();
+
+            expect(setChildren).not.toHaveBeenCalled();
+            expect(notifications.success).not.toHaveBeenCalled();
+            expect(notifications.error).not.toHaveBeenCalled();
+        }));
+
+        it("rejects a drop into a linked/read-only subtree with no request", fakeAsync(() => {
+            const before = JSON.stringify(viewService.tree);
+
+            dropOnto("nano-glossary", "micro-detection");
+            flush();
+
+            expect(setChildren).not.toHaveBeenCalled();
+            expect(JSON.stringify(viewService.tree)).toBe(before);
+        }));
+
+        it("rejects a drop onto a parent that is too short", fakeAsync(() => {
+            const before = JSON.stringify(viewService.tree);
+
+            // A module cannot go inside a micromodule.
+            dropOnto("incident-response", "network-security");
+            flush();
+
+            expect(setChildren).not.toHaveBeenCalled();
+            expect(JSON.stringify(viewService.tree)).toBe(before);
+        }));
+
+        it("rejects dropping a unit into its own descendant", fakeAsync(() => {
+            const before = JSON.stringify(viewService.tree);
+
+            dropOnto("unit-foundations", "mod-core-concepts");
+            flush();
+
+            expect(setChildren).not.toHaveBeenCalled();
+            expect(JSON.stringify(viewService.tree)).toBe(before);
+        }));
+
+        it("rolls the tree back and shows an error when the save fails", fakeAsync(() => {
+            const before = JSON.stringify(viewService.tree);
+            setChildren.mockRejectedValue(new Error("boom"));
+
+            dropOnto("nano-glossary", "network-security");
+            // Applied optimistically while the request is in flight.
+            expect(
+                findNode(viewService.tree, "network-security")!.children,
+            ).toHaveLength(1);
+            flush();
+
+            expect(JSON.stringify(viewService.tree)).toBe(before);
+            expect(notifications.success).not.toHaveBeenCalled();
+            expect(notifications.error).toHaveBeenCalledWith(
+                "Move failed",
+                expect.stringContaining("left as it was"),
+            );
+            expect(loaderRetry).not.toHaveBeenCalled();
+        }));
+
+        it("refuses a second drop while the first is still saving", fakeAsync(() => {
+            let resolveFirst!: () => void;
+            setChildren.mockReturnValueOnce(
+                new Promise<void>((resolve) => (resolveFirst = resolve)),
+            );
+
+            dropOnto("nano-glossary", "network-security");
+            expect(component.canMove("nano-glossary")).toBe(false);
+            dropOnto("nano-glossary", "root");
+            expect(setChildren).toHaveBeenCalledTimes(1);
+
+            resolveFirst();
+            flush();
+            expect(component.canMove("nano-glossary")).toBe(true);
+        }));
 
         it("picker-confirm and drag-path moves yield an identical tree", () => {
             // Picker path: move via moveNode with index omitted (append).
@@ -678,6 +806,195 @@ describe("HierarchyTreeComponent (integration)", () => {
 
             expect(pickerTree).toBe(dragTree);
         });
+    });
+
+    describe("removing a child", () => {
+        /** The open remove-confirmation dialog, or null. */
+        function confirmDialog(): HTMLElement | null {
+            return document.querySelector<HTMLElement>(
+                ".cdk-overlay-container .hierarchy-remove-confirm",
+            );
+        }
+
+        function confirmDialogButton(kind: "danger" | "ghost"): HTMLElement {
+            return document.querySelector<HTMLElement>(
+                `.cdk-overlay-container .hierarchy-remove-confirm__button--${kind}`,
+            )!;
+        }
+
+        /** Select "Remove from Hierarchy" in the Action Menu of `nodeId`. */
+        function chooseRemove(nodeId: string): void {
+            triggerFor(nodeId).click();
+            flush();
+            fixture.detectChanges();
+            const remove = overlayMenuItems().find(
+                (item) => item.getAttribute("data-action-id") === "remove",
+            );
+            if (!remove) {
+                throw new Error(`Remove menu item not found for ${nodeId}`);
+            }
+            remove.click();
+            flush();
+            fixture.detectChanges();
+        }
+
+        /** Choose Remove, then press Remove in the confirmation. */
+        function removeViaMenu(nodeId: string): void {
+            chooseRemove(nodeId);
+            confirmDialogButton("danger").click();
+            flush();
+            fixture.detectChanges();
+        }
+
+        it("asks first and sends nothing until the author confirms", fakeAsync(() => {
+            const before = JSON.stringify(viewService.tree);
+
+            chooseRemove("nano-glossary");
+
+            const dialog = confirmDialog()!;
+            expect(dialog).toBeTruthy();
+            expect(dialog.getAttribute("role")).toBe("alertdialog");
+            expect(dialog.textContent).toContain("Security Glossary");
+            expect(dialog.textContent).toContain("Intro to Cybersecurity");
+            expect(dialog.textContent).toContain("stays in your library");
+            expect(setChildren).not.toHaveBeenCalled();
+            expect(JSON.stringify(viewService.tree)).toBe(before);
+            // Cancel is focused first because Remove is the riskier choice.
+            expect(document.activeElement).toBe(confirmDialogButton("ghost"));
+        }));
+
+        it("mentions how many objects leave with it when the child has its own children", fakeAsync(() => {
+            chooseRemove("unit-foundations");
+
+            // Foundations Unit > Core Concepts > CIA Triad
+            expect(confirmDialog()!.textContent).toContain(
+                "2 objects inside it will leave this hierarchy with it",
+            );
+        }));
+
+        it("does not mention contents for a child without children", fakeAsync(() => {
+            chooseRemove("nano-glossary");
+
+            expect(confirmDialog()!.textContent).not.toContain("inside it");
+        }));
+
+        it.each([
+            ["Cancel", () => confirmDialogButton("ghost").click()],
+            [
+                "Escape",
+                () =>
+                    document
+                        .querySelector(
+                            ".cdk-overlay-container .cdk-overlay-pane",
+                        )!
+                        .dispatchEvent(
+                            new KeyboardEvent("keydown", {
+                                key: "Escape",
+                                keyCode: 27,
+                                bubbles: true,
+                            }),
+                        ),
+            ],
+            ["a backdrop click", () => backdrop()!.click()],
+        ])(
+            "%s closes the dialog, changes nothing, and returns focus to the row",
+            fakeAsync((_label, dismiss) => {
+                const before = JSON.stringify(viewService.tree);
+                chooseRemove("nano-glossary");
+
+                dismiss();
+                flush();
+                fixture.detectChanges();
+
+                expect(confirmDialog()).toBeNull();
+                expect(setChildren).not.toHaveBeenCalled();
+                expect(JSON.stringify(viewService.tree)).toBe(before);
+                expect(notifications.success).not.toHaveBeenCalled();
+                expect(document.activeElement).toBe(
+                    triggerFor("nano-glossary"),
+                );
+            }),
+        );
+
+        it("unlinks the child from its parent, keeps the object, and says so", fakeAsync(() => {
+            removeViaMenu("nano-glossary");
+
+            expect(confirmDialog()).toBeNull();
+            expect(setChildren.mock.calls).toEqual([
+                ["root", ["nano-glossary"], true],
+            ]);
+            expect(findNode(viewService.tree, "nano-glossary")).toBeUndefined();
+            expect(notifications.success).toHaveBeenCalledWith(
+                "Object removed",
+                "“Security Glossary” was removed from “Intro to Cybersecurity”. It is still in your library.",
+            );
+            expect(liveAnnouncer.announce).toHaveBeenCalledWith(
+                expect.stringContaining("still in your library"),
+                "polite",
+            );
+        }));
+
+        it("moves focus to the parent's menu button once the row is gone", fakeAsync(() => {
+            removeViaMenu("nano-glossary");
+
+            expect(document.activeElement).toBe(triggerFor("root"));
+        }));
+
+        it("removes a linked root as a whole", fakeAsync(() => {
+            removeViaMenu("incident-response");
+
+            expect(setChildren.mock.calls).toEqual([
+                ["root", ["incident-response"], true],
+            ]);
+            expect(
+                findNode(viewService.tree, "incident-response"),
+            ).toBeUndefined();
+            expect(
+                findNode(viewService.tree, "micro-detection"),
+            ).toBeUndefined();
+        }));
+
+        it("restores the tree and shows an error when the save fails", fakeAsync(() => {
+            const before = JSON.stringify(viewService.tree);
+            setChildren.mockRejectedValue(new Error("boom"));
+
+            removeViaMenu("nano-glossary");
+
+            expect(JSON.stringify(viewService.tree)).toBe(before);
+            expect(notifications.success).not.toHaveBeenCalled();
+            expect(notifications.error).toHaveBeenCalledWith(
+                "Remove failed",
+                expect.stringContaining("left as it was"),
+            );
+        }));
+
+        it("closes an open dialog when the tree is destroyed", fakeAsync(() => {
+            chooseRemove("nano-glossary");
+            expect(confirmDialog()).toBeTruthy();
+
+            fixture.destroy();
+            flush();
+
+            expect(confirmDialog()).toBeNull();
+            expect(backdrop()).toBeNull();
+        }));
+
+        it("does not offer removal for the root or inside a linked subtree", fakeAsync(() => {
+            for (const nodeId of ["root", "micro-detection"]) {
+                triggerFor(nodeId).click();
+                flush();
+                fixture.detectChanges();
+                const remove = overlayMenuItems().find(
+                    (item) => item.getAttribute("data-action-id") === "remove",
+                )!;
+                expect(remove.disabled).toBe(true);
+                triggerFor(nodeId).click();
+                flush();
+                fixture.detectChanges();
+            }
+            expect(confirmDialog()).toBeNull();
+            expect(setChildren).not.toHaveBeenCalled();
+        }));
     });
 });
 
