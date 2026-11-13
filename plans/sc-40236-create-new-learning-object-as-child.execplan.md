@@ -30,13 +30,15 @@ Out of scope: adding an existing library object (SC-40237), reorder, re-parentin
 - [x] (2026-11-13) Wrote this plan.
 - [x] (2026-11-13) Baseline: 10 hierarchy-tree suites, 184 tests pass.
 - [x] (2026-11-13) Story owner answered the open questions (see Decision Log). The uncommitted SC-40642 code (remove-confirmation dialog, tree component and spec edits) was committed to `feature/sc-40642/remove-and-reorganize-children-in-the` as `66fc9e9a5`, and this branch was fast-forwarded onto it. The SC-40642 plan edit and `package-lock.json` were left uncommitted on purpose.
-- [ ] Types and mapper: carry `cuid` and `version` on `HierarchyNode` so a node can link to its Builder.
-- [ ] Edit service: `create(parentNodeId, { name, length })`.
-- [ ] View service: add a child node under a parent (`addChild`), reusing the occurrence key rule.
-- [ ] Create dialog component (`hierarchy-add-child`), wired into the tree like the remove confirmation.
-- [ ] Node component: "Add Child Object" and "Edit in Builder" menu items.
-- [ ] Specs for each of the above.
-- [ ] Browser check with Playwright against a mocked gateway (desktop and 390px), then a run against the real gateway and clark-service.
+- [x] (2026-11-13) Types and mapper: `HierarchyNode` carries optional `cuid` and `version` (`builderIdentity` in `hierarchy-node.mapper.ts`; the loader sets them on the root too). `NodeActionId` adds `"edit-in-builder"`; new `NewChildRequest` type.
+- [x] (2026-11-13) View service: `canAddChild` and `addChild` (keys the node as `${parent.id}/${learningObjectId}`, expands the parent).
+- [x] (2026-11-13) Edit service: `create(parentNodeId, request)` runs name check, create, set length, attach, then adds the node. A failed length or attach step deletes the new object. Reasons `name-taken` and `name-invalid` added; `leftInLibrary` flag on the error.
+- [x] (2026-11-13) Dialog: `hierarchy-add-child/` (reactive form, lengths from `LENGTH_ORDER`, focus trap, inline errors), opened from the tree in a CDK overlay.
+- [x] (2026-11-13) Node component: "Add Child Object" and "Edit in Builder" menu items (order: Add, Edit, Move, Remove). The empty-state message now hides once the root has a child.
+- [x] (2026-11-13) Specs: new dialog spec; new cases in edit service, view service, mapper, loader, node, tree, and states specs. 11 suites, 298 tests pass after Prettier. Mutation-checked: disabling the cleanup delete fails 4 edit-service tests. `tsc --noEmit -p src/tsconfig.app.json` exits 0.
+- [x] (2026-11-13) Browser check (Playwright, mocked gateway, 1280px and 390px): menu items; dialog layout; refused-character name sends nothing; create sends check, POST, PATCH length, POST children in order and the row appears with focus and a toast; duplicate name shows an inline error; failed attach sends DELETE and leaves the tree unchanged; "Edit in Builder" opens `/onion/learning-object-builder/<cuid>/<version>` in a new tab; reload shows the new child; Cancel returns focus to the parent's menu button; no horizontal overflow at 390px.
+- [ ] Run against the real gateway and clark-service (docker compose is up; the dev server works against it). Blocked on a local account with a verified email: registration has a reCAPTCHA, so an author account must be supplied or created by hand. Still to confirm there: the new object appears in the Dashboard, and stays there after being removed from the hierarchy.
+- [ ] Commit and push the SC-40236 implementation.
 
 ## Surprises & Discoveries
 
@@ -95,7 +97,7 @@ Out of scope: adding an existing library object (SC-40237), reorder, re-parentin
 
 ## Outcomes & Retrospective
 
-Not started.
+Implemented and verified with unit tests and a mocked-gateway browser run. Not yet verified against the real gateway and clark-service (see Progress). The mock cannot prove the server accepts `length` on `PATCH` for a new object, nor that the Dashboard lists the new object.
 
 ## Context and Orientation
 
