@@ -32,6 +32,7 @@ Permissions are unchanged: whatever the API allows today is what the author can 
 - [x] (2026-11-12) Node component and types: "Remove from Hierarchy" Action Menu item (`NodeActionId` adds `"remove"`).
 - [x] (2026-11-12) Specs: new `hierarchy-edit.service.spec.ts`; updated tree, node, and states specs. 161 tests in 17 hierarchy-tree suites pass. Mutation-checked: disabling rollback fails 12 tests; swapping add/remove order fails 4.
 - [x] (2026-11-12) Browser check (Playwright, mocked gateway, desktop 1280px): Remove menu item; remove persists and reload shows it; failed remove rolls back with toast; pointer drag re-parent sends POST then PATCH; drop onto a linked root sends nothing; failed add rolls back with toast and sends no removal.
+- [x] (2026-11-13) Removal confirmation dialog (component, tree wiring, specs; 168 tests pass; browser-checked: nothing sent before confirm, Escape returns focus, confirm sends one PATCH). Not yet checked at phone width.
 - [ ] Phone width: the page has no horizontal overflow, but nested rows and their kebab menus are clipped at the right edge at 390px. This comes from the SC-40233 layout, not this story. Left as is.
 - [ ] Run against the real gateway and clark-service (only the mocked gateway was used).
 
@@ -90,9 +91,9 @@ Permissions are unchanged: whatever the API allows today is what the author can 
   Rationale: The server changes every occurrence of the parent, and a failed compensation leaves the server state unknown. Reloading shows the truth. The reload resets expand/collapse state, which is acceptable for these rare cases.
   Date/Author: 2026-11-12 / Kiro
 
-- Decision: Removal gets an Action Menu item "Remove from hierarchy" with a success toast that states the object stays in the library, and no extra confirmation dialog.
-  Rationale: Unlinking is non-destructive (the object remains and can be linked again by SC-40237) and the toast makes the outcome explicit. The Builder has no shared confirm-dialog pattern in this feature area; adding one is scope creep. Revisit if product wants a confirm step.
-  Date/Author: 2026-11-11 / Kiro
+- Decision (reversed 2026-11-13): Removal asks for confirmation. The Action Menu item "Remove from Hierarchy" opens a modal (`clark-hierarchy-remove-confirm`, a CDK overlay like the Move picker) naming the child and its parent, saying it only unlinks and the object stays in the library, and, when the child has contents, how many objects leave with it. Nothing is sent until the author presses Remove. Cancel is focused first; Cancel, Escape, and a backdrop click leave the tree untouched and return focus to the row's menu button. After a confirmed removal the success toast still states the object stays in the library.
+  Rationale: Requested by the story owner. Removing a unit also takes its whole subtree out of this hierarchy, which is easy to do by accident from a kebab menu. This supersedes the earlier "toast only" decision, which had said the feature area had no confirm-dialog pattern to reuse; the Move picker is that pattern.
+  Date/Author: 2026-11-13 / Kiro
 
 ## Outcomes & Retrospective
 
@@ -125,7 +126,8 @@ Affected files (planned):
 
 - `components/hierarchy-tree/hierarchy-view.service.ts` (`getNode`, `getParent`, and `removeChild`)
 - `components/hierarchy-tree/hierarchy-edit.service.ts` (new)
-- `components/hierarchy-tree/hierarchy-tree.component.{ts,html}` (use the edit service; error handling; busy gating; picker destination filter)
+- `components/hierarchy-tree/hierarchy-tree.component.{ts,html}` (use the edit service; error handling; busy gating; picker destination filter; removal confirmation overlay)
+- `components/hierarchy-tree/hierarchy-remove-confirm/` (new; the removal confirmation dialog)
 - `components/hierarchy-tree/hierarchy-node/hierarchy-node.component.{ts,html}` (Remove menu item)
 - `components/hierarchy-tree/hierarchy-tree.types.ts` (`NodeActionId` adds `"remove"`)
 - `pages/hierarchy-page/hierarchy-page.component.ts` (provide `HierarchyEditService`)
@@ -174,9 +176,9 @@ Automated (Jest):
 - Edit service, shared child: removing or moving one occurrence sends the correct parent id and leaves the other occurrence in place.
 - Edit service, lock: a second mutation while one is in flight is rejected without any API call; `saving$` is true during the call and false after.
 - View service: all existing `canDrop` rules still hold (the edit service spec re-checks cycle, length, and linked-subtree refusals end to end); `removeChild` rejects the root, a descendant of a linked root, and an unknown id; a linked root is removable as a whole.
-- Tree/node components: Remove item appears and is disabled for the root and linked-subtree descendants; a failed persist shows an error toast and the tree is unchanged; the current parent is absent from picker destinations.
+- Tree/node components: Remove item appears and is disabled for the root and linked-subtree descendants; choosing it opens a confirmation and sends nothing until Remove is pressed; Cancel, Escape, and a backdrop click change nothing and return focus; the dialog states how many objects leave with the child; an open dialog closes when the tree is destroyed; a failed persist shows an error toast and the tree is unchanged; the current parent is absent from picker destinations.
 
-Manual (Playwright, gateway mocked, desktop and phone width): remove a child (request body correct, node disappears, toast); drag a child to another editable parent (add then remove requests, tree updates); failing add and failing remove each roll back with an error toast; invalid drop onto a read-only subtree, a too-short parent, and a descendant is refused with no request; reload via a fresh `/children` mock shows the persisted structure.
+Manual (Playwright, gateway mocked, desktop and phone width): remove a child (confirmation shown first, request body correct only after Remove, node disappears, toast); drag a child to another editable parent (add then remove requests, tree updates); failing add and failing remove each roll back with an error toast; invalid drop onto a read-only subtree, a too-short parent, and a descendant is refused with no request; reload via a fresh `/children` mock shows the persisted structure.
 
 Access: no route, guard, or interceptor changes. A 403 from the API appears as the error path (rollback and toast).
 
@@ -200,5 +202,4 @@ All steps are additive. To roll back, revert the commits on this branch; no data
 ## Open Questions
 
 - Reorder inside a parent: out of scope per the story owner (2026-11-12). The API has no route that sets child order, so if it is ever wanted it needs a backend route first.
-- Should removal ask for confirmation? This plan assumes no, with an explicit toast.
 - The editable heuristic is carried over from SC-40640 and should be confirmed with product/backend (reviewers, and what "linked" means before SC-40641).
