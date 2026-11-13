@@ -28,14 +28,19 @@ import { Overlay, OverlayRef } from "@angular/cdk/overlay";
 import { ComponentPortal } from "@angular/cdk/portal";
 import { ESCAPE } from "@angular/cdk/keycodes";
 import { Observable, Subject, Subscription } from "rxjs";
-import { take, takeUntil } from "rxjs/operators";
+import { map, take, takeUntil } from "rxjs/operators";
 import { LearningObject } from "@entity";
 import { HierarchyNodeComponent } from "./hierarchy-node/hierarchy-node.component";
 import { HierarchyMovePickerComponent } from "./hierarchy-move-picker/hierarchy-move-picker.component";
+import {
+    HierarchyAddChildComponent,
+    INVALID_NAME_MESSAGE,
+} from "./hierarchy-add-child/hierarchy-add-child.component";
 import { HierarchyRemoveConfirmComponent } from "./hierarchy-remove-confirm/hierarchy-remove-confirm.component";
 import { HierarchyViewService } from "./hierarchy-view.service";
 import { HierarchyLoaderService } from "./hierarchy-loader.service";
 import {
+    HierarchyCreateOutcome,
     HierarchyEditError,
     HierarchyEditOutcome,
     HierarchyEditService,
@@ -43,6 +48,7 @@ import {
 import {
     HierarchyLoadStatus,
     HierarchyNode,
+    NewChildRequest,
     NodeActionId,
 } from "./hierarchy-tree.types";
 
@@ -56,7 +62,9 @@ import {
  * the loading, error, empty and ready states. Moving and removing children is
  * saved immediately through {@link HierarchyEditService} (sc-40642): the tree
  * updates first, and on a failed save it is restored and an error is shown.
- * Creating and linking children are wired in sc-40236 / sc-40237.
+ * Creating a new child (sc-40236) opens a dialog and adds the child once the
+ * API has saved it; "Edit in Builder" opens a node in a new tab. Linking an
+ * existing object is wired in sc-40237.
  *
  * Drag-and-drop model (rebuilt in sc-40233): the WHOLE tree is a single
  * `cdkDropList` (`cdkDropListSortingDisabled`) rather than a group of per-node
@@ -88,6 +96,8 @@ export class HierarchyTreeComponent implements OnInit, OnChanges, OnDestroy {
     tree$: Observable<HierarchyNode[]>;
     status$: Observable<HierarchyLoadStatus>;
     saving$: Observable<boolean>;
+    /** True when the root has at least one child (hides the empty message). */
+    hasChildren$: Observable<boolean>;
 
     /** Ends in-flight edit subscriptions when the tree is destroyed. */
     private readonly destroy$ = new Subject<void>();
@@ -111,6 +121,9 @@ export class HierarchyTreeComponent implements OnInit, OnChanges, OnDestroy {
         this.tree$ = this.viewService.tree$;
         this.status$ = this.loader.status$;
         this.saving$ = this.editService.saving$;
+        this.hasChildren$ = this.tree$.pipe(
+            map((tree) => tree.some((node) => node.children.length > 0)),
+        );
         this.loadHierarchy();
     }
 
@@ -151,6 +164,13 @@ export class HierarchyTreeComponent implements OnInit, OnChanges, OnDestroy {
      */
     readonly canMove = (nodeId: string): boolean =>
         !this.editService.saving && this.viewService.canMove(nodeId);
+
+    /**
+     * Whether a new child may be created under a node; handed to each node.
+     * Like {@link canMove}, nothing starts while a change is saving.
+     */
+    readonly canAddChild = (nodeId: string): boolean =>
+        !this.editService.saving && this.viewService.canAddChild(nodeId);
 
     onToggleExpanded(id: string): void {
         this.viewService.toggleExpanded(id);
@@ -253,10 +273,10 @@ export class HierarchyTreeComponent implements OnInit, OnChanges, OnDestroy {
      * was only half applied on the server, or when the edited parent appears
      * more than once in the tree (the server changed every occurrence).
      */
-    private persist(
-        edit$: Observable<HierarchyEditOutcome>,
+    private persist<T extends HierarchyEditOutcome>(
+        edit$: Observable<T>,
         handlers: {
-            onSuccess: (outcome: HierarchyEditOutcome) => void;
+            onSuccess: (outcome: T) => void;
             onFailure: (error: HierarchyEditError) => void;
         },
     ): void {
@@ -283,17 +303,24 @@ export class HierarchyTreeComponent implements OnInit, OnChanges, OnDestroy {
     /** Toast for a save that failed; refused (invalid or busy) edits stay silent. */
     private toastFailure(
         error: HierarchyEditError,
-        action: "move" | "remove",
+        action: "move" | "remove" | "create",
     ): void {
         if (error.reason !== "failed") {
             return;
         }
-        const message =
+        const verb =
             action === "move"
-                ? "The object could not be moved, so your hierarchy was left as it was."
-                : "The object could not be removed, so your hierarchy was left as it was.";
+                ? "moved"
+                : action === "remove"
+                  ? "removed"
+                  : "created";
+        const message = `The object could not be ${verb}, so your hierarchy was left as it was.`;
         this.notifications.error(
-            action === "move" ? "Move failed" : "Remove failed",
+            action === "move"
+                ? "Move failed"
+                : action === "remove"
+                  ? "Remove failed"
+                  : "Create failed",
             error.reloadRequired
                 ? `${message} The hierarchy was reloaded to show what is saved.`
                 : message,
@@ -358,6 +385,7 @@ export class HierarchyTreeComponent implements OnInit, OnChanges, OnDestroy {
         }
         this.closeMovePicker(false);
         this.closeRemoveConfirm(false);
+        this.closeAddChild(false);
     }
 
     /**
@@ -366,9 +394,19 @@ export class HierarchyTreeComponent implements OnInit, OnChanges, OnDestroy {
      * tick.
      */
     onMenuAction(payload: { actionId: NodeActionId; nodeId: string }): void {
+        if (this.destroyed) {
+            return;
+        }
+        if (payload.actionId === "edit-in-builder") {
+            // Open straight from the click so the browser allows the new tab.
+            this.openInBuilder(payload.nodeId);
+
+            return;
+        }
         if (
-            (payload.actionId !== "move" && payload.actionId !== "remove") ||
-            this.destroyed
+            payload.actionId !== "move" &&
+            payload.actionId !== "remove" &&
+            payload.actionId !== "add-child"
         ) {
             return;
         }
@@ -383,11 +421,227 @@ export class HierarchyTreeComponent implements OnInit, OnChanges, OnDestroy {
                 }
                 if (payload.actionId === "move") {
                     this.openMovePicker(payload.nodeId);
+                } else if (payload.actionId === "add-child") {
+                    this.openAddChild(payload.nodeId);
                 } else {
                     this.removeChild(payload.nodeId);
                 }
             }, 0),
         );
+    }
+
+    /**
+     * Open the Builder for `nodeId` in a new tab so the author can edit it
+     * there. The root is the object already open in this tab, and a node
+     * without a cuid and version has no Builder address; both are ignored.
+     */
+    private openInBuilder(nodeId: string): void {
+        const node = findInTree(this.viewService.tree, nodeId);
+        if (
+            !node ||
+            !node.editable ||
+            !node.cuid ||
+            typeof node.version !== "number" ||
+            this.viewService.parentIdOf(nodeId) === undefined
+        ) {
+            return;
+        }
+        window.open(
+            `/onion/learning-object-builder/${encodeURIComponent(node.cuid)}/${node.version}`,
+            "_blank",
+            "noopener",
+        );
+    }
+
+    // --- Add child dialog (sc-40236) ---
+
+    /** The live add-child overlay, or null when it is closed. */
+    private addChildOverlayRef: OverlayRef | null = null;
+
+    /** The attached dialog, kept to show save progress and errors in it. */
+    private addChildRef: ComponentRef<HierarchyAddChildComponent> | null = null;
+
+    /** Subscriptions tied to the open dialog; torn down on close. */
+    private addChildSubscriptions: Subscription[] = [];
+
+    /** The row whose Add Child action opened the dialog (focus restore). */
+    private addChildOriginNodeId: string | null = null;
+
+    /**
+     * Open the dialog that creates a new child under `nodeId`. Nothing is sent
+     * until the author confirms. Cancel, Escape, and a backdrop click close it
+     * and return focus to the row's menu button, except while a save is running.
+     */
+    private openAddChild(nodeId: string): void {
+        if (!this.canAddChild(nodeId)) {
+            return;
+        }
+        const parent = findInTree(this.viewService.tree, nodeId);
+        if (!parent) {
+            return;
+        }
+
+        // Replace any dialog that is already open.
+        this.closeAddChild(false);
+        this.addChildOriginNodeId = nodeId;
+
+        const overlayRef = this.overlay.create({
+            hasBackdrop: true,
+            disposeOnNavigation: true,
+            scrollStrategy: this.overlay.scrollStrategies.block(),
+            positionStrategy: this.overlay
+                .position()
+                .global()
+                .centerHorizontally()
+                .centerVertically(),
+        });
+        this.addChildOverlayRef = overlayRef;
+
+        const dialogRef = overlayRef.attach(
+            new ComponentPortal(HierarchyAddChildComponent, this.vcr),
+        );
+        this.addChildRef = dialogRef;
+        dialogRef.setInput("parentName", parent.name ?? "");
+        dialogRef.setInput("parentLength", parent.length);
+        dialogRef.changeDetectorRef.detectChanges();
+
+        this.addChildSubscriptions.push(
+            dialogRef.instance.confirm.subscribe((request) =>
+                this.saveNewChild(nodeId, request),
+            ),
+            dialogRef.instance.cancel.subscribe(() => this.closeAddChild()),
+            overlayRef.backdropClick().subscribe(() => this.dismissAddChild()),
+            overlayRef.detachments().subscribe(() => this.closeAddChild()),
+            overlayRef.keydownEvents().subscribe((keyEvent) => {
+                if (keyEvent.keyCode === ESCAPE) {
+                    keyEvent.preventDefault();
+                    this.dismissAddChild();
+                }
+            }),
+        );
+    }
+
+    /** Close on Escape or a backdrop click unless a save is running. */
+    private dismissAddChild(): void {
+        if (!this.editService.saving) {
+            this.closeAddChild();
+        }
+    }
+
+    /** Single close path for the dialog, mirroring the remove confirmation. */
+    private closeAddChild(restoreFocus = true): void {
+        const originNodeId = this.addChildOriginNodeId;
+        this.addChildOriginNodeId = null;
+        this.addChildSubscriptions.forEach((sub) => sub.unsubscribe());
+        this.addChildSubscriptions = [];
+        if (this.addChildOverlayRef) {
+            this.addChildOverlayRef.dispose();
+            this.addChildOverlayRef = null;
+        }
+        this.addChildRef = null;
+        if (restoreFocus && !this.destroyed && originNodeId) {
+            this.restoreNodeFocus(originNodeId);
+        }
+    }
+
+    /** Push save progress and errors into the open dialog. */
+    private updateAddChildDialog(
+        state: Partial<
+            Pick<
+                HierarchyAddChildComponent,
+                "saving" | "nameError" | "errorMessage"
+            >
+        >,
+    ): void {
+        if (!this.addChildRef) {
+            return;
+        }
+        Object.assign(this.addChildRef.instance, state);
+        this.addChildRef.changeDetectorRef.detectChanges();
+    }
+
+    /**
+     * Create the new child and add it to the tree. The dialog stays open and
+     * locked while the API saves. On success it closes, the new row is
+     * revealed and focused, and a toast confirms that the object is in the
+     * author's library. On failure the tree is unchanged and the dialog stays
+     * open with the reason, so the author can fix the name or try again.
+     */
+    private saveNewChild(nodeId: string, request: NewChildRequest): void {
+        this.updateAddChildDialog({
+            saving: true,
+            nameError: "",
+            errorMessage: "",
+        });
+        this.persist<HierarchyCreateOutcome>(
+            this.editService.create(nodeId, request),
+            {
+                onSuccess: (outcome) => {
+                    this.closeAddChild(false);
+                    // Render the new row first so focus lands on its live button.
+                    this.changeDetector.detectChanges();
+                    this.restoreNodeFocus(outcome.node.id);
+                    const message = `“${outcome.name}” was created and added to “${outcome.parentName}”. It is in your library.`;
+                    this.notifications.success("Object created", message);
+                    void this.liveAnnouncer.announce(message, "polite");
+                },
+                onFailure: (error) => this.showCreateFailure(error),
+            },
+        );
+    }
+
+    private showCreateFailure(error: HierarchyEditError): void {
+        if (error.reloadRequired) {
+            // The hierarchy was reloaded from the server, so the dialog would
+            // describe a tree that is gone.
+            this.closeAddChild(false);
+            this.toastFailure(error, "create");
+
+            return;
+        }
+        let message: string;
+        switch (error.reason) {
+            case "name-taken":
+                this.updateAddChildDialog({
+                    saving: false,
+                    nameError:
+                        "You already have a learning object with this name. Choose a different name.",
+                });
+                message =
+                    "That name is already used by another of your objects.";
+                break;
+            case "name-invalid":
+                this.updateAddChildDialog({
+                    saving: false,
+                    nameError: INVALID_NAME_MESSAGE,
+                });
+                message = INVALID_NAME_MESSAGE;
+                break;
+            case "busy":
+                message =
+                    "Another change is still saving. Try again in a moment.";
+                this.updateAddChildDialog({
+                    saving: false,
+                    errorMessage: message,
+                });
+                break;
+            case "invalid":
+                message = "A new object can't be added here.";
+                this.updateAddChildDialog({
+                    saving: false,
+                    errorMessage: message,
+                });
+                break;
+            default:
+                message = error.leftInLibrary
+                    ? "The object was created and is in your library, but it could not be added here. You can find it on your dashboard."
+                    : "The object could not be created, so your hierarchy was left as it was. Try again.";
+                this.updateAddChildDialog({
+                    saving: false,
+                    errorMessage: message,
+                });
+        }
+        void this.liveAnnouncer.announce(message, "assertive");
     }
 
     /** The live remove-confirmation overlay, or null when it is closed. */

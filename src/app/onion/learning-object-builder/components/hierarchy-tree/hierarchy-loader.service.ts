@@ -11,7 +11,7 @@ import { map, switchMap } from "rxjs/operators";
 import { LearningObject } from "@entity";
 import { AuthService } from "../../../../core/auth-module/auth.service";
 import { LearningObjectService } from "../../../../core/learning-object-module/learning-object/learning-object.service";
-import { toHierarchyNode } from "./hierarchy-node.mapper";
+import { builderIdentity, toHierarchyNode } from "./hierarchy-node.mapper";
 import { LENGTH_ORDER, canHaveChildren } from "./hierarchy-length.util";
 import { HierarchyViewService } from "./hierarchy-view.service";
 import {
@@ -104,6 +104,7 @@ export class HierarchyLoaderService implements OnDestroy {
                 const rootNode: HierarchyNode = {
                     id: root.id,
                     learningObjectId: root.id,
+                    ...builderIdentity(root),
                     name: root.name,
                     length: root.length,
                     editable: true,

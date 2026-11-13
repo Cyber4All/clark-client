@@ -38,6 +38,7 @@ describe("HierarchyNodeComponent", () => {
                 [node]="node"
                 [isRoot]="isRoot"
                 [canMovePredicate]="canMovePredicate"
+                [canAddChildPredicate]="canAddChildPredicate"
                 (menuAction)="onMenuAction($event)"></clark-hierarchy-node>
         `,
     })
@@ -45,6 +46,7 @@ describe("HierarchyNodeComponent", () => {
         node: HierarchyNode = makeNode();
         isRoot = false;
         canMovePredicate: (nodeId: string) => boolean = () => true;
+        canAddChildPredicate: (nodeId: string) => boolean = () => true;
         emitted: Array<{ actionId: NodeActionId; nodeId: string }> = [];
 
         onMenuAction(payload: {
@@ -103,6 +105,18 @@ describe("HierarchyNodeComponent", () => {
         );
     }
 
+    /** The open menu item with the given action id. */
+    function menuItem(actionId: string): HTMLButtonElement {
+        return overlayMenuItems().find(
+            (item) => item.getAttribute("data-action-id") === actionId,
+        )!;
+    }
+    /** Action ids of the open menu items, in order. */
+    function actionIds(): Array<string | null> {
+        return overlayMenuItems().map((item) =>
+            item.getAttribute("data-action-id"),
+        );
+    }
     /** The single Action Menu trigger on the rendered row. */
     function triggerButton(): HTMLButtonElement {
         return fixture.debugElement.query(By.css(".action-menu-button"))
@@ -208,57 +222,146 @@ describe("HierarchyNodeComponent", () => {
     });
 
     describe("menuActions composition", () => {
-        it("enables Move and Remove for a movable node and omits the future Add Child action", () => {
+        it("lists Add Child, Edit in Builder, Move, and Remove in that order", () => {
             host.isRoot = false;
-            host.canMovePredicate = () => true;
+            host.node = makeNode({ cuid: "c-1", version: 0 });
             render();
             openMenu();
-
-            const items = overlayMenuItems();
-            expect(
-                items.map((item) => item.getAttribute("data-action-id")),
-            ).toEqual(["move", "remove"]);
-
-            const [move, remove] = items;
-            expect(move.textContent).toContain("Move Object");
-            expect(remove.textContent).toContain("Remove from Hierarchy");
-            for (const item of items) {
+            expect(actionIds()).toEqual([
+                "add-child",
+                "edit-in-builder",
+                "move",
+                "remove",
+            ]);
+            expect(menuItem("add-child").textContent).toContain(
+                "Add Child Object",
+            );
+            expect(menuItem("edit-in-builder").textContent).toContain(
+                "Edit in Builder",
+            );
+            expect(menuItem("move").textContent).toContain("Move Object");
+            expect(menuItem("remove").textContent).toContain(
+                "Remove from Hierarchy",
+            );
+        });
+        it("enables every item for an editable, movable node that can hold children and has a Builder address", () => {
+            host.isRoot = false;
+            host.node = makeNode({ cuid: "c-1", version: 0 });
+            host.canMovePredicate = () => true;
+            host.canAddChildPredicate = () => true;
+            render();
+            openMenu();
+            for (const item of overlayMenuItems()) {
                 expect(item.disabled).toBe(false);
                 expect(item.getAttribute("aria-disabled")).not.toBe("true");
             }
-
-            expect(
-                document.querySelector('[data-action-id="add-child"]'),
-            ).toBeNull();
         });
-
         it("renders Move and Remove present-but-disabled when the predicate says not movable", () => {
             host.isRoot = false;
             host.canMovePredicate = () => false;
             render();
             openMenu();
-
-            const items = overlayMenuItems();
-            expect(
-                items.map((item) => item.getAttribute("data-action-id")),
-            ).toEqual(["move", "remove"]);
-            expect(items.every((item) => item.disabled)).toBe(true);
+            expect(menuItem("move").disabled).toBe(true);
+            expect(menuItem("remove").disabled).toBe(true);
         });
-
         it("renders Move and Remove present-but-disabled for the root even when the predicate allows it", () => {
             host.isRoot = true;
             host.canMovePredicate = () => true;
             render();
             openMenu();
-
-            const items = overlayMenuItems();
-            expect(
-                items.map((item) => item.getAttribute("data-action-id")),
-            ).toEqual(["move", "remove"]);
-            expect(items.every((item) => item.disabled)).toBe(true);
+            expect(menuItem("move").disabled).toBe(true);
+            expect(menuItem("remove").disabled).toBe(true);
         });
     });
-
+    describe("Add Child Object", () => {
+        it("is disabled when the predicate refuses (read-only, Nanomodule, or saving)", () => {
+            host.canAddChildPredicate = () => false;
+            render();
+            openMenu();
+            expect(menuItem("add-child").disabled).toBe(true);
+        });
+        it("is still available on the root", () => {
+            host.isRoot = true;
+            host.canAddChildPredicate = () => true;
+            render();
+            openMenu();
+            expect(menuItem("add-child").disabled).toBe(false);
+        });
+        it("asks the predicate about this node's id", () => {
+            const predicate = jest.fn().mockReturnValue(true);
+            host.node = makeNode({ id: "unit-foundations" });
+            host.canAddChildPredicate = predicate;
+            render();
+            openMenu();
+            expect(predicate).toHaveBeenCalledWith("unit-foundations");
+        });
+        it("emits the add-child intent with this node's id", () => {
+            host.node = makeNode({ id: "unit-foundations" });
+            render();
+            openMenu();
+            menuItem("add-child").click();
+            fixture.detectChanges();
+            expect(host.emitted).toEqual([
+                { actionId: "add-child", nodeId: "unit-foundations" },
+            ]);
+        });
+        it("does not emit when disabled", () => {
+            host.canAddChildPredicate = () => false;
+            render();
+            openMenu();
+            menuItem("add-child").click();
+            fixture.detectChanges();
+            expect(host.emitted).toEqual([]);
+        });
+    });
+    describe("Edit in Builder", () => {
+        it("is enabled for an editable non-root node with a cuid and version", () => {
+            host.node = makeNode({ cuid: "c-1", version: 0 });
+            render();
+            openMenu();
+            expect(menuItem("edit-in-builder").disabled).toBe(false);
+        });
+        it("is disabled without a version", () => {
+            host.node = makeNode({ cuid: "c-1" });
+            render();
+            openMenu();
+            expect(menuItem("edit-in-builder").disabled).toBe(true);
+        });
+        it("is disabled without a cuid", () => {
+            host.node = makeNode({ version: 2 });
+            render();
+            openMenu();
+            expect(menuItem("edit-in-builder").disabled).toBe(true);
+        });
+        it("is disabled for a read-only node", () => {
+            host.node = makeNode({
+                cuid: "c-1",
+                version: 0,
+                editable: false,
+                linkedRoot: true,
+            });
+            render();
+            openMenu();
+            expect(menuItem("edit-in-builder").disabled).toBe(true);
+        });
+        it("is disabled for the root, which is already open in this tab", () => {
+            host.isRoot = true;
+            host.node = makeNode({ cuid: "c-1", version: 0 });
+            render();
+            openMenu();
+            expect(menuItem("edit-in-builder").disabled).toBe(true);
+        });
+        it("emits the edit-in-builder intent with this node's id", () => {
+            host.node = makeNode({ id: "u1", cuid: "c-1", version: 0 });
+            render();
+            openMenu();
+            menuItem("edit-in-builder").click();
+            fixture.detectChanges();
+            expect(host.emitted).toEqual([
+                { actionId: "edit-in-builder", nodeId: "u1" },
+            ]);
+        });
+    });
     describe("selecting Remove emits the intent", () => {
         it("emits the remove action with this node's id", () => {
             host.isRoot = false;
@@ -283,13 +386,13 @@ describe("HierarchyNodeComponent", () => {
             render();
             openMenu();
 
-            const move = overlayMenuItems()[0];
+            const move = menuItem("move");
             move.dispatchEvent(new MouseEvent("mousedown", { bubbles: true }));
             fixture.detectChanges();
 
             // A browser only delivers the click to this item if Angular has
             // kept the original button attached throughout the gesture.
-            expect(overlayMenuItems()[0]).toBe(move);
+            expect(menuItem("move")).toBe(move);
             expect(move.isConnected).toBe(true);
             move.dispatchEvent(new MouseEvent("mouseup", { bubbles: true }));
             move.click();
@@ -309,7 +412,7 @@ describe("HierarchyNodeComponent", () => {
             render();
             openMenu();
 
-            const move = overlayMenuItems()[0];
+            const move = menuItem("move");
             expect(move.disabled).toBe(false);
 
             move.click();
@@ -325,7 +428,7 @@ describe("HierarchyNodeComponent", () => {
             render();
             openMenu();
 
-            const move = overlayMenuItems()[0];
+            const move = menuItem("move");
             expect(move.disabled).toBe(true);
             move.click();
             fixture.detectChanges();
@@ -429,7 +532,7 @@ describe("HierarchyNodeComponent", () => {
             expect(nodes[1].componentInstance.canMove).toBe(false);
             expect(nodes[1].query(By.css(".drag-handle"))).toBeNull();
             openMenu();
-            expect(overlayMenuItems()[0].disabled).toBe(false);
+            expect(menuItem("move").disabled).toBe(false);
 
             const toggle = nodes[0].query(By.css(".toggle"));
             const toggled = jest.spyOn(
