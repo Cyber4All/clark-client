@@ -37,7 +37,8 @@ Out of scope: adding an existing library object (SC-40237), reorder, re-parentin
 - [x] (2026-11-13) Node component: "Add Child Object" and "Edit in Builder" menu items (order: Add, Edit, Move, Remove). The empty-state message now hides once the root has a child.
 - [x] (2026-11-13) Specs: new dialog spec; new cases in edit service, view service, mapper, loader, node, tree, and states specs. 11 suites, 298 tests pass after Prettier. Mutation-checked: disabling the cleanup delete fails 4 edit-service tests. `tsc --noEmit -p src/tsconfig.app.json` exits 0.
 - [x] (2026-11-13) Browser check (Playwright, mocked gateway, 1280px and 390px): menu items; dialog layout; refused-character name sends nothing; create sends check, POST, PATCH length, POST children in order and the row appears with focus and a toast; duplicate name shows an inline error; failed attach sends DELETE and leaves the tree unchanged; "Edit in Builder" opens `/onion/learning-object-builder/<cuid>/<version>` in a new tab; reload shows the new child; Cancel returns focus to the parent's menu button; no horizontal overflow at 390px.
-- [ ] Run against the real gateway and clark-service (docker compose is up; the dev server works against it). Blocked on a local account with a verified email: registration has a reCAPTCHA, so an author account must be supplied or created by hand. Still to confirm there: the new object appears in the Dashboard, and stays there after being removed from the hierarchy.
+- [x] (2026-11-13) Run against the real gateway and clark-service (docker compose, local `onion` database, an admin account). Created a Course through the real API, then used the Hierarchy tab: the empty-hierarchy message disappeared after the first add; the gateway logged name check, `POST /learning-objects`, `PATCH` length, `POST .../children`, all 200; Mongo shows the parent's `children` holds the new id and the child is a `unit`, `unreleased`, authored by the signed-in user (the create route returns a Nanomodule, confirming the extra length call is needed); a reload shows the child; "Edit in Builder" opened `/onion/learning-object-builder/<child cuid>/0/info` in a new tab with the child's name; the Dashboard lists the child ("1 parent"); a duplicate name showed the inline error without creating anything; removing the child from the hierarchy left it in the Dashboard.
+- [ ] Not run against the real services: the cleanup path (a failing length or attach call). It needs a parent the account cannot write to, and the account used is an admin. It is covered by the unit specs and the mocked-gateway run.
 - [ ] Commit and push the SC-40236 implementation.
 
 ## Surprises & Discoveries
@@ -97,7 +98,7 @@ Out of scope: adding an existing library object (SC-40237), reorder, re-parentin
 
 ## Outcomes & Retrospective
 
-Implemented and verified with unit tests and a mocked-gateway browser run. Not yet verified against the real gateway and clark-service (see Progress). The mock cannot prove the server accepts `length` on `PATCH` for a new object, nor that the Dashboard lists the new object.
+Implemented and verified with unit tests, a mocked-gateway browser run, and a run against the real gateway and clark-service. The one path not exercised for real is the cleanup after a failed length or attach call. Limits: creating a child is three non-atomic calls with a best-effort delete; the single in-flight edit lock means other edits wait while a create saves; a create under a parent that appears more than once in the tree triggers a reload that resets expand state. The test objects `SC40236 Test Parent <timestamp>` and `SC40236 Test Child Unit` remain in the local database of the account used.
 
 ## Context and Orientation
 
