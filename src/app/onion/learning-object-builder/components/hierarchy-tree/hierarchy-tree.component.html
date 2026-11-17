@@ -67,7 +67,7 @@
         </div>
 
         <p
-            *ngIf="status === 'empty' && !(hasChildren$ | async)"
+            *ngIf="status === 'empty' && (hasChildren$ | async) !== true"
             class="hierarchy-state__empty">
             This learning object has no children yet.
         </p>
