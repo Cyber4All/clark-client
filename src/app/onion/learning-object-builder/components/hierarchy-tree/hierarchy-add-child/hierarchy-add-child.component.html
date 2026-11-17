@@ -1,0 +1,76 @@
+<form
+    class="hierarchy-add-child"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="add-child-title"
+    cdkTrapFocus
+    [cdkTrapFocusAutoCapture]="true"
+    [formGroup]="form"
+    [attr.aria-busy]="saving"
+    novalidate
+    (ngSubmit)="onSubmit()">
+    <h2 class="hierarchy-add-child__heading" id="add-child-title">
+        Add a new child object
+    </h2>
+    <div class="hierarchy-add-child__body">
+        <p class="hierarchy-add-child__intro">
+            This creates a new learning object in your library and adds it to
+            <strong>{{ displayParentName }}</strong
+            >.
+        </p>
+
+        <div class="hierarchy-add-child__field">
+            <label for="add-child-name">Name</label>
+            <input
+                id="add-child-name"
+                type="text"
+                formControlName="name"
+                autocomplete="off"
+                cdkFocusInitial
+                [attr.aria-invalid]="nameMessage ? 'true' : null"
+                [attr.aria-describedby]="
+                    nameMessage ? 'add-child-name-error' : null
+                "
+                [readonly]="saving"
+                (input)="onNameInput()" />
+            <p
+                *ngIf="nameMessage"
+                class="hierarchy-add-child__error"
+                id="add-child-name-error">
+                {{ nameMessage }}
+            </p>
+        </div>
+
+        <fieldset class="hierarchy-add-child__field" [disabled]="saving">
+            <legend>Length</legend>
+            <label
+                *ngFor="let length of lengths"
+                class="hierarchy-add-child__option">
+                <input type="radio" formControlName="length" [value]="length" />
+                <span>{{ length | titlecase }}</span>
+            </label>
+        </fieldset>
+
+        <p
+            *ngIf="errorMessage"
+            class="hierarchy-add-child__error hierarchy-add-child__error--general"
+            role="alert">
+            {{ errorMessage }}
+        </p>
+    </div>
+    <footer class="hierarchy-add-child__actions">
+        <button
+            type="button"
+            class="hierarchy-add-child__button hierarchy-add-child__button--ghost"
+            [disabled]="saving"
+            (click)="onCancel()">
+            Cancel
+        </button>
+        <button
+            type="submit"
+            class="hierarchy-add-child__button hierarchy-add-child__button--primary"
+            [disabled]="saving">
+            {{ saving ? "Creating…" : "Create" }}
+        </button>
+    </footer>
+</form>

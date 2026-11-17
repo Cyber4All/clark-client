@@ -55,6 +55,10 @@ describe("HierarchyTreeComponent (integration)", () => {
     let notifications: { success: jest.Mock; error: jest.Mock };
     let liveAnnouncer: { announce: jest.Mock };
     let setChildren: jest.Mock;
+    let checkNameAvailability: jest.Mock;
+    let createObject: jest.Mock;
+    let saveObject: jest.Mock;
+    let deleteObject: jest.Mock;
     let loaderRetry: jest.Mock;
 
     beforeAll(() => {
@@ -214,6 +218,14 @@ describe("HierarchyTreeComponent (integration)", () => {
         notifications = { success: jest.fn(), error: jest.fn() };
         liveAnnouncer = { announce: jest.fn() };
         setChildren = jest.fn().mockResolvedValue(undefined);
+        checkNameAvailability = jest.fn().mockResolvedValue(true);
+        createObject = jest.fn().mockResolvedValue({
+            id: "new-1",
+            cuid: "cuid-new-1",
+            version: 0,
+        });
+        saveObject = jest.fn().mockResolvedValue({});
+        deleteObject = jest.fn().mockResolvedValue({});
         loaderRetry = jest.fn();
         TestBed.configureTestingModule({
             imports: [HierarchyTreeComponent, NoopAnimationsModule],
@@ -224,7 +236,13 @@ describe("HierarchyTreeComponent (integration)", () => {
                 // hierarchy-edit.service.spec.ts.
                 {
                     provide: LearningObjectService,
-                    useValue: { setChildren },
+                    useValue: {
+                        setChildren,
+                        checkNameAvailability,
+                        create: createObject,
+                        save: saveObject,
+                        delete: deleteObject,
+                    },
                 },
                 {
                     // Loading is covered by hierarchy-loader.service.spec.ts;
@@ -995,6 +1013,433 @@ describe("HierarchyTreeComponent (integration)", () => {
             expect(confirmDialog()).toBeNull();
             expect(setChildren).not.toHaveBeenCalled();
         }));
+    });
+    describe("adding a new child", () => {
+        /** The open add-child dialog, or null. */
+        function addDialog(): HTMLElement | null {
+            return document.querySelector<HTMLElement>(
+                ".cdk-overlay-container .hierarchy-add-child",
+            );
+        }
+        function dialogNameInput(): HTMLInputElement {
+            return document.querySelector<HTMLInputElement>(
+                ".cdk-overlay-container #add-child-name",
+            )!;
+        }
+        function dialogButton(kind: "primary" | "ghost"): HTMLButtonElement {
+            return document.querySelector<HTMLButtonElement>(
+                `.cdk-overlay-container .hierarchy-add-child__button--${kind}`,
+            )!;
+        }
+        function dialogErrors(): string {
+            return Array.from(
+                document.querySelectorAll(
+                    ".cdk-overlay-container .hierarchy-add-child__error",
+                ),
+            )
+                .map((e) => e.textContent!.trim())
+                .join(" | ");
+        }
+        /** Select "Add Child Object" in the Action Menu of `nodeId`. */
+        function chooseAdd(nodeId: string): void {
+            triggerFor(nodeId).click();
+            flush();
+            fixture.detectChanges();
+            const add = overlayMenuItems().find(
+                (item) => item.getAttribute("data-action-id") === "add-child",
+            );
+            if (!add) {
+                throw new Error(`Add menu item not found for ${nodeId}`);
+            }
+            add.click();
+            flush();
+            fixture.detectChanges();
+        }
+        function typeName(value: string): void {
+            const input = dialogNameInput();
+            input.value = value;
+            input.dispatchEvent(new Event("input"));
+            fixture.detectChanges();
+        }
+        function pressCreate(): void {
+            dialogButton("primary").click();
+            flush();
+            fixture.detectChanges();
+        }
+        /** Open the dialog under `nodeId`, type a name, and press Create. */
+        function createViaMenu(nodeId: string, name = "My New Module"): void {
+            chooseAdd(nodeId);
+            typeName(name);
+            pressCreate();
+        }
+        const escapeKey = () =>
+            document
+                .querySelector(".cdk-overlay-container .cdk-overlay-pane")!
+                .dispatchEvent(
+                    new KeyboardEvent("keydown", {
+                        key: "Escape",
+                        keyCode: 27,
+                        bubbles: true,
+                    }),
+                );
+
+        it("opens a dialog that names the parent and sends nothing yet", fakeAsync(() => {
+            const before = JSON.stringify(viewService.tree);
+            chooseAdd("unit-foundations");
+            const dialog = addDialog()!;
+            expect(dialog).toBeTruthy();
+            expect(dialog.getAttribute("role")).toBe("dialog");
+            expect(dialog.textContent).toContain("Foundations Unit");
+            expect(dialogNameInput()).toBe(document.activeElement);
+            expect(checkNameAvailability).not.toHaveBeenCalled();
+            expect(createObject).not.toHaveBeenCalled();
+            expect(JSON.stringify(viewService.tree)).toBe(before);
+        }));
+
+        it("offers only lengths shorter than the parent", fakeAsync(() => {
+            chooseAdd("unit-foundations");
+            const labels = Array.from(
+                document.querySelectorAll(
+                    '.cdk-overlay-container .hierarchy-add-child input[type="radio"]',
+                ),
+            ).map((radio) => radio.parentElement!.textContent!.trim());
+            expect(labels).toEqual(["Nanomodule", "Micromodule", "Module"]);
+        }));
+
+        it("creates the object, attaches it, and shows it as the parent's last child", fakeAsync(() => {
+            createViaMenu("unit-foundations");
+            expect(addDialog()).toBeNull();
+            expect(createObject).toHaveBeenCalledWith({
+                name: "My New Module",
+                length: LearningObject.Length.MODULE,
+                status: LearningObject.Status.UNRELEASED,
+            });
+            expect(saveObject).toHaveBeenCalledWith("new-1", {
+                length: LearningObject.Length.MODULE,
+            });
+            expect(setChildren.mock.calls).toEqual([
+                ["unit-foundations", ["new-1"], false],
+            ]);
+            const kids = findNode(
+                viewService.tree,
+                "unit-foundations",
+            )!.children;
+            expect(kids[kids.length - 1]).toMatchObject({
+                id: "unit-foundations/new-1",
+                name: "My New Module",
+                editable: true,
+                cuid: "cuid-new-1",
+                version: 0,
+            });
+            expect(
+                fixture.nativeElement.querySelector(
+                    '.node-row[data-node-id="unit-foundations/new-1"]',
+                ),
+            ).toBeTruthy();
+        }));
+
+        it("confirms with a toast that mentions the library and moves focus to the new row", fakeAsync(() => {
+            createViaMenu("unit-foundations");
+            expect(notifications.success).toHaveBeenCalledWith(
+                "Object created",
+                "“My New Module” was created and added to “Foundations Unit”. It is in your library.",
+            );
+            expect(liveAnnouncer.announce).toHaveBeenCalledWith(
+                expect.stringContaining("is in your library"),
+                "polite",
+            );
+            expect(document.activeElement).toBe(
+                triggerFor("unit-foundations/new-1"),
+            );
+        }));
+
+        it("can add the first child under the root", fakeAsync(() => {
+            viewService.setTree([{ ...buildSpecTree()[0], children: [] }]);
+            fixture.detectChanges();
+            createViaMenu("root", "First unit");
+            expect(setChildren.mock.calls).toEqual([
+                ["root", ["new-1"], false],
+            ]);
+            expect(findNode(viewService.tree, "root/new-1")).toBeDefined();
+        }));
+
+        it("the new child can then be opened in the Builder and moved", fakeAsync(() => {
+            createViaMenu("unit-foundations");
+            expect(viewService.canMove("unit-foundations/new-1")).toBe(true);
+            const openSpy = jest
+                .spyOn(window, "open")
+                .mockImplementation(() => null);
+            triggerFor("unit-foundations/new-1").click();
+            flush();
+            fixture.detectChanges();
+            const edit = overlayMenuItems().find(
+                (item) =>
+                    item.getAttribute("data-action-id") === "edit-in-builder",
+            )!;
+            expect(edit.disabled).toBe(false);
+            edit.click();
+            flush();
+            expect(openSpy).toHaveBeenCalledWith(
+                "/onion/learning-object-builder/cuid-new-1/0",
+                "_blank",
+                "noopener",
+            );
+            openSpy.mockRestore();
+        }));
+
+        it("keeps the dialog open and the tree unchanged when the name is taken", fakeAsync(() => {
+            const before = JSON.stringify(viewService.tree);
+            checkNameAvailability.mockResolvedValue(false);
+            createViaMenu("unit-foundations", "Taken");
+            expect(addDialog()).toBeTruthy();
+            expect(dialogErrors()).toContain("already have a learning object");
+            expect(createObject).not.toHaveBeenCalled();
+            expect(JSON.stringify(viewService.tree)).toBe(before);
+            expect(notifications.success).not.toHaveBeenCalled();
+            // Editing the name clears the message and allows another try.
+            typeName("Fresh name");
+            expect(dialogErrors()).toBe("");
+            checkNameAvailability.mockResolvedValue(true);
+            pressCreate();
+            expect(addDialog()).toBeNull();
+            expect(createObject).toHaveBeenCalledTimes(1);
+        }));
+
+        it("blocks a name with a refused character before sending anything", fakeAsync(() => {
+            chooseAdd("unit-foundations");
+            typeName("bad/name");
+            pressCreate();
+            expect(dialogErrors()).toContain("cannot contain");
+            expect(checkNameAvailability).not.toHaveBeenCalled();
+            expect(createObject).not.toHaveBeenCalled();
+            expect(addDialog()).toBeTruthy();
+        }));
+
+        it("rolls back and shows an error when create fails", fakeAsync(() => {
+            const before = JSON.stringify(viewService.tree);
+            createObject.mockRejectedValue({ status: 500 });
+            createViaMenu("unit-foundations");
+            expect(addDialog()).toBeTruthy();
+            expect(dialogErrors()).toContain("could not be created");
+            expect(JSON.stringify(viewService.tree)).toBe(before);
+            expect(setChildren).not.toHaveBeenCalled();
+            expect(deleteObject).not.toHaveBeenCalled();
+            expect(notifications.success).not.toHaveBeenCalled();
+            expect(liveAnnouncer.announce).toHaveBeenCalledWith(
+                expect.stringContaining("could not be created"),
+                "assertive",
+            );
+            // The form is usable again so the author can retry.
+            expect(dialogButton("primary").disabled).toBe(false);
+        }));
+
+        it("deletes the new object and shows an error when attaching fails", fakeAsync(() => {
+            const before = JSON.stringify(viewService.tree);
+            setChildren.mockRejectedValue({ status: 403 });
+            createViaMenu("unit-foundations");
+            expect(deleteObject).toHaveBeenCalledWith("new-1");
+            expect(addDialog()).toBeTruthy();
+            expect(dialogErrors()).toContain("could not be created");
+            expect(JSON.stringify(viewService.tree)).toBe(before);
+            expect(loaderRetry).not.toHaveBeenCalled();
+        }));
+
+        it("tells the author where the object is when it could not be cleaned up", fakeAsync(() => {
+            saveObject.mockRejectedValue({ status: 500 });
+            deleteObject.mockRejectedValue({ status: 500 });
+            createViaMenu("unit-foundations");
+            expect(dialogErrors()).toContain("is in your library");
+            expect(dialogErrors()).toContain("dashboard");
+            expect(loaderRetry).not.toHaveBeenCalled();
+        }));
+
+        it("reloads the hierarchy and closes the dialog when the saved state is uncertain", fakeAsync(() => {
+            setChildren.mockRejectedValue({ status: 500 });
+            deleteObject.mockRejectedValue({ status: 500 });
+            createViaMenu("unit-foundations");
+            expect(loaderRetry).toHaveBeenCalledTimes(1);
+            expect(addDialog()).toBeNull();
+            expect(notifications.error).toHaveBeenCalledWith(
+                "Create failed",
+                expect.stringContaining("reloaded"),
+            );
+        }));
+
+        it("locks the dialog while saving and ignores Escape and backdrop clicks", fakeAsync(() => {
+            let finish!: (value: unknown) => void;
+            createObject.mockReturnValue(
+                new Promise((resolve) => (finish = resolve)),
+            );
+            chooseAdd("unit-foundations");
+            typeName("Slow");
+            dialogButton("primary").click();
+            flush();
+            fixture.detectChanges();
+            expect(dialogButton("primary").disabled).toBe(true);
+            expect(dialogButton("primary").textContent).toContain("Creating");
+            escapeKey();
+            backdrop()!.click();
+            flush();
+            fixture.detectChanges();
+            expect(addDialog()).toBeTruthy();
+            // A second submit while saving sends nothing more.
+            dialogButton("primary").click();
+            flush();
+            expect(createObject).toHaveBeenCalledTimes(1);
+            finish({ id: "new-1", cuid: "c", version: 0 });
+            flush();
+            fixture.detectChanges();
+            expect(addDialog()).toBeNull();
+            expect(
+                findNode(viewService.tree, "unit-foundations/new-1"),
+            ).toBeDefined();
+        }));
+
+        it("disables Move, Remove and further edits while a create is saving", fakeAsync(() => {
+            let finish!: (value: unknown) => void;
+            createObject.mockReturnValue(
+                new Promise((resolve) => (finish = resolve)),
+            );
+            chooseAdd("unit-foundations");
+            typeName("Slow");
+            dialogButton("primary").click();
+            flush();
+            expect(component.canMove("nano-glossary")).toBe(false);
+            expect(component.canAddChild("network-security")).toBe(false);
+            finish({ id: "new-1", cuid: "c", version: 0 });
+            flush();
+            fixture.detectChanges();
+            expect(component.canMove("nano-glossary")).toBe(true);
+            expect(component.canAddChild("unit-foundations")).toBe(true);
+        }));
+
+        it.each([
+            ["Cancel", () => dialogButton("ghost").click()],
+            ["Escape", () => escapeKey()],
+            ["a backdrop click", () => backdrop()!.click()],
+        ])(
+            "%s closes the dialog, sends nothing, and returns focus to the row",
+            fakeAsync((_label, dismiss) => {
+                const before = JSON.stringify(viewService.tree);
+                chooseAdd("unit-foundations");
+                typeName("Not saved");
+                dismiss();
+                flush();
+                fixture.detectChanges();
+                expect(addDialog()).toBeNull();
+                expect(checkNameAvailability).not.toHaveBeenCalled();
+                expect(createObject).not.toHaveBeenCalled();
+                expect(JSON.stringify(viewService.tree)).toBe(before);
+                expect(document.activeElement).toBe(
+                    triggerFor("unit-foundations"),
+                );
+            }),
+        );
+
+        it("closes an open dialog when the tree is destroyed", fakeAsync(() => {
+            chooseAdd("unit-foundations");
+            expect(addDialog()).toBeTruthy();
+            fixture.destroy();
+            flush();
+            expect(addDialog()).toBeNull();
+            expect(backdrop()).toBeNull();
+        }));
+
+        it("does not offer the dialog for a Nanomodule or inside a linked subtree", fakeAsync(() => {
+            for (const nodeId of [
+                "nano-glossary",
+                "incident-response",
+                "micro-detection",
+            ]) {
+                triggerFor(nodeId).click();
+                flush();
+                fixture.detectChanges();
+                const add = overlayMenuItems().find(
+                    (item) =>
+                        item.getAttribute("data-action-id") === "add-child",
+                )!;
+                expect(add.disabled).toBe(true);
+                triggerFor(nodeId).click();
+                flush();
+                fixture.detectChanges();
+            }
+            expect(addDialog()).toBeNull();
+            expect(createObject).not.toHaveBeenCalled();
+        }));
+    });
+
+    describe("opening a node in the Builder", () => {
+        let openSpy: jest.SpyInstance;
+        beforeEach(() => {
+            openSpy = jest.spyOn(window, "open").mockImplementation(() => null);
+            const tree = buildSpecTree();
+            const withAddress = (
+                nodes: HierarchyNode[],
+                address: Record<string, [string, number]>,
+            ): HierarchyNode[] =>
+                nodes.map((n) => ({
+                    ...n,
+                    ...(address[n.id]
+                        ? { cuid: address[n.id][0], version: address[n.id][1] }
+                        : {}),
+                    children: withAddress(n.children, address),
+                }));
+            viewService.setTree(
+                withAddress(tree, {
+                    root: ["cuid-root", 0],
+                    "network-security": ["cuid net/1", 3],
+                    "incident-response": ["cuid-linked", 0],
+                }),
+            );
+            fixture.detectChanges();
+        });
+        afterEach(() => openSpy.mockRestore());
+
+        function chooseEdit(nodeId: string): HTMLButtonElement {
+            triggerFor(nodeId).click();
+            flush();
+            fixture.detectChanges();
+            const edit = overlayMenuItems().find(
+                (item) =>
+                    item.getAttribute("data-action-id") === "edit-in-builder",
+            )!;
+            edit.click();
+            flush();
+            fixture.detectChanges();
+
+            return edit;
+        }
+
+        it("opens the node's Builder address in a new tab", fakeAsync(() => {
+            chooseEdit("network-security");
+            expect(openSpy).toHaveBeenCalledTimes(1);
+            expect(openSpy).toHaveBeenCalledWith(
+                "/onion/learning-object-builder/cuid%20net%2F1/3",
+                "_blank",
+                "noopener",
+            );
+        }));
+
+        it("does not change the tree or open any dialog", fakeAsync(() => {
+            const before = JSON.stringify(viewService.tree);
+            chooseEdit("network-security");
+            expect(JSON.stringify(viewService.tree)).toBe(before);
+            expect(
+                document.querySelector(
+                    ".cdk-overlay-container .hierarchy-add-child",
+                ),
+            ).toBeNull();
+            expect(setChildren).not.toHaveBeenCalled();
+        }));
+
+        it.each(["root", "incident-response", "nano-glossary"])(
+            "is not available for %s (root, read-only, or no Builder address)",
+            fakeAsync((nodeId: string) => {
+                const edit = chooseEdit(nodeId);
+                expect(edit.disabled).toBe(true);
+                expect(openSpy).not.toHaveBeenCalled();
+            }),
+        );
     });
 });
 

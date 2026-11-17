@@ -24,6 +24,22 @@ export function canViewerEdit(
 }
 
 /**
+ * The fields needed to open a learning object in the Builder. Only present
+ * values are returned so nodes do not carry `undefined` keys. `cuid` is an
+ * empty string on an unsaved entity, which counts as absent.
+ */
+export function builderIdentity(
+    payload: Pick<LearningObject, "cuid" | "version">,
+): Pick<HierarchyNode, "cuid" | "version"> {
+    return {
+        ...(payload.cuid ? { cuid: payload.cuid } : {}),
+        ...(typeof payload.version === "number"
+            ? { version: payload.version }
+            : {}),
+    };
+}
+
+/**
  * Map one API child into the tree view-model (without its children).
  *
  * `key` is the unique occurrence key for this appearance in the tree (see
@@ -43,6 +59,7 @@ export function toHierarchyNode(
         return {
             id: key,
             learningObjectId: payload.id,
+            ...builderIdentity(payload),
             name: payload.name,
             length: payload.length,
             editable: false,
@@ -54,6 +71,7 @@ export function toHierarchyNode(
     return {
         id: key,
         learningObjectId: payload.id,
+        ...builderIdentity(payload),
         name: payload.name,
         length: payload.length,
         editable,

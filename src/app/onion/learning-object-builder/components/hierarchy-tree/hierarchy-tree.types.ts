@@ -36,6 +36,15 @@ export interface HierarchyNode {
      */
     learningObjectId?: string;
 
+    /**
+     * Stable content id and version of the learning object. Together they
+     * build the Builder URL (`/onion/learning-object-builder/:cuid/:version`)
+     * used by "Edit in Builder". Optional so small local trees (tests) can omit
+     * them; a node without them cannot be opened in the Builder.
+     */
+    cuid?: string;
+    version?: number;
+
     /** Display name of the learning object. */
     name: string;
 
@@ -74,6 +83,14 @@ export interface HierarchyNode {
     expanded?: boolean;
 }
 
+/** Name and length the author chooses for a new child learning object (sc-40236). */
+export interface NewChildRequest {
+    /** Display name, already trimmed. */
+    name: string;
+    /** Length of the new child; must be shorter than its parent's. */
+    length: LearningObject.Length;
+}
+
 /** Discriminates the two actions offered by a node's `+` contextual menu. */
 export type AddChildAction = "create-new" | "add-existing";
 
@@ -82,10 +99,11 @@ export type AddChildAction = "create-new" | "add-existing";
  *
  * Each action has a unique id so additional actions (e.g. the future
  * "add-child" Add Child Object action) can be added to the same menu structure
- * without identifier collision. `"move"` and `"remove"` (sc-40642) are the
- * working actions; `"remove"` only unlinks the child from its parent.
+ * without identifier collision. `"move"` and `"remove"` (sc-40642) move or
+ * unlink a child. `"add-child"` (sc-40236) creates a new learning object as a
+ * child of the node. `"edit-in-builder"` opens the node's Builder in a new tab.
  */
-export type NodeActionId = "move" | "remove" | "add-child";
+export type NodeActionId = "move" | "remove" | "add-child" | "edit-in-builder";
 
 /** A single rendered Action_Menu item for a node row. */
 export interface NodeAction {

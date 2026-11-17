@@ -1,5 +1,9 @@
 import { LearningObject } from "@entity";
-import { canViewerEdit, toHierarchyNode } from "./hierarchy-node.mapper";
+import {
+    builderIdentity,
+    canViewerEdit,
+    toHierarchyNode,
+} from "./hierarchy-node.mapper";
 import { HierarchyViewer } from "./hierarchy-tree.types";
 
 const payload = (overrides: Record<string, unknown> = {}): LearningObject =>
@@ -100,6 +104,52 @@ describe("hierarchy-node.mapper", () => {
             );
             expect(node.id).toBe("root/u9/c1");
             expect(node.learningObjectId).toBe("c1");
+        });
+    });
+    describe("builderIdentity", () => {
+        it("returns the cuid and version", () => {
+            expect(
+                builderIdentity({ cuid: "c-1", version: 3 } as LearningObject),
+            ).toEqual({ cuid: "c-1", version: 3 });
+        });
+        it("keeps version 0, which is a real version", () => {
+            expect(
+                builderIdentity({ cuid: "c-1", version: 0 } as LearningObject),
+            ).toEqual({ cuid: "c-1", version: 0 });
+        });
+        it("leaves out an empty cuid and a missing version", () => {
+            const identity = builderIdentity({
+                cuid: "",
+                version: undefined,
+            } as unknown as LearningObject);
+            expect(identity).toEqual({});
+            expect("cuid" in identity).toBe(false);
+            expect("version" in identity).toBe(false);
+        });
+    });
+    describe("toHierarchyNode Builder address", () => {
+        it("carries cuid and version on an editable child", () => {
+            const node = toHierarchyNode(
+                payload({ cuid: "c-1", version: 2 }),
+                viewer({ username: "alice" }),
+            );
+            expect(node).toMatchObject({ cuid: "c-1", version: 2 });
+        });
+        it("carries them on a read-only descendant too", () => {
+            const node = toHierarchyNode(
+                payload({ cuid: "c-1", version: 2 }),
+                viewer({ username: "alice" }),
+                true,
+            );
+            expect(node).toMatchObject({ cuid: "c-1", version: 2 });
+        });
+        it("adds no keys when the payload has neither", () => {
+            const node = toHierarchyNode(
+                payload(),
+                viewer({ username: "alice" }),
+            );
+            expect("cuid" in node).toBe(false);
+            expect("version" in node).toBe(false);
         });
     });
 });

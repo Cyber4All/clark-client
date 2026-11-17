@@ -91,6 +91,19 @@ describe("HierarchyLoaderService", () => {
         ).toEqual(["m1"]);
     });
 
+    it("gives the root and its children their Builder address", async () => {
+        children["root"] = async () => [
+            Object.assign(child("u1", UNIT), { cuid: "cu-u1", version: 1 }),
+        ];
+        loader.load(Object.assign(root(), { cuid: "cu-root", version: 0 }));
+        await settle();
+        const [rootNode] = view.tree;
+        expect(rootNode).toMatchObject({ cuid: "cu-root", version: 0 });
+        expect(rootNode.children[0]).toMatchObject({
+            cuid: "cu-u1",
+            version: 1,
+        });
+    });
     it("never requests children of a nanomodule", async () => {
         children["root"] = async () => [child("n1", NANOMODULE)];
 

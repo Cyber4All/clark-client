@@ -2,8 +2,17 @@ import { Injectable } from "@angular/core";
 import { BehaviorSubject, defer, from, Observable, of, throwError } from "rxjs";
 import { catchError, finalize, map, switchMap } from "rxjs/operators";
 import { LearningObjectService } from "../../../../core/learning-object-module/learning-object/learning-object.service";
+import { LearningObject } from "@entity";
 import { HierarchyViewService } from "./hierarchy-view.service";
-import { HierarchyNode } from "./hierarchy-tree.types";
+import { HierarchyNode, NewChildRequest } from "./hierarchy-tree.types";
+import { builderIdentity } from "./hierarchy-node.mapper";
+import { canHaveChildren, isValidChildLength } from "./hierarchy-length.util";
+
+/**
+ * Characters the API refuses in a learning object name. Mirrors
+ * `CreateLearningObjectDTO` in clark-service; the API stays the authority.
+ */
+export const INVALID_NAME_CHARACTERS = /[\\/"*|]/;
 
 /** Why a hierarchy edit did not complete. */
 export type HierarchyEditFailure =
@@ -12,7 +21,11 @@ export type HierarchyEditFailure =
     /** The edit is not allowed by the hierarchy rules. Nothing was sent. */
     | "invalid"
     /** The API rejected or failed the request. The tree was rolled back. */
-    | "failed";
+    | "failed"
+    /** Create only: another learning object of yours already has this name. */
+    | "name-taken"
+    /** Create only: the name is empty or has characters the API refuses. */
+    | "name-invalid";
 
 /**
  * Error emitted by {@link HierarchyEditService} when an edit does not complete.
@@ -28,6 +41,12 @@ export class HierarchyEditError extends Error {
          */
         readonly reloadRequired = false,
         readonly cause?: unknown,
+        /**
+         * Create only: a learning object was created but could not be attached
+         * (or have its length set) and could not be removed again. It is in the
+         * author's library and not in the hierarchy.
+         */
+        readonly leftInLibrary = false,
     ) {
         super(`Hierarchy edit not completed: ${reason}`);
         Object.setPrototypeOf(this, HierarchyEditError.prototype);
@@ -49,6 +68,12 @@ export interface HierarchyEditOutcome {
     reloadRecommended: boolean;
 }
 
+/** What a completed create changed: the outcome plus the node that was added. */
+export interface HierarchyCreateOutcome extends HierarchyEditOutcome {
+    /** The new child as it now appears in the tree. */
+    node: HierarchyNode;
+}
+
 /**
  * Persists author edits to the Builder Hierarchy (sc-40642).
  *
@@ -63,6 +88,14 @@ export interface HierarchyEditOutcome {
  * occurrence `id` of a node. There is no atomic "move" route, so a re-parent is
  * two calls: add to the new parent, then remove from the old one. Adding first
  * means a failure can duplicate a child briefly but can never lose it.
+ *
+ * Creating a child (sc-40236) follows the same path the Dashboard "New" button
+ * uses: `LearningObjectService.create` (a shell object that is always a
+ * Nanomodule), then `save` for the length, then attach to the parent with
+ * `setChildren`. The tree is changed only after all three succeed, so there is
+ * nothing to roll back in the view. If the length or attach step fails, the
+ * object created a moment ago is deleted so the library is not left with an
+ * object the author never saw.
  *
  * The API cannot persist the ORDER of children yet (see the sc-40642 ExecPlan),
  * so reordering inside one parent is refused as `invalid`.
@@ -195,6 +228,170 @@ export class HierarchyEditService {
                 finalize(() => this.savingSubject.next(false)),
             );
         });
+    }
+
+    /**
+     * Create a new learning object named `request.name` with `request.length`
+     * and attach it as the last child of the node `parentNodeId`.
+     *
+     * Emits the created node once it is saved and in the tree. Errors with a
+     * {@link HierarchyEditError}: `name-taken` and `name-invalid` for name
+     * problems (nothing was created), `invalid` and `busy` when refused up
+     * front, and `failed` when the API failed. The tree is unchanged on every
+     * error.
+     */
+    create(
+        parentNodeId: string,
+        request: NewChildRequest,
+    ): Observable<HierarchyCreateOutcome> {
+        return defer((): Observable<HierarchyCreateOutcome> => {
+            const parent = this.viewService.getNode(parentNodeId);
+            const name = request?.name?.trim() ?? "";
+            if (
+                !parent ||
+                !name ||
+                !parent.editable ||
+                !canHaveChildren(parent.length) ||
+                !isValidChildLength(parent.length, request.length)
+            ) {
+                return this.refuse(name ? "invalid" : "name-invalid");
+            }
+            if (INVALID_NAME_CHARACTERS.test(name)) {
+                return this.refuse("name-invalid");
+            }
+            if (this.saving) {
+                return this.refuse("busy");
+            }
+
+            const parentId = learningObjectIdOf(parent);
+            const parentName = parent.name?.trim() || "Unnamed object";
+            const reloadRecommended =
+                countLearningObject(this.viewService.tree, parentId) > 1;
+            this.savingSubject.next(true);
+
+            return from(
+                this.learningObjectService.checkNameAvailability(name),
+            ).pipe(
+                // If the check itself fails, let the create call decide: the
+                // API checks the name again and is the authority.
+                catchError(() => of(true)),
+                switchMap((available) =>
+                    available
+                        ? of(undefined)
+                        : throwError(new HierarchyEditError("name-taken")),
+                ),
+                switchMap(() =>
+                    from(
+                        this.learningObjectService.create({
+                            name,
+                            length: request.length,
+                            status: LearningObject.Status.UNRELEASED,
+                        }),
+                    ).pipe(
+                        catchError((cause) =>
+                            throwError(this.createFailure(cause)),
+                        ),
+                    ),
+                ),
+                switchMap((created: LearningObject) => {
+                    const childId = created.id;
+
+                    return from(
+                        this.learningObjectService.save(childId, {
+                            length: request.length,
+                        }),
+                    ).pipe(
+                        catchError((cause) =>
+                            this.discard(childId, cause, false),
+                        ),
+                        switchMap(() =>
+                            from(
+                                this.learningObjectService.setChildren(
+                                    parentId,
+                                    [childId],
+                                    false,
+                                ),
+                            ).pipe(
+                                catchError((cause) =>
+                                    this.discard(childId, cause, true),
+                                ),
+                            ),
+                        ),
+                        map((): HierarchyCreateOutcome => {
+                            const node = this.viewService.addChild(
+                                parentNodeId,
+                                {
+                                    learningObjectId: childId,
+                                    ...builderIdentity(created),
+                                    name,
+                                    length: request.length,
+                                    editable: true,
+                                },
+                            );
+                            if (!node) {
+                                // Saved on the server but the tree cannot show
+                                // it; reload to show what is saved.
+                                throw new HierarchyEditError("failed", true);
+                            }
+
+                            return {
+                                name,
+                                parentName,
+                                reloadRecommended,
+                                node,
+                            };
+                        }),
+                    );
+                }),
+                catchError((error) =>
+                    throwError(
+                        error instanceof HierarchyEditError
+                            ? error
+                            : new HierarchyEditError("failed", false, error),
+                    ),
+                ),
+                finalize(() => this.savingSubject.next(false)),
+            );
+        });
+    }
+
+    /** Map a failed create call to a name error where the API says so. */
+    private createFailure(cause: any): HierarchyEditError {
+        if (cause?.status === 409) {
+            return new HierarchyEditError("name-taken", false, cause);
+        }
+        if (cause?.status === 400) {
+            return new HierarchyEditError("name-invalid", false, cause);
+        }
+
+        return new HierarchyEditError("failed", false, cause);
+    }
+
+    /**
+     * A step after the create failed: delete the object this call created and
+     * surface `failed`. `attachStep` is true when the failing call was the
+     * attach, which may have been applied on the server even though the client
+     * saw an error; if the delete also fails the hierarchy must be reloaded.
+     */
+    private discard(
+        childId: string,
+        cause: unknown,
+        attachStep: boolean,
+    ): Observable<never> {
+        return from(this.learningObjectService.delete(childId)).pipe(
+            map(() => false),
+            catchError(() => of(true)),
+            switchMap((leftInLibrary) =>
+                throwError(
+                    new HierarchyEditError(
+                        "failed",
+                        leftInLibrary && attachStep,
+                        cause,
+                        leftInLibrary,
+                    ),
+                ),
+            ),
+        );
     }
 
     /** Best effort removal of `childId` from `parentId`; emits whether it worked. */

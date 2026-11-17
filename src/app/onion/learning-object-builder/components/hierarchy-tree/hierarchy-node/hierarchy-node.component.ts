@@ -126,6 +126,13 @@ export class HierarchyNodeComponent {
      */
     @Input() canMovePredicate: (nodeId: string) => boolean = () => false;
 
+    /**
+     * Predicate deciding whether a new child may be created under a node.
+     * Provided by the tree container; false for read-only nodes, Nanomodules,
+     * and while a change is saving.
+     */
+    @Input() canAddChildPredicate: (nodeId: string) => boolean = () => false;
+
     /** Emitted when the user toggles this node's expand/collapse chevron. */
     @Output() toggleExpanded = new EventEmitter<string>();
 
@@ -204,14 +211,48 @@ export class HierarchyNodeComponent {
         return !this.isRoot && this.canMovePredicate(this.node.id);
     }
 
+    /** Whether a new child may be created under this node. */
+    get canAddChild(): boolean {
+        return this.canAddChildPredicate(this.node.id);
+    }
+
     /**
-     * Keep Move Object and Remove from Hierarchy visible, enabling them only
-     * when this node can move (never the root, never inside a linked subtree).
-     * Remove only unlinks the child; the learning object stays in the library.
-     * Add Child Object is reserved in the action type but is not rendered yet.
+     * Whether this node can be opened in the Builder: its learning object must
+     * be editable and known by cuid and version. The root is the object already
+     * open in this tab, so it is not offered.
+     */
+    get canEditInBuilder(): boolean {
+        return (
+            !this.isRoot &&
+            this.node.editable &&
+            !!this.node.cuid &&
+            typeof this.node.version === "number"
+        );
+    }
+
+    /**
+     * Action Menu items. All are always listed and are disabled, not hidden,
+     * when they do not apply:
+     *   - Add Child Object: editable nodes that can hold children.
+     *   - Edit in Builder: editable nodes other than the root; opens a new tab.
+     *   - Move Object and Remove from Hierarchy: nodes that can move (never the
+     *     root, never inside a linked subtree). Remove only unlinks the child;
+     *     the learning object stays in the library.
      */
     get menuActions(): NodeAction[] {
         return [
+            {
+                id: "add-child",
+                label: "Add Child Object",
+                icon: "far fa-plus",
+                disabled: !this.canAddChild,
+            },
+            {
+                id: "edit-in-builder",
+                label: "Edit in Builder",
+                icon: "far fa-external-link",
+                disabled: !this.canEditInBuilder,
+            },
             {
                 id: "move",
                 label: "Move Object",

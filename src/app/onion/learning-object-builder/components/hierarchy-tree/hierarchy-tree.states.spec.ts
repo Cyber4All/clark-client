@@ -104,6 +104,32 @@ describe("HierarchyTreeComponent load states", () => {
         ).toContain("no children");
     });
 
+    it("hides the empty message once a child has been added to an empty hierarchy", () => {
+        const root = {
+            id: "root",
+            name: "Root",
+            length: LearningObject.Length.COURSE,
+            editable: true,
+            expanded: true,
+            children: [],
+        };
+        view.setTree([root]);
+        status$.next("empty");
+        fixture.detectChanges();
+        expect(el().querySelector(".hierarchy-state__empty")).toBeTruthy();
+        // The loader status stays "empty" after a create; the tree decides.
+        view.addChild("root", {
+            learningObjectId: "c1",
+            name: "First child",
+            length: LearningObject.Length.UNIT,
+            editable: true,
+        });
+        fixture.detectChanges();
+        expect(el().querySelector(".hierarchy-state__empty")).toBeNull();
+        expect(
+            el().querySelector('.node-row[data-node-id="root/c1"]'),
+        ).toBeTruthy();
+    });
     it("hides the empty message when the hierarchy is ready", () => {
         status$.next("ready");
         fixture.detectChanges();
