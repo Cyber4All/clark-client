@@ -83,6 +83,36 @@ describe("Builder status confirmation", () => {
         expect(closed).not.toHaveBeenCalled();
     });
 
+    it.each([
+        {
+            message: "The service is unavailable",
+            expected: "The service is unavailable",
+        },
+        {
+            message: "",
+            expected:
+                "There was an error trying to update the status of this learning object. Please try again later!",
+        },
+    ])(
+        "shows a readable toast when the API message is empty: $message",
+        async ({ message, expected }) => {
+            const { component, execute, error, closed } = setup();
+            execute.mockRejectedValueOnce({
+                status: 503,
+                error: { message: "" },
+                message,
+            });
+            await component.updateStatus();
+            expect(error).toHaveBeenCalledWith("Error!", expected);
+            expect(component.serviceInteraction).toBe(false);
+            expect(component.selectedStatus).toBe(LearningObject.Status.REVIEW);
+            expect(component.learningObject.status).toBe(
+                LearningObject.Status.WAITING,
+            );
+            expect(closed).not.toHaveBeenCalled();
+        },
+    );
+
     it("prevents duplicate confirms while a request is pending", async () => {
         const { component, execute, closed } = setup();
         let finish: () => void;

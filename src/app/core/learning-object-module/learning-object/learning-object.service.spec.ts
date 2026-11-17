@@ -98,7 +98,7 @@ describe("LearningObjectService", () => {
         expect(request.request.withCredentials).toBe(true);
         expect(request.request.body).toEqual({
             status: LearningObject.Status.WAITING,
-            collection: "secinj",
+            objectCollection: "secinj",
             selectedAuthorizations: ["Spelling and Grammar Changes"],
             submissionReason: "Ready for review",
         });
@@ -111,6 +111,8 @@ describe("LearningObjectService", () => {
         const request = httpMock.expectOne(
             `${environment.apiURL}/learning-objects/parent-id/status`,
         );
+        expect(request.request.body.objectCollection).toBe("secinj");
+        expect(request.request.body).not.toHaveProperty("collection");
         expect(request.request.body.selectedAuthorizations).toEqual([]);
         request.flush(null, { status: 204, statusText: "No Content" });
         await result;

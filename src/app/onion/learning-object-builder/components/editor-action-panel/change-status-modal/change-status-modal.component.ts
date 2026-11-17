@@ -190,8 +190,8 @@ export class ChangeStatusModalComponent implements OnInit {
             this.closeModal();
         } catch (error) {
             const message =
-                error?.error?.message ??
-                error?.message ??
+                error?.error?.message ||
+                error?.message ||
                 "There was an error trying to update the status of this learning object. Please try again later!";
             this.toaster.error("Error!", message);
         } finally {

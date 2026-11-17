@@ -15,6 +15,10 @@ Send the hierarchy submission fields required by the migrated backend. Retain th
 - [x] (2026-10-28) Verified companion gateway routing and live hierarchy submission; manually confirmed hierarchy release.
 - [x] (2026-10-28) Reviewed PR scope: retain compatibility changes, the requested bug fix, and their tests; remove excess planning history.
 
+- [x] (2026-11-03) Confirmed intentional retry behavior; empty API messages now fall back to a readable outer message or generic text. Eight modal tests, app TypeScript, focused lint, and formatting checks passed.
+
+- [x] (2026-11-17) Coordinated removal of the backend collection alias: submitHierarchy sends objectCollection; all 7 service/form tests, app TypeScript, focused ESLint/Prettier, and whitespace checks passed.
+
 ## Surprises & Discoveries
 
 The existing hierarchy form collected `selectedAuthorizations` and `submissionReason` but omitted them from hierarchy requests. The migrated backend requires authorizations; an empty array is valid.
@@ -22,6 +26,10 @@ The existing hierarchy form collected `selectedAuthorizations` and `submissionRe
 The Builder's `savedCorrectly` guard already existed on main at `f76430718`. A fresh load left it false, silently blocking status changes. A successful save earlier in the app session could make the same action work. The store also allowed blocked status actions to fall through into bundling.
 
 ## Decision Log
+
+- Decision: Use objectCollection as the hierarchy submission body field and service parameter, matching clark-service’s canonical submission contract. Keep the positional service signature and existing callers intact.
+  Rationale: User authorized coordinated alias removal in backend and client. Preserve unrelated modal changes already in the working tree, existing form data, authentication, URLs, and error handling.
+  Date/Author: 2026-11-17 / User and Codex
 
 - Decision: Keep the current client URL, authentication, environment configuration, and UI. Forward the existing form values through the existing hierarchy PATCH call.
   Rationale: The companion gateway performs the backend retargeting.
@@ -70,4 +78,10 @@ The local submission fixture is named `SC-40234 Submission Check 20261028212451`
 
 ## Interfaces and Dependencies
 
-`submitHierarchy(id, collection, selectedAuthorizations, submissionReason?)` requires the companion backend PATCH endpoint and gateway retargeting. No new packages, environment variables, auth policy, interceptor behavior, frontend routes, or deployment changes are introduced by this client PR.
+`submitHierarchy(id, objectCollection, selectedAuthorizations, submissionReason?)` requires the companion backend PATCH endpoint and gateway retargeting. No new packages, environment variables, auth policy, interceptor behavior, frontend routes, or deployment changes are introduced by this client PR.
+
+Frontend review follow-up (2026-11-03): Leaving the modal open on status-change errors is intentional so the user can retry with the selected status/reason intact. It closes only after success or explicit cancellation. Change error-message fallback from nullish to truthy selection so an empty backend message uses the outer error message or generic text. Add regression cases for both fallback levels and retained modal/error state. No change to the API, modal success flow, or save readiness. Validation passed: 8 modal tests, application TypeScript, focused ESLint, Prettier, and git diff --check. The tests cover both empty-message fallback levels, retained selection/status, and busy-state reset.
+
+API contract follow-up (2026-11-17): update only learning-object.service.ts and its spec to send objectCollection in the hierarchy PATCH body, with the same collection value supplied by the form. Backend will remove its collection fallback in the same local milestone. The existing client never supplies force, so its requests keep default selection. Run service and submit-hierarchy specs using the explicit Angular Jest transform documented above, app TypeScript, focused ESLint/Prettier, and whitespace checks. Deploy client and backend together; the previous client payload is incompatible once the alias is removed. Existing unrelated modal changes are preserved.
+
+API contract validation outcome (2026-11-17): 7 tests passed across learning-object.service.spec.ts and submit-hierarchy.spec.ts using the documented explicit Angular transform. Client app tsc, focused ESLint and Prettier, and git diff --check passed. The companion backend passed 91 unit and 104 API tests, including rejection of legacy collection-only payloads before writes. Service callers retain the same positional arguments. Release client and backend together; no build, gateway, modal, interceptor, or auth changes were made in this milestone.

@@ -398,14 +398,14 @@ export class LearningObjectService {
      * The gateway forwards this PATCH to clark-service.
      *
      * @param id id of the root learning object of a hierarchy
-     * @param collection the collection the objects will belong to
+     * @param objectCollection the collection the objects will belong to
      * @param selectedAuthorizations changes authorized by the submitting author
      * @param submissionReason optional notes for reviewers
      * @returns A promise
      */
     async submitHierarchy(
         id: string,
-        collection: string,
+        objectCollection: string,
         selectedAuthorizations: string[],
         submissionReason?: string,
     ): Promise<any> {
@@ -414,7 +414,7 @@ export class LearningObjectService {
                 LEARNING_OBJECT_ROUTES.UPDATE_LEARNING_OBJECT_STATUS(id),
                 {
                     status: LearningObject.Status.WAITING,
-                    collection,
+                    objectCollection,
                     selectedAuthorizations,
                     submissionReason,
                 },
