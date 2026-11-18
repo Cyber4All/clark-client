@@ -74,7 +74,8 @@
     min-height: 1.6em;
 }
 
-.playlist-details .edit-icon-button {
+.playlist-details .edit-icon-button,
+.playlist-details .share-icon-button {
     display: inline-grid;
     width: 34px;
     min-width: 34px;
@@ -86,7 +87,7 @@
     background: var(--theme-foreground-raised);
     color: var(--theme-link);
 
-    &:hover {
+    &:hover:not(:disabled) {
         background: var(--theme-foreground-subtle);
     }
 
@@ -96,12 +97,28 @@
     }
 }
 
+.share-icon-tooltip {
+    display: inline-flex;
+
+    &:focus-visible {
+        outline: 2px solid var(--theme-focus);
+        outline-offset: 2px;
+        border-radius: 50%;
+    }
+}
+
 .owner-actions,
 .confirm-dialog__actions {
     display: flex;
     align-items: center;
     flex-wrap: wrap;
     gap: 10px;
+}
+
+.share-status {
+    margin: 0;
+    color: var(--theme-text-muted);
+    font-size: 14px;
 }
 
 .search-form input {
@@ -130,6 +147,12 @@
 
 .playlist-details .danger-button {
     background: var(--theme-status-error);
+}
+
+.playlist-details .share-icon-button:disabled {
+    cursor: not-allowed;
+    opacity: 1;
+    color: var(--theme-text-muted);
 }
 
 .playlist-details .card-action-button {
