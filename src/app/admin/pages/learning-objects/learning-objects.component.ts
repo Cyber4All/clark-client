@@ -311,6 +311,7 @@ export class LearningObjectsComponent
 
         this.query = {
             ...this.query,
+            currPage: 1,
             orderBy: OrderBy.Date,
             sortType,
         };
@@ -335,6 +336,7 @@ export class LearningObjectsComponent
 
         this.query = {
             ...this.query,
+            currPage: 1,
             orderBy,
             sortType,
         };

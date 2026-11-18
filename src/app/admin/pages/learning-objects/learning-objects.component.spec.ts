@@ -67,7 +67,7 @@ describe("LearningObjectsComponent", () => {
         [OrderBy.Name, "name"],
         [OrderBy.Author, "author"],
     ])(
-        "sorts by %s in both directions and preserves query parameters",
+        "sorts by %s in both directions and resets to the first page",
         async (orderBy, apiOrderBy) => {
             component.query = {
                 text: "search text",
@@ -85,7 +85,7 @@ describe("LearningObjectsComponent", () => {
                     req.params.get("orderBy") === apiOrderBy &&
                     req.params.get("sortType") === "-1" &&
                     req.params.get("text") === "search text" &&
-                    req.params.get("currPage") === "3" &&
+                    req.params.get("currPage") === "1" &&
                     req.params.get("status") === "released" &&
                     req.params.get("collection") === "collection-abv" &&
                     req.params.get("start") === "2026-01-01" &&
@@ -96,8 +96,10 @@ describe("LearningObjectsComponent", () => {
             await fixture.whenStable();
             expect(component.query.orderBy).toBe(orderBy);
             expect(component.query.sortType).toBe(SortType.Descending);
+            expect(component.query.currPage).toBe(1);
             expect(router.url).toContain(`orderBy=${apiOrderBy}`);
             expect(router.url).toContain("sortType=-1");
+            expect(router.url).toContain("currPage=1");
 
             component.sortBy(orderBy);
             request = httpMock.expectOne(
@@ -106,7 +108,7 @@ describe("LearningObjectsComponent", () => {
                     req.params.get("orderBy") === apiOrderBy &&
                     req.params.get("sortType") === "1" &&
                     req.params.get("text") === "search text" &&
-                    req.params.get("currPage") === "3" &&
+                    req.params.get("currPage") === "1" &&
                     req.params.get("status") === "released" &&
                     req.params.get("collection") === "collection-abv" &&
                     req.params.get("start") === "2026-01-01" &&
@@ -116,8 +118,10 @@ describe("LearningObjectsComponent", () => {
 
             await fixture.whenStable();
             expect(component.query.sortType).toBe(SortType.Ascending);
+            expect(component.query.currPage).toBe(1);
             expect(router.url).toContain(`orderBy=${apiOrderBy}`);
             expect(router.url).toContain("sortType=1");
+            expect(router.url).toContain("currPage=1");
         },
     );
 
@@ -140,11 +144,12 @@ describe("LearningObjectsComponent", () => {
                     req.params.get("sortType") === "-1" &&
                     req.params.get("text") === "search text" &&
                     req.params.get("collection") === "collection-abv" &&
-                    req.params.get("currPage") === "3",
+                    req.params.get("currPage") === "1",
             );
 
             expect(component.query.orderBy).toBe(OrderBy.Date);
             expect(component.query.sortType).toBe(SortType.Descending);
+            expect(component.query.currPage).toBe(1);
             request.flush({ objects: [], total: 0 });
         },
     );
@@ -161,9 +166,11 @@ describe("LearningObjectsComponent", () => {
             (req) =>
                 req.url === `${environment.apiURL}/learning-objects` &&
                 req.params.get("orderBy") === "date" &&
-                req.params.get("sortType") === "1",
+                req.params.get("sortType") === "1" &&
+                req.params.get("currPage") === "1",
         );
         expect(component.query.sortType).toBe(SortType.Ascending);
+        expect(component.query.currPage).toBe(1);
         request.flush({ objects: [], total: 0 });
 
         component.sortByDate();
@@ -171,9 +178,11 @@ describe("LearningObjectsComponent", () => {
             (req) =>
                 req.url === `${environment.apiURL}/learning-objects` &&
                 req.params.get("orderBy") === "date" &&
-                req.params.get("sortType") === "-1",
+                req.params.get("sortType") === "-1" &&
+                req.params.get("currPage") === "1",
         );
         expect(component.query.sortType).toBe(SortType.Descending);
+        expect(component.query.currPage).toBe(1);
         request.flush({ objects: [], total: 0 });
     });
 });
