@@ -58,8 +58,8 @@
         opacity: 0.3;
     }
 
-    &:hover,
-    &:focus {
+    &:not(.status-item--disabled):hover,
+    &:not(.status-item--disabled):focus {
         box-shadow: 0 0 5px var(--theme-focus);
     }
 
@@ -69,6 +69,12 @@
         justify-content: center;
         margin-left: 15px;
     }
+}
+
+.status-item--disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    outline: none;
 }
 
 .btn-group {

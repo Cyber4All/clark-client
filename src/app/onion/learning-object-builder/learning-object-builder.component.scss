@@ -18,11 +18,6 @@
         font-size: $small;
         margin-right: 10px;
     }
-
-    &.service-indicator--error {
-        background: var(--theme-status-error);
-        color: var(--theme-action-on-status);
-    }
 }
 
 .popup-inner {

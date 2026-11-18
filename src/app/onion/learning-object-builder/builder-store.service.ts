@@ -21,6 +21,7 @@ import type {
     AgenticBuilderSuggestions,
     AgenticOutcomeSuggestion,
 } from "app/core/learning-object-module/learning-object/learning-object.types";
+import { ToastrOvenService } from "app/shared/modules/toaster/notification.service";
 
 /**
  * Defines a list of actions the builder can take
@@ -112,6 +113,9 @@ export class BuilderStore {
     // false until a save operation is attempted, true after that
     public touched: boolean;
 
+    // false until a save operation is successful, true after that
+    public savedCorrectly = false;
+
     /**
      * Public variable used in the file upload process to fire the bundling
      * process correctly and prevent users from exiting the builder prematurely
@@ -181,6 +185,7 @@ export class BuilderStore {
         private outcomeService: OutcomeService,
         private editorialService: EditorialService,
         private fileService: FileService,
+        private toaster: ToastrOvenService,
     ) {
         // subscribe to our objectCache$ observable and initiate calls to save object after a debounce
         this.objectCache$
@@ -450,6 +455,7 @@ export class BuilderStore {
                 this.titleService.setTitle(
                     "CLARK | " + this.learningObject.displayName,
                 );
+                this.savedCorrectly = true;
                 return this.learningObject;
             })
             .catch((e) => {
@@ -613,7 +619,10 @@ export class BuilderStore {
             case BUILDER_ACTIONS.DELETE_FILES:
                 return await this.removeFiles(data.fileIds);
             case BUILDER_ACTIONS.CHANGE_STATUS:
-                return await this.changeStatus(data.status, data.reason);
+                if (this.savedCorrectly) {
+                    return await this.changeStatus(data.status, data.reason);
+                } else {
+                }
             case BUILDER_ACTIONS.TOGGLE_BUNDLE:
                 return await this.toggleBundle(data);
             case BUILDER_ACTIONS.TOGGLE_CONTEXT:
@@ -777,11 +786,17 @@ export class BuilderStore {
             this.outcomeService
                 .deleteOutcome(outcome.serviceId || outcome.id)
                 .then(() => {
+                    this.savedCorrectly = true;
                     this.serviceInteraction$.next(false);
                 })
-                .catch((e) =>
-                    this.handleServiceError(e, BUILDER_ERRORS.DELETE_OUTCOME),
-                );
+                .catch((e) => {
+                    this.handleServiceError(e, BUILDER_ERRORS.DELETE_OUTCOME);
+                });
+        } else {
+            this.savedCorrectly =
+                this.validator.saveable &&
+                this.validator.submittable &&
+                this.validator.outcomeValidator.submittable;
         }
     }
 
@@ -811,6 +826,15 @@ export class BuilderStore {
             this.learningObject,
             this.outcomes,
         );
+
+        const error = this.validator.getOutcome(outcome.id);
+
+        if (error) {
+            this.savedCorrectly = false;
+            this.displayErrorMessage(error);
+        } else {
+            this.savedCorrectly = true;
+        }
 
         if (outcome.bloom && outcome.verb && outcome.text) {
             this.saveOutcome(
@@ -1280,6 +1304,7 @@ export class BuilderStore {
                 if (Object.keys(postCreateUpdates).length) {
                     this.updateLearningObject(postCreateUpdates);
                 } else {
+                    this.savedCorrectly = true;
                     this.serviceInteraction$.next(false);
                 }
             })
@@ -1370,8 +1395,10 @@ export class BuilderStore {
             .save(this.learningObject.id, object)
             .then(() => {
                 this.serviceInteraction$.next(false);
+                this.savedCorrectly = true;
             })
             .catch((e) => {
+                this.savedCorrectly = false;
                 if (e.status === 400) {
                     const validationError = this.getServiceValidationError(e);
                     this.validator.errors.saveErrors.set(
@@ -1410,8 +1437,16 @@ export class BuilderStore {
             : firstMessage?.message || firstMessage || "Unable to save";
         const property =
             firstMessage?.property || this.inferErrorProperty(message);
-
+        // Error messaging happens here because this method has meaningful error messages
+        this.displayErrorMessage(message);
         return { property, message };
+    }
+
+    private displayErrorMessage(message: string): void {
+        this.toaster.persistentError(
+            "Error!",
+            message + "\nThese changes will not be saved.",
+        );
     }
 
     private inferErrorProperty(message: string): string {
@@ -1529,6 +1564,7 @@ export class BuilderStore {
                     "The outcome create response did not include a valid database ID.",
                 );
             }
+            this.savedCorrectly = true;
         } catch (_error) {
             this.serviceInteraction$.next(null);
             this.serviceError$.next(BUILDER_ERRORS.INCOMPLETE_OUTCOME);
@@ -1603,12 +1639,14 @@ export class BuilderStore {
         try {
             await this.outcomeService.saveOutcome(updateValue as any);
             this.serviceInteraction$.next(false);
+            this.savedCorrectly = true;
         } catch (e) {
             this.serviceInteraction$.next(null);
             this.handleServiceError(
                 e as HttpErrorResponse,
                 BUILDER_ERRORS.UPDATE_OUTCOME,
             );
+            this.savedCorrectly = false;
             throw e;
         }
     }
