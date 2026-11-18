@@ -455,6 +455,7 @@ export class BuilderStore {
                 this.titleService.setTitle(
                     "CLARK | " + this.learningObject.displayName,
                 );
+                this.savedCorrectly = true;
                 return this.learningObject;
             })
             .catch((e) => {
@@ -785,11 +786,17 @@ export class BuilderStore {
             this.outcomeService
                 .deleteOutcome(outcome.serviceId || outcome.id)
                 .then(() => {
+                    this.savedCorrectly = true;
                     this.serviceInteraction$.next(false);
                 })
-                .catch((e) =>
-                    this.handleServiceError(e, BUILDER_ERRORS.DELETE_OUTCOME),
-                );
+                .catch((e) => {
+                    this.handleServiceError(e, BUILDER_ERRORS.DELETE_OUTCOME);
+                });
+        } else {
+            this.savedCorrectly =
+                this.validator.saveable &&
+                this.validator.submittable &&
+                this.validator.outcomeValidator.submittable;
         }
     }
 
@@ -819,6 +826,15 @@ export class BuilderStore {
             this.learningObject,
             this.outcomes,
         );
+
+        const error = this.validator.getOutcome(outcome.id);
+
+        if (error) {
+            this.savedCorrectly = false;
+            this.displayErrorMessage(error);
+        } else {
+            this.savedCorrectly = true;
+        }
 
         if (outcome.bloom && outcome.verb && outcome.text) {
             this.saveOutcome(
@@ -1288,6 +1304,7 @@ export class BuilderStore {
                 if (Object.keys(postCreateUpdates).length) {
                     this.updateLearningObject(postCreateUpdates);
                 } else {
+                    this.savedCorrectly = true;
                     this.serviceInteraction$.next(false);
                 }
             })
@@ -1421,11 +1438,15 @@ export class BuilderStore {
         const property =
             firstMessage?.property || this.inferErrorProperty(message);
         // Error messaging happens here because this method has meaningful error messages
+        this.displayErrorMessage(message);
+        return { property, message };
+    }
+
+    private displayErrorMessage(message: string): void {
         this.toaster.persistentError(
             "Error!",
             message + "\nThese changes will not be saved.",
         );
-        return { property, message };
     }
 
     private inferErrorProperty(message: string): string {
@@ -1543,6 +1564,7 @@ export class BuilderStore {
                     "The outcome create response did not include a valid database ID.",
                 );
             }
+            this.savedCorrectly = true;
         } catch (_error) {
             this.serviceInteraction$.next(null);
             this.serviceError$.next(BUILDER_ERRORS.INCOMPLETE_OUTCOME);
@@ -1617,12 +1639,14 @@ export class BuilderStore {
         try {
             await this.outcomeService.saveOutcome(updateValue as any);
             this.serviceInteraction$.next(false);
+            this.savedCorrectly = true;
         } catch (e) {
             this.serviceInteraction$.next(null);
             this.handleServiceError(
                 e as HttpErrorResponse,
                 BUILDER_ERRORS.UPDATE_OUTCOME,
             );
+            this.savedCorrectly = false;
             throw e;
         }
     }
