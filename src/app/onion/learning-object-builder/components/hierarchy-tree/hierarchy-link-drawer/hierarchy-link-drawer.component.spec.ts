@@ -397,25 +397,193 @@ describe("HierarchyLinkDrawerComponent", () => {
             expect(el().textContent).not.toContain("Show more");
         }));
 
-        it("does not repeat or skip results after one was linked", fakeAsync(() => {
-            searchLinkCandidates.mockReturnValueOnce(of(page(ids(0, 10), 15)));
-            render();
-            component.markLinked("r0");
-            // The server's list is one shorter now, so page 1 holds r1..r10.
-            searchLinkCandidates.mockReturnValueOnce(
-                of(page([...ids(1, 10)], 14)),
-            );
+        describe("after an object is linked", () => {
+            it("asks the server again for as many results as were showing", fakeAsync(() => {
+                searchLinkCandidates.mockReturnValueOnce(
+                    of(page(ids(0, 10), 15)),
+                );
+                render();
+                searchLinkCandidates.mockReturnValueOnce(
+                    of(page(ids(1, 10), 14)),
+                );
 
-            component.onLoadMore();
-            fixture.detectChanges();
+                component.markLinked("r0");
+                fixture.detectChanges();
 
-            expect(lastQuery().currPage).toBe(1);
-            expect(component.candidates.map((c) => c.id)).toEqual(ids(1, 10));
-            // r10 is the one new result, and nothing is shown twice.
-            expect(new Set(component.candidates.map((c) => c.id)).size).toBe(
-                component.candidates.length,
-            );
-        }));
+                expect(searchLinkCandidates).toHaveBeenCalledTimes(2);
+                expect(lastQuery().currPage).toBe(1);
+                expect(lastQuery().limit).toBe(LINK_PAGE_SIZE);
+                expect(component.candidates.map((c) => c.id)).toEqual(
+                    ids(1, 10),
+                );
+                expect(component.total).toBe(14);
+            }));
+
+            it("keeps the list on screen while it refreshes, without the busy skeleton", fakeAsync(() => {
+                searchLinkCandidates.mockReturnValueOnce(
+                    of(page(ids(0, 3), 3)),
+                );
+                render();
+                const pending = new Subject<ReturnType<typeof page>>();
+                searchLinkCandidates.mockReturnValueOnce(pending);
+
+                component.markLinked("r0");
+                fixture.detectChanges();
+
+                expect(component.state).toBe("ready");
+                expect(names()).toEqual(["Released r1", "Released r2"]);
+                expect(el().querySelector(".link-drawer__loading")).toBeNull();
+
+                pending.next(page(ids(1, 2), 2));
+                fixture.detectChanges();
+                expect(names()).toEqual(["Released r1", "Released r2"]);
+            }));
+
+            it("keeps 'Show more' and the right page when linking a Unit takes its inherited objects out of the loaded results", fakeAsync(() => {
+                // 20 of 31 are loaded. Linking r0 (a Unit) also removes six
+                // of the loaded results, which were inside it: 31 - 1 - 6 = 24
+                // are left, and 4 of them have not been seen.
+                searchLinkCandidates.mockReturnValueOnce(
+                    of(page(ids(0, 10), 31)),
+                );
+                render();
+                searchLinkCandidates.mockReturnValueOnce(
+                    of(page(ids(10, 10), 31)),
+                );
+                component.onLoadMore();
+                fixture.detectChanges();
+                expect(component.candidates.length).toBe(20);
+
+                const remaining = [
+                    ...ids(7, 3),
+                    ...ids(10, 10),
+                    ...ids(20, 7),
+                    ...ids(27, 4),
+                ].slice(0, 20);
+                searchLinkCandidates.mockReturnValueOnce(
+                    of({
+                        learningObjects: remaining.map((id) => candidate(id)),
+                        total: 24,
+                    }),
+                );
+                component.markLinked("r0");
+                fixture.detectChanges();
+
+                // Both pages were requested again as one, so the offset the
+                // next page starts from matches what is showing.
+                expect(lastQuery().currPage).toBe(1);
+                expect(lastQuery().limit).toBe(2 * LINK_PAGE_SIZE);
+                expect(component.candidates.length).toBe(20);
+                expect(component.total).toBe(24);
+                expect(component.hasMore).toBe(true);
+                expect(el().textContent).toContain("Show more");
+
+                searchLinkCandidates.mockReturnValueOnce(
+                    of({
+                        learningObjects: ids(40, 4).map((id) => candidate(id)),
+                        total: 24,
+                    }),
+                );
+                component.onLoadMore();
+                fixture.detectChanges();
+
+                expect(lastQuery().currPage).toBe(3);
+                expect(lastQuery().limit).toBe(LINK_PAGE_SIZE);
+                expect(component.candidates.length).toBe(24);
+                expect(component.hasMore).toBe(false);
+            }));
+
+            it("rounds the refresh up to whole pages", fakeAsync(() => {
+                searchLinkCandidates.mockReturnValueOnce(
+                    of(page(ids(0, 10), 25)),
+                );
+                render();
+                searchLinkCandidates.mockReturnValueOnce(
+                    of(page(ids(10, 10), 25)),
+                );
+                component.onLoadMore();
+                searchLinkCandidates.mockReturnValueOnce(
+                    of(page(ids(20, 5), 25)),
+                );
+                component.onLoadMore();
+                expect(component.candidates.length).toBe(25);
+
+                searchLinkCandidates.mockReturnValueOnce(
+                    of(page(ids(1, 24), 24)),
+                );
+                component.markLinked("r0");
+
+                expect(lastQuery().limit).toBe(30);
+                expect(component.candidates.length).toBe(24);
+                expect(component.hasMore).toBe(false);
+            }));
+
+            it("does not let 'Show more' run against a list that is being refreshed", fakeAsync(() => {
+                searchLinkCandidates.mockReturnValueOnce(
+                    of(page(ids(0, 10), 25)),
+                );
+                render();
+                searchLinkCandidates.mockReturnValueOnce(new Subject());
+                component.markLinked("r0");
+                fixture.detectChanges();
+                searchLinkCandidates.mockClear();
+
+                component.onLoadMore();
+
+                expect(searchLinkCandidates).not.toHaveBeenCalled();
+                const button = Array.from(
+                    el().querySelectorAll<HTMLButtonElement>(
+                        ".link-drawer__more",
+                    ),
+                )[0];
+                expect(button.disabled).toBe(true);
+            }));
+
+            it("shows Try again when the refresh fails, rather than a list that may be wrong", fakeAsync(() => {
+                searchLinkCandidates.mockReturnValueOnce(
+                    of(page(ids(0, 10), 15)),
+                );
+                render();
+                searchLinkCandidates.mockReturnValueOnce(
+                    throwError(() => new Error("down")),
+                );
+
+                component.markLinked("r0");
+                fixture.detectChanges();
+
+                expect(component.state).toBe("error");
+                expect(component.refreshing).toBe(false);
+
+                searchLinkCandidates.mockReturnValueOnce(
+                    of(page(ids(1, 10), 14)),
+                );
+                el()
+                    .querySelector<HTMLButtonElement>(
+                        ".link-drawer__state button",
+                    )!
+                    .click();
+                fixture.detectChanges();
+                expect(component.state).toBe("ready");
+                expect(lastQuery().currPage).toBe(1);
+            }));
+
+            it("is replaced by a newer search the author starts meanwhile", fakeAsync(() => {
+                searchLinkCandidates.mockReturnValueOnce(
+                    of(page(ids(0, 3), 3)),
+                );
+                render();
+                const refresh = new Subject<ReturnType<typeof page>>();
+                searchLinkCandidates.mockReturnValueOnce(refresh);
+                component.markLinked("r0");
+                searchLinkCandidates.mockReturnValueOnce(of(page(["fresh"])));
+                typeSearch("newer");
+
+                refresh.next(page(["stale"]));
+                fixture.detectChanges();
+
+                expect(names()).toEqual(["Released fresh"]);
+            }));
+        });
 
         it("keeps the results and says so when a later page fails", fakeAsync(() => {
             searchLinkCandidates.mockReturnValueOnce(of(page(ids(0, 10), 15)));
@@ -470,6 +638,8 @@ describe("HierarchyLinkDrawerComponent", () => {
         it("removes a linked result, counts it, and unlocks the rest", fakeAsync(() => {
             render();
             linkButtons()[0].click();
+            // The refresh that follows keeps the list on screen until it answers.
+            searchLinkCandidates.mockReturnValueOnce(new Subject());
             component.markLinked("a");
             fixture.detectChanges();
 

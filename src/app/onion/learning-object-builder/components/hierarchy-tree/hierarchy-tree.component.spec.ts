@@ -233,9 +233,15 @@ describe("HierarchyTreeComponent (integration)", () => {
         deleteObject = jest.fn().mockResolvedValue({});
         loaderRetry = jest.fn();
         loadLinkedSubtree = jest.fn(() => of([]));
-        searchLinkCandidates = jest.fn(() =>
-            of({ learningObjects: [releasedModule("rel-1")], total: 1 }),
-        );
+        // Like the API, leave out an object once it has been linked.
+        searchLinkCandidates = jest.fn(() => {
+            const linked = setChildren.mock.calls.map(([, ids]) => ids[0]);
+            const learningObjects = [releasedModule("rel-1")].filter(
+                (candidate) => !linked.includes(candidate.id),
+            );
+
+            return of({ learningObjects, total: learningObjects.length });
+        });
         TestBed.configureTestingModule({
             imports: [HierarchyTreeComponent, NoopAnimationsModule],
             providers: [
@@ -1154,6 +1160,8 @@ describe("HierarchyTreeComponent (integration)", () => {
             );
             expect(drawer()).toBeTruthy();
             expect(resultButtons().length).toBe(0);
+            // The drawer asked the API again, so its list and paging match.
+            expect(searchLinkCandidates).toHaveBeenCalledTimes(2);
         }));
 
         it("shows the linked object's inherited objects under it", fakeAsync(() => {

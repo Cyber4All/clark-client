@@ -190,7 +190,7 @@
             *ngIf="state === 'ready' && hasMore"
             type="button"
             class="link-drawer__button link-drawer__button--ghost link-drawer__more"
-            [disabled]="loadingMore"
+            [disabled]="loadingMore || refreshing"
             (click)="onLoadMore()">
             {{ loadingMore ? "Loading…" : "Show more" }}
         </button>
