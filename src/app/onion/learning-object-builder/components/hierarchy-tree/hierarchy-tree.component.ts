@@ -24,6 +24,7 @@ import {
     LiveAnnouncer,
 } from "@angular/cdk/a11y";
 import { ToastrOvenService } from "../../../../shared/modules/toaster/notification.service";
+import { AuthService } from "../../../../core/auth-module/auth.service";
 import { Overlay, OverlayRef } from "@angular/cdk/overlay";
 import { ComponentPortal } from "@angular/cdk/portal";
 import { ESCAPE } from "@angular/cdk/keycodes";
@@ -37,6 +38,7 @@ import {
     INVALID_NAME_MESSAGE,
 } from "./hierarchy-add-child/hierarchy-add-child.component";
 import { HierarchyRemoveConfirmComponent } from "./hierarchy-remove-confirm/hierarchy-remove-confirm.component";
+import { HierarchyLinkDrawerComponent } from "./hierarchy-link-drawer/hierarchy-link-drawer.component";
 import { HierarchyViewService } from "./hierarchy-view.service";
 import { HierarchyLoaderService } from "./hierarchy-loader.service";
 import {
@@ -44,6 +46,7 @@ import {
     HierarchyEditError,
     HierarchyEditOutcome,
     HierarchyEditService,
+    HierarchyLinkOutcome,
 } from "./hierarchy-edit.service";
 import {
     HierarchyLoadStatus,
@@ -63,8 +66,10 @@ import {
  * saved immediately through {@link HierarchyEditService} (sc-40642): the tree
  * updates first, and on a failed save it is restored and an error is shown.
  * Creating a new child (sc-40236) opens a dialog and adds the child once the
- * API has saved it; "Edit in Builder" opens a node in a new tab. Linking an
- * existing object is wired in sc-40237.
+ * API has saved it; "Edit in Builder" opens a node in a new tab. Linking a
+ * released object (sc-40641) opens a search drawer and adds the chosen object
+ * as a read-only child; adding the author's own unreleased objects is wired in
+ * sc-40237.
  *
  * Drag-and-drop model (rebuilt in sc-40233): the WHOLE tree is a single
  * `cdkDropList` (`cdkDropListSortingDisabled`) rather than a group of per-node
@@ -115,6 +120,7 @@ export class HierarchyTreeComponent implements OnInit, OnChanges, OnDestroy {
         private liveAnnouncer: LiveAnnouncer,
         private focusMonitor: FocusMonitor,
         private inputModality: InputModalityDetector,
+        private authService: AuthService,
     ) {}
 
     ngOnInit(): void {
@@ -386,6 +392,7 @@ export class HierarchyTreeComponent implements OnInit, OnChanges, OnDestroy {
         this.closeMovePicker(false);
         this.closeRemoveConfirm(false);
         this.closeAddChild(false);
+        this.closeLinkDrawer(false);
     }
 
     /**
@@ -406,7 +413,8 @@ export class HierarchyTreeComponent implements OnInit, OnChanges, OnDestroy {
         if (
             payload.actionId !== "move" &&
             payload.actionId !== "remove" &&
-            payload.actionId !== "add-child"
+            payload.actionId !== "add-child" &&
+            payload.actionId !== "link-existing"
         ) {
             return;
         }
@@ -423,6 +431,8 @@ export class HierarchyTreeComponent implements OnInit, OnChanges, OnDestroy {
                     this.openMovePicker(payload.nodeId);
                 } else if (payload.actionId === "add-child") {
                     this.openAddChild(payload.nodeId);
+                } else if (payload.actionId === "link-existing") {
+                    this.openLinkDrawer(payload.nodeId);
                 } else {
                     this.removeChild(payload.nodeId);
                 }
@@ -640,6 +650,162 @@ export class HierarchyTreeComponent implements OnInit, OnChanges, OnDestroy {
                     saving: false,
                     errorMessage: message,
                 });
+        }
+        void this.liveAnnouncer.announce(message, "assertive");
+    }
+
+    // --- Link released object drawer (sc-40641) ---
+
+    /** The live link drawer overlay, or null when it is closed. */
+    private linkOverlayRef: OverlayRef | null = null;
+
+    /** The attached drawer, kept to report link results back into it. */
+    private linkRef: ComponentRef<HierarchyLinkDrawerComponent> | null = null;
+
+    /** Subscriptions tied to the open drawer; torn down on close. */
+    private linkSubscriptions: Subscription[] = [];
+
+    /** The row whose Link action opened the drawer (focus restore). */
+    private linkOriginNodeId: string | null = null;
+
+    /**
+     * Open the drawer that searches released objects to link under `nodeId`.
+     * Nothing is saved until the author picks a result. Escape, the close
+     * button, and a backdrop click close it and return focus to the row's menu
+     * button, except while a link is saving.
+     */
+    private openLinkDrawer(nodeId: string): void {
+        if (!this.canAddChild(nodeId)) {
+            return;
+        }
+        const parent = findInTree(this.viewService.tree, nodeId);
+        const root = this.viewService.tree[0];
+        if (!parent || !root) {
+            return;
+        }
+
+        // Replace any drawer that is already open.
+        this.closeLinkDrawer(false);
+        this.linkOriginNodeId = nodeId;
+
+        const overlayRef = this.overlay.create({
+            hasBackdrop: true,
+            disposeOnNavigation: true,
+            scrollStrategy: this.overlay.scrollStrategies.block(),
+            positionStrategy: this.overlay
+                .position()
+                .global()
+                .top("0")
+                .right("0"),
+        });
+        this.linkOverlayRef = overlayRef;
+
+        const drawerRef = overlayRef.attach(
+            new ComponentPortal(HierarchyLinkDrawerComponent, this.vcr),
+        );
+        this.linkRef = drawerRef;
+        drawerRef.setInput("parentId", parent.learningObjectId ?? parent.id);
+        drawerRef.setInput("parentName", parent.name ?? "");
+        drawerRef.setInput("parentLength", parent.length);
+        drawerRef.setInput("hierarchyRootId", root.learningObjectId ?? root.id);
+        drawerRef.setInput("currentUsername", this.authService.username ?? "");
+        drawerRef.changeDetectorRef.detectChanges();
+
+        this.linkSubscriptions.push(
+            drawerRef.instance.link.subscribe((candidate) =>
+                this.saveLink(nodeId, candidate),
+            ),
+            drawerRef.instance.close.subscribe(() => this.dismissLinkDrawer()),
+            overlayRef
+                .backdropClick()
+                .subscribe(() => this.dismissLinkDrawer()),
+            overlayRef.detachments().subscribe(() => this.closeLinkDrawer()),
+            overlayRef.keydownEvents().subscribe((keyEvent) => {
+                if (keyEvent.keyCode === ESCAPE) {
+                    keyEvent.preventDefault();
+                    this.dismissLinkDrawer();
+                }
+            }),
+        );
+    }
+
+    /** Close on Escape, the close button, or a backdrop click unless a link is saving. */
+    private dismissLinkDrawer(): void {
+        if (!this.editService.saving) {
+            this.closeLinkDrawer();
+        }
+    }
+
+    /** Single close path for the drawer, mirroring the add-child dialog. */
+    private closeLinkDrawer(restoreFocus = true): void {
+        const originNodeId = this.linkOriginNodeId;
+        this.linkOriginNodeId = null;
+        this.linkSubscriptions.forEach((sub) => sub.unsubscribe());
+        this.linkSubscriptions = [];
+        if (this.linkOverlayRef) {
+            this.linkOverlayRef.dispose();
+            this.linkOverlayRef = null;
+        }
+        this.linkRef = null;
+        if (restoreFocus && !this.destroyed && originNodeId) {
+            this.restoreNodeFocus(originNodeId);
+        }
+    }
+
+    /** Re-render the open drawer after the tree changed its state. */
+    private refreshLinkDrawer(): void {
+        this.linkRef?.changeDetectorRef.detectChanges();
+    }
+
+    /**
+     * Link `candidate` under `nodeId`. The row is added at once and the drawer
+     * locks its buttons while the API saves. On success the result leaves the
+     * drawer's list and a toast confirms; on failure the row is gone again,
+     * the drawer shows why, and the author can try again or pick another.
+     */
+    private saveLink(nodeId: string, candidate: LearningObject): void {
+        this.persist<HierarchyLinkOutcome>(
+            this.editService.link(nodeId, candidate),
+            {
+                onSuccess: (outcome) => {
+                    this.linkRef?.instance.markLinked(candidate.id);
+                    this.refreshLinkDrawer();
+                    const message = `“${outcome.name}” was linked under “${outcome.parentName}”. It is read-only here.`;
+                    this.notifications.success("Object linked", message);
+                    void this.liveAnnouncer.announce(message, "polite");
+                },
+                onFailure: (error) => this.showLinkFailure(candidate, error),
+            },
+        );
+    }
+
+    private showLinkFailure(
+        candidate: LearningObject,
+        error: HierarchyEditError,
+    ): void {
+        const status = (error.cause as { status?: number } | undefined)?.status;
+        const name = candidate.name?.trim() || "This object";
+        let message: string;
+        switch (error.reason) {
+            case "busy":
+                message =
+                    "Another change is still saving. Try again in a moment.";
+                break;
+            case "invalid":
+                message = `“${name}” can't be linked here. It may already be in this hierarchy.`;
+                break;
+            default:
+                message =
+                    status === 400
+                        ? `“${name}” can't be linked here. It may already be in this hierarchy or be the wrong length.`
+                        : status === 403
+                          ? "You don't have permission to link objects here."
+                          : `“${name}” could not be linked, so your hierarchy was left as it was. Try again.`;
+        }
+        this.linkRef?.instance.showLinkError(message);
+        this.refreshLinkDrawer();
+        if (error.reason === "failed") {
+            this.notifications.error("Link failed", message);
         }
         void this.liveAnnouncer.announce(message, "assertive");
     }

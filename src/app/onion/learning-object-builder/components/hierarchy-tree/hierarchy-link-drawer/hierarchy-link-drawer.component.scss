@@ -1,0 +1,356 @@
+@import "_vars.scss";
+
+// Length colors, the same as the tree's length badges.
+$course: #0b3a57;
+$micro: #4a6286;
+$nano: #a45b57;
+
+:host {
+    display: block;
+    height: 100%;
+    min-width: 0;
+}
+
+.link-drawer {
+    display: flex;
+    flex-direction: column;
+    width: 460px;
+    max-width: 100vw;
+    height: 100dvh;
+    box-sizing: border-box;
+    background: #fff;
+    box-shadow: -12px 0 48px rgba(15, 35, 50, 0.22);
+    color: $darker-grey;
+    font-size: 14px;
+    line-height: 1.5;
+
+    &,
+    * {
+        box-sizing: border-box;
+    }
+
+    button,
+    input,
+    select {
+        font: inherit;
+        &:focus-visible {
+            outline: 2px solid $light-blue;
+            outline-offset: 2px;
+        }
+    }
+
+    &__header {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 24px 24px 12px;
+    }
+
+    &__heading {
+        min-width: 0;
+    }
+
+    &__title {
+        margin: 0 0 6px;
+        font-size: 20px;
+        font-weight: 600;
+        line-height: 1.3;
+    }
+
+    &__intro {
+        margin: 0;
+        overflow-wrap: anywhere;
+    }
+
+    &__close {
+        flex: none;
+        width: 36px;
+        height: 36px;
+        border: 0;
+        border-radius: 6px;
+        background: transparent;
+        color: inherit;
+        font-size: 16px;
+        cursor: pointer;
+
+        &:hover {
+            background: $secondary-white-background;
+        }
+    }
+
+    &__filters {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        padding: 12px 24px 16px;
+        border-bottom: 1px solid $profile-border;
+    }
+
+    &__field {
+        display: block;
+        margin: 0;
+        padding: 0;
+        border: 0;
+        min-width: 0;
+
+        > label,
+        > legend {
+            display: block;
+            margin: 0 0 4px;
+            padding: 0;
+            font-weight: 600;
+        }
+
+        > input[type="search"],
+        > select {
+            width: 100%;
+            min-height: 40px;
+            padding: 8px 12px;
+            border: 1px solid $profile-border;
+            border-radius: 6px;
+            background: #fff;
+            color: inherit;
+        }
+    }
+
+    &__lengths {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    &__chip {
+        position: relative;
+        display: inline-flex;
+        cursor: pointer;
+
+        input {
+            position: absolute;
+            opacity: 0;
+            inset: 0;
+            margin: 0;
+            cursor: pointer;
+
+            &:focus-visible + span {
+                outline: 2px solid $light-blue;
+                outline-offset: 2px;
+            }
+        }
+
+        span {
+            min-height: 34px;
+            padding: 6px 12px;
+            border: 1px solid $profile-border;
+            border-radius: 17px;
+            background: #fff;
+            line-height: 1.4;
+        }
+
+        input:checked + span {
+            border-color: $light-blue;
+            background: $box-background;
+            color: darken($light-blue, 12%);
+            font-weight: 600;
+        }
+    }
+
+    &__clear {
+        align-self: flex-start;
+        padding: 4px 0;
+        border: 0;
+        background: none;
+        color: $light-blue;
+        font-weight: 600;
+        text-decoration: underline;
+        cursor: pointer;
+    }
+
+    &__results {
+        flex: 1 1 auto;
+        min-height: 0;
+        overflow-y: auto;
+        padding: 12px 24px 24px;
+    }
+
+    &__summary {
+        min-height: 21px;
+        margin: 0 0 8px;
+        color: $placeholder;
+    }
+
+    &__note {
+        margin: 0 0 8px;
+
+        &--error {
+            color: $error-red;
+        }
+    }
+
+    &__state {
+        padding: 24px 0;
+
+        p {
+            margin: 0 0 12px;
+        }
+    }
+
+    &__loading {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    &__skeleton {
+        display: block;
+        height: 72px;
+        border-radius: 8px;
+        background: linear-gradient(
+            90deg,
+            $secondary-white-background,
+            #eef2fb,
+            $secondary-white-background
+        );
+        background-size: 200% 100%;
+        animation: link-drawer-shimmer 1.4s linear infinite;
+    }
+
+    &__list {
+        display: flex;
+        flex-direction: column;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    &__item {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 14px 0;
+        border-bottom: 1px solid $profile-border;
+
+        &:first-child {
+            padding-top: 4px;
+        }
+    }
+
+    &__info {
+        flex: 1 1 auto;
+        min-width: 0;
+    }
+
+    &__name {
+        margin: 0 0 4px;
+        font-weight: 700;
+        font-size: 15px;
+        overflow-wrap: anywhere;
+    }
+
+    &__meta {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 6px 10px;
+        margin: 0 0 4px;
+        color: $placeholder;
+    }
+
+    &__badge {
+        padding: 2px 8px;
+        border-radius: 4px;
+        color: #fff;
+        font-size: 12px;
+        font-weight: 600;
+        line-height: 1.5;
+        background: $micro;
+
+        &--course {
+            background: $course;
+        }
+        &--nanomodule {
+            background: $nano;
+        }
+    }
+
+    &__own {
+        color: $darker-grey;
+        font-weight: 600;
+    }
+
+    &__description {
+        display: -webkit-box;
+        margin: 0;
+        overflow: hidden;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow-wrap: anywhere;
+    }
+
+    &__button {
+        min-height: 38px;
+        padding: 8px 18px;
+        border: 1px solid transparent;
+        border-radius: 6px;
+        font-weight: 600;
+        white-space: nowrap;
+        cursor: pointer;
+
+        &:disabled {
+            cursor: default;
+            opacity: 0.6;
+        }
+
+        &--ghost {
+            background: #fff;
+            border-color: $profile-border;
+            color: $darker-grey;
+            &:hover:not(:disabled) {
+                background: $secondary-white-background;
+            }
+        }
+
+        &--primary {
+            flex: none;
+            background: $light-blue;
+            color: #fff;
+            &:hover:not(:disabled) {
+                background: darken($light-blue, 8%);
+            }
+        }
+    }
+
+    &__more {
+        width: 100%;
+        margin-top: 16px;
+    }
+}
+
+@keyframes link-drawer-shimmer {
+    to {
+        background-position: -200% 0;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .link-drawer__skeleton {
+        animation: none;
+    }
+}
+
+@media (max-width: 540px) {
+    .link-drawer {
+        width: 100vw;
+
+        &__header {
+            padding: 16px 16px 8px;
+        }
+        &__filters {
+            padding: 8px 16px 12px;
+        }
+        &__results {
+            padding: 8px 16px 16px;
+        }
+    }
+}

@@ -52,6 +52,45 @@ describe("hierarchy-node.mapper", () => {
                 canViewerEdit(payload(), viewer({ username: undefined })),
             ).toBe(false);
         });
+
+        describe("a released object", () => {
+            const released = () =>
+                payload({ status: LearningObject.Status.RELEASED });
+
+            it("is read-only for its author", () => {
+                expect(
+                    canViewerEdit(released(), viewer({ username: "alice" })),
+                ).toBe(false);
+            });
+
+            it("is read-only for a contributor", () => {
+                expect(
+                    canViewerEdit(released(), viewer({ username: "bob" })),
+                ).toBe(false);
+            });
+
+            it("is read-only for an admin or editor", () => {
+                expect(
+                    canViewerEdit(
+                        released(),
+                        viewer({ isAdminOrEditor: true }),
+                    ),
+                ).toBe(false);
+            });
+        });
+
+        it.each([
+            LearningObject.Status.UNRELEASED,
+            LearningObject.Status.WAITING,
+            LearningObject.Status.REVIEW,
+        ])("keeps the existing rule for a %s object", (status) => {
+            expect(
+                canViewerEdit(
+                    payload({ status }),
+                    viewer({ username: "alice" }),
+                ),
+            ).toBe(true);
+        });
     });
 
     describe("toHierarchyNode", () => {
@@ -70,6 +109,15 @@ describe("hierarchy-node.mapper", () => {
 
         it("maps a child the viewer cannot edit to a linked root", () => {
             const node = toHierarchyNode(payload(), viewer());
+            expect(node.editable).toBe(false);
+            expect(node.linkedRoot).toBe(true);
+        });
+
+        it("maps the author's own released child to a linked root", () => {
+            const node = toHierarchyNode(
+                payload({ status: LearningObject.Status.RELEASED }),
+                viewer({ username: "alice" }),
+            );
             expect(node.editable).toBe(false);
             expect(node.linkedRoot).toBe(true);
         });

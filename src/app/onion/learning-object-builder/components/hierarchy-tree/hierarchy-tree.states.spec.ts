@@ -4,6 +4,7 @@ import { NoopAnimationsModule } from "@angular/platform-browser/animations";
 import { BehaviorSubject, of } from "rxjs";
 import { LearningObject } from "@entity";
 import { ToastrOvenService } from "../../../../shared/modules/toaster/notification.service";
+import { AuthService } from "../../../../core/auth-module/auth.service";
 import { HierarchyEditService } from "./hierarchy-edit.service";
 import { HierarchyLoaderService } from "./hierarchy-loader.service";
 import { HierarchyLoadStatus } from "./hierarchy-tree.types";
@@ -47,6 +48,7 @@ describe("HierarchyTreeComponent load states", () => {
                     useValue: { success: jest.fn(), error: jest.fn() },
                 },
                 { provide: LiveAnnouncer, useValue: { announce: jest.fn() } },
+                { provide: AuthService, useValue: { username: "alice" } },
             ],
         });
         view = TestBed.inject(HierarchyViewService);

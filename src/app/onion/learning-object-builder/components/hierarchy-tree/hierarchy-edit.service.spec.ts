@@ -1,9 +1,11 @@
 import { LearningObject } from "@entity";
+import { of, throwError } from "rxjs";
 import {
     HierarchyCreateOutcome,
     HierarchyEditError,
     HierarchyEditOutcome,
     HierarchyEditService,
+    HierarchyLinkOutcome,
 } from "./hierarchy-edit.service";
 import { HierarchyViewService } from "./hierarchy-view.service";
 import { HierarchyNode } from "./hierarchy-tree.types";
@@ -71,6 +73,7 @@ describe("HierarchyEditService", () => {
     let view: HierarchyViewService;
     let service: HierarchyEditService;
     let setChildren: jest.Mock;
+    let loadLinkedSubtree: jest.Mock;
 
     const idsUnder = (id: string): string[] =>
         (find(view.tree, id)?.children ?? []).map((c) => c.id);
@@ -97,9 +100,12 @@ describe("HierarchyEditService", () => {
 
     beforeEach(() => {
         setChildren = jest.fn().mockResolvedValue(undefined);
+        loadLinkedSubtree = jest.fn(() => of([]));
         view = new HierarchyViewService();
         view.setTree(buildTree());
-        service = new HierarchyEditService({ setChildren } as any, view);
+        service = new HierarchyEditService({ setChildren } as any, view, {
+            loadLinkedSubtree,
+        } as any);
     });
 
     describe("remove", () => {
@@ -583,6 +589,7 @@ describe("HierarchyEditService", () => {
                     delete: deleteObject,
                 } as any,
                 view,
+                { loadLinkedSubtree } as any,
             );
         });
 
@@ -937,6 +944,268 @@ describe("HierarchyEditService", () => {
                 finish();
                 await settle();
             });
+        });
+    });
+
+    describe("link (sc-40641)", () => {
+        const candidate = (
+            id: string,
+            length: LearningObject.Length,
+            over: Record<string, unknown> = {},
+        ): LearningObject =>
+            ({
+                id,
+                cuid: `cuid-${id}`,
+                version: 3,
+                name: `released-${id}`,
+                length,
+                status: LearningObject.Status.RELEASED,
+                ...over,
+            }) as unknown as LearningObject;
+
+        const released = candidate("rel", MODULE);
+
+        async function runLink(
+            parentNodeId: string,
+            lo: LearningObject = released,
+        ): Promise<{
+            outcome?: HierarchyLinkOutcome;
+            error?: HierarchyEditError;
+        }> {
+            const result: {
+                outcome?: HierarchyLinkOutcome;
+                error?: HierarchyEditError;
+            } = {};
+            service.link(parentNodeId, lo).subscribe({
+                next: (outcome) => (result.outcome = outcome),
+                error: (error) => (result.error = error),
+            });
+            await settle();
+
+            return result;
+        }
+
+        it("saves the link with the parent's id and the hierarchy root, then adds a read-only linked node", async () => {
+            const { outcome, error } = await runLink("root/u1");
+
+            expect(error).toBeUndefined();
+            expect(setChildren).toHaveBeenCalledTimes(1);
+            expect(setChildren).toHaveBeenCalledWith(
+                "u1",
+                ["rel"],
+                false,
+                "root",
+            );
+            const node = find(view.tree, "root/u1/rel")!;
+            expect(node).toMatchObject({
+                learningObjectId: "rel",
+                cuid: "cuid-rel",
+                version: 3,
+                name: "released-rel",
+                length: MODULE,
+                editable: false,
+                linkedRoot: true,
+            });
+            expect(idsUnder("root/u1")).toEqual(["root/u1/m1", "root/u1/rel"]);
+            expect(outcome).toMatchObject({
+                name: "released-rel",
+                parentName: "name-u1",
+                reloadRecommended: false,
+            });
+        });
+
+        it("shows the linked node before the save finishes", async () => {
+            let finish!: () => void;
+            setChildren.mockReturnValueOnce(
+                new Promise<void>((resolve) => (finish = resolve)),
+            );
+            service.link("root/u1", released).subscribe();
+            await settle();
+            expect(find(view.tree, "root/u1/rel")).toBeDefined();
+            expect(service.saving).toBe(true);
+            finish();
+            await settle();
+            expect(service.saving).toBe(false);
+        });
+
+        it("attaches the linked object's inherited subtree and loads it by the node's key", async () => {
+            const inherited: HierarchyNode = node("im", MICROMODULE, {
+                id: "root/u1/rel/im",
+                learningObjectId: "im",
+                editable: false,
+            });
+            loadLinkedSubtree.mockReturnValueOnce(of([inherited]));
+
+            const { outcome } = await runLink("root/u1");
+
+            expect(loadLinkedSubtree).toHaveBeenCalledWith(
+                { id: "rel", length: MODULE },
+                "root/u1/rel",
+            );
+            expect(idsUnder("root/u1/rel")).toEqual(["root/u1/rel/im"]);
+            expect(outcome?.node.children).toEqual([inherited]);
+        });
+
+        it("restores the exact previous tree and reports failed when the save fails", async () => {
+            const before = view.tree;
+            setChildren.mockRejectedValueOnce({ status: 500 });
+
+            const { outcome, error } = await runLink("root/u1");
+
+            expect(outcome).toBeUndefined();
+            expect(error).toBeInstanceOf(HierarchyEditError);
+            expect(error?.reason).toBe("failed");
+            expect(error?.cause).toEqual({ status: 500 });
+            expect(view.tree).toBe(before);
+            expect(loadLinkedSubtree).not.toHaveBeenCalled();
+            expect(service.saving).toBe(false);
+        });
+
+        it("keeps the saved link and recommends a reload when the inherited objects do not load", async () => {
+            loadLinkedSubtree.mockReturnValueOnce(
+                throwError(() => new Error("boom")),
+            );
+
+            const { outcome, error } = await runLink("root/u1");
+
+            expect(error).toBeUndefined();
+            expect(outcome?.reloadRecommended).toBe(true);
+            expect(find(view.tree, "root/u1/rel")).toBeDefined();
+            expect(service.saving).toBe(false);
+        });
+
+        it("recommends a reload when the parent also appears elsewhere in the tree", async () => {
+            // The server adds the link to every occurrence of the parent.
+            view.setTree([
+                node("root", COURSE, {
+                    children: [
+                        node("u1", UNIT, {
+                            id: "root/a/u1",
+                            learningObjectId: "u1",
+                        }),
+                        node("u1", UNIT, {
+                            id: "root/b/u1",
+                            learningObjectId: "u1",
+                        }),
+                    ],
+                }),
+            ]);
+            const { outcome } = await runLink("root/a/u1");
+            expect(outcome?.reloadRecommended).toBe(true);
+        });
+
+        describe("refuses without sending anything", () => {
+            const expectRefused = (
+                error: HierarchyEditError | undefined,
+                reason = "invalid",
+            ) => {
+                expect(error?.reason).toBe(reason);
+                expect(setChildren).not.toHaveBeenCalled();
+                expect(loadLinkedSubtree).not.toHaveBeenCalled();
+            };
+
+            it("for an unknown or read-only parent, or one inside a linked subtree", async () => {
+                expectRefused((await runLink("nope")).error);
+                expectRefused((await runLink("root/linked")).error);
+                expectRefused((await runLink("root/linked/lm")).error);
+            });
+
+            it("for a Nanomodule parent", async () => {
+                view.setTree([
+                    node("root", COURSE, {
+                        children: [
+                            node("n", LearningObject.Length.NANOMODULE, {
+                                id: "root/n",
+                                learningObjectId: "n",
+                            }),
+                        ],
+                    }),
+                ]);
+                expectRefused(
+                    (
+                        await runLink(
+                            "root/n",
+                            candidate("x", LearningObject.Length.NANOMODULE),
+                        )
+                    ).error,
+                );
+            });
+
+            it("for a length that is not shorter than the parent", async () => {
+                expectRefused(
+                    (await runLink("root/u1", candidate("x", UNIT))).error,
+                );
+                expectRefused(
+                    (await runLink("root/u1", candidate("y", COURSE))).error,
+                );
+            });
+
+            it("for an object that is not released", async () => {
+                expectRefused(
+                    (
+                        await runLink(
+                            "root/u1",
+                            candidate("x", MODULE, {
+                                status: LearningObject.Status.UNRELEASED,
+                            }),
+                        )
+                    ).error,
+                );
+            });
+
+            it("for the parent itself, an ancestor, and an object already in the tree", async () => {
+                expectRefused(
+                    (await runLink("root/u1", candidate("u1", MODULE))).error,
+                );
+                expectRefused(
+                    (await runLink("root/u1", candidate("root", MODULE))).error,
+                );
+                expectRefused(
+                    (await runLink("root/u2", candidate("m1", MICROMODULE)))
+                        .error,
+                );
+                expectRefused(
+                    (await runLink("root/u2", candidate("lm", MICROMODULE)))
+                        .error,
+                );
+            });
+
+            it("for a candidate without an id", async () => {
+                expectRefused(
+                    (
+                        await runLink(
+                            "root/u1",
+                            candidate(undefined as any, MODULE),
+                        )
+                    ).error,
+                );
+            });
+
+            it("while another edit is saving", async () => {
+                let finish!: () => void;
+                setChildren.mockReturnValueOnce(
+                    new Promise<void>((resolve) => (finish = resolve)),
+                );
+                service.remove("root/u1/m1").subscribe();
+                const { error } = await runLink("root/u2");
+                expect(error?.reason).toBe("busy");
+                expect(find(view.tree, "root/u2/rel")).toBeUndefined();
+                finish();
+                await settle();
+            });
+        });
+
+        it("blocks other edits while a link is saving", async () => {
+            let finish!: () => void;
+            setChildren.mockReturnValueOnce(
+                new Promise<void>((resolve) => (finish = resolve)),
+            );
+            service.link("root/u1", released).subscribe();
+            await settle();
+            const { error } = await run(service.remove("root/u2"));
+            expect(error?.reason).toBe("busy");
+            finish();
+            await settle();
         });
     });
 });
