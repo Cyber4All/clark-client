@@ -1,7 +1,10 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
 import { LearningObject, User } from "@entity";
 import { ActivatedRoute, Router } from "@angular/router";
-import { LearningObjectService } from "app/core/learning-object-module/learning-object/learning-object.service";
+import {
+    isFailedResource,
+    LearningObjectService,
+} from "app/core/learning-object-module/learning-object/learning-object.service";
 import { takeUntil } from "rxjs/operators";
 import { Subject } from "rxjs";
 import { Title } from "@angular/platform-browser";
@@ -218,9 +221,12 @@ export class DetailsComponent implements OnInit, OnDestroy {
                         this.releasedLearningObject = object;
 
                         // FIXME: This filter should be removed when service logic for filtering children is updated
+                        const releasedChildren = this.releasedLearningObject
+                            .children as unknown;
                         this.releasedChildren = (
-                            (this.releasedLearningObject.children ??
-                                []) as any[]
+                            (Array.isArray(releasedChildren)
+                                ? releasedChildren
+                                : []) as any[]
                         ).filter((child) => {
                             return (
                                 child.status ===
@@ -378,18 +384,33 @@ export class DetailsComponent implements OnInit, OnDestroy {
                     "ratings",
                 ])
                 .subscribe((val) => {
+                    if (isFailedResource(val.data)) {
+                        console.warn(
+                            `Failed to load revised learning object resource "${val.name}"`,
+                            {
+                                learningObjectId:
+                                    this.revisedLearningObject?.id,
+                                status: (val.data as any)?.status,
+                                url: (val.data as any)?.url,
+                                message: (val.data as any)?.message,
+                            },
+                        );
+                        return;
+                    }
                     this.revisedLearningObject[val.name] = val.data;
                 });
             // FIXME: This filter should be removed when service logic is updated
-            this.revisedChildren = this.revisedLearningObject.children.filter(
-                (child) => {
-                    return (
-                        child.status === LearningObject.Status["RELEASED"] ||
-                        child.status === LearningObject.Status["REVIEW"] ||
-                        child.status === LearningObject.Status["WAITING"]
-                    );
-                },
-            );
+            const revisedChildren = this.revisedLearningObject
+                .children as unknown;
+            this.revisedChildren = (
+                (Array.isArray(revisedChildren) ? revisedChildren : []) as any[]
+            ).filter((child) => {
+                return (
+                    child.status === LearningObject.Status["RELEASED"] ||
+                    child.status === LearningObject.Status["REVIEW"] ||
+                    child.status === LearningObject.Status["WAITING"]
+                );
+            });
 
             const owners = this.revisedLearningObject.contributors.map(
                 (user) => user.username,
