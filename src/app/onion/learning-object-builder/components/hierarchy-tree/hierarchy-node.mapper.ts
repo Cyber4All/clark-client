@@ -5,11 +5,19 @@ import { HierarchyNode, HierarchyViewer } from "./hierarchy-tree.types";
  * Whether the viewer may edit a child: they are its author or a contributor,
  * or they are an admin/editor. This mirrors the existing Builder access rule;
  * hierarchy permissions are unchanged (sc-40640).
+ *
+ * A RELEASED object is never editable from the hierarchy, whoever the viewer
+ * is: it can only change through a revision, so it is always a linked,
+ * read-only child (sc-40641). The API agrees (no one has write access to a
+ * released object).
  */
 export function canViewerEdit(
     payload: LearningObject,
     viewer: HierarchyViewer,
 ): boolean {
+    if (payload.status === LearningObject.Status.RELEASED) {
+        return false;
+    }
     if (viewer.isAdminOrEditor) {
         return true;
     }

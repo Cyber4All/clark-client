@@ -4,6 +4,7 @@ import { catchError, finalize, map, switchMap } from "rxjs/operators";
 import { LearningObjectService } from "../../../../core/learning-object-module/learning-object/learning-object.service";
 import { LearningObject } from "@entity";
 import { HierarchyViewService } from "./hierarchy-view.service";
+import { HierarchyLoaderService } from "./hierarchy-loader.service";
 import { HierarchyNode, NewChildRequest } from "./hierarchy-tree.types";
 import { builderIdentity } from "./hierarchy-node.mapper";
 import { canHaveChildren, isValidChildLength } from "./hierarchy-length.util";
@@ -74,6 +75,12 @@ export interface HierarchyCreateOutcome extends HierarchyEditOutcome {
     node: HierarchyNode;
 }
 
+/** What a completed link changed: the outcome plus the linked node as it now appears. */
+export interface HierarchyLinkOutcome extends HierarchyEditOutcome {
+    /** The linked, read-only child, with its inherited subtree when it could be loaded. */
+    node: HierarchyNode;
+}
+
 /**
  * Persists author edits to the Builder Hierarchy (sc-40642).
  *
@@ -97,6 +104,13 @@ export interface HierarchyCreateOutcome extends HierarchyEditOutcome {
  * object created a moment ago is deleted so the library is not left with an
  * object the author never saw.
  *
+ * Linking a released learning object (sc-40641) is optimistic like a move: the
+ * read-only node is added first, then `setChildren` saves it (sending the
+ * hierarchy root so the API can reject an object already in the hierarchy). A
+ * failed save restores the previous tree. After a successful save the linked
+ * object's inherited subtree is fetched and attached; if that fetch fails the
+ * link stays (it is saved) and a reload is recommended instead.
+ *
  * The API cannot persist the ORDER of children yet (see the sc-40642 ExecPlan),
  * so reordering inside one parent is refused as `invalid`.
  *
@@ -112,6 +126,7 @@ export class HierarchyEditService {
     constructor(
         private learningObjectService: LearningObjectService,
         private viewService: HierarchyViewService,
+        private loader: HierarchyLoaderService,
     ) {}
 
     /** Synchronous snapshot of {@link saving$}. */
@@ -349,6 +364,107 @@ export class HierarchyEditService {
                             ? error
                             : new HierarchyEditError("failed", false, error),
                     ),
+                ),
+                finalize(() => this.savingSubject.next(false)),
+            );
+        });
+    }
+
+    /**
+     * Link the released learning object `candidate` as a read-only child of
+     * the node `parentNodeId`, appended as its last child.
+     *
+     * Emits the linked node once it is saved. Errors with a
+     * {@link HierarchyEditError}: `invalid` or `busy` when refused up front
+     * (nothing sent), `failed` when the API rejected or failed the save (the
+     * tree was restored).
+     *
+     * Refused as `invalid` when the parent is read-only or cannot hold the
+     * child's length, when the candidate is not released, and when the object
+     * is already somewhere in the tree. That last rule also covers the parent
+     * itself and its ancestors, so a link can never create a cycle.
+     */
+    link(
+        parentNodeId: string,
+        candidate: LearningObject,
+    ): Observable<HierarchyLinkOutcome> {
+        return defer((): Observable<HierarchyLinkOutcome> => {
+            const parent = this.viewService.getNode(parentNodeId);
+            const root = this.viewService.tree[0];
+            const childId = candidate?.id;
+            if (
+                !parent ||
+                !root ||
+                !childId ||
+                !parent.editable ||
+                !canHaveChildren(parent.length) ||
+                candidate.status !== LearningObject.Status.RELEASED ||
+                !isValidChildLength(parent.length, candidate.length) ||
+                this.viewService.containsLearningObject(childId)
+            ) {
+                return this.refuse("invalid");
+            }
+            if (this.saving) {
+                return this.refuse("busy");
+            }
+
+            const snapshot = this.viewService.tree;
+            const parentId = learningObjectIdOf(parent);
+            const outcome = {
+                name: candidate.name?.trim() || "Unnamed object",
+                parentName: parent.name?.trim() || "Unnamed object",
+                reloadRecommended: countLearningObject(snapshot, parentId) > 1,
+            };
+            const added = this.viewService.addChild(parentNodeId, {
+                learningObjectId: childId,
+                ...builderIdentity(candidate),
+                name: candidate.name,
+                length: candidate.length,
+                editable: false,
+                linkedRoot: true,
+            });
+            if (!added) {
+                return this.refuse("invalid");
+            }
+            this.savingSubject.next(true);
+
+            return from(
+                this.learningObjectService.setChildren(
+                    parentId,
+                    [childId],
+                    false,
+                    learningObjectIdOf(root),
+                ),
+            ).pipe(
+                catchError((cause) => this.rollback(snapshot, false, cause)),
+                switchMap(() =>
+                    this.loader
+                        .loadLinkedSubtree(
+                            { id: childId, length: candidate.length },
+                            added.id,
+                        )
+                        .pipe(
+                            map((children): HierarchyLinkOutcome => {
+                                this.viewService.setChildrenOf(
+                                    added.id,
+                                    children,
+                                );
+
+                                return {
+                                    ...outcome,
+                                    node: { ...added, children },
+                                };
+                            }),
+                            // Saved, but the inherited objects did not load:
+                            // keep the link and let the caller reload.
+                            catchError(() =>
+                                of<HierarchyLinkOutcome>({
+                                    ...outcome,
+                                    reloadRecommended: true,
+                                    node: added,
+                                }),
+                            ),
+                        ),
                 ),
                 finalize(() => this.savingSubject.next(false)),
             );

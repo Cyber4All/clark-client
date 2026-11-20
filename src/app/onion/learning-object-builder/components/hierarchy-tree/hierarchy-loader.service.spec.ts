@@ -351,4 +351,105 @@ describe("HierarchyLoaderService", () => {
         loader.retry();
         expect(getLearningObjectChildren).not.toHaveBeenCalled();
     });
+
+    describe("loadLinkedSubtree (sc-40641)", () => {
+        /** Run the stream to its single emission, or its error. */
+        function loadSubtree(
+            linked = { id: "lk", length: UNIT },
+            key = "root/lk",
+        ): Promise<HierarchyNodeResult> {
+            return new Promise((resolve) => {
+                loader.loadLinkedSubtree(linked, key).subscribe({
+                    next: (nodes) => resolve({ nodes }),
+                    error: (error) => resolve({ error }),
+                });
+            });
+        }
+
+        it("returns the whole inherited subtree as read-only nodes, even the viewer's own objects", async () => {
+            // "alice" is the viewer and the author of both, but they come
+            // with the linked object, so neither is editable.
+            children["lk"] = async () => [child("m1", MODULE, "alice")];
+            children["m1"] = async () => [child("mm1", MICROMODULE, "alice")];
+
+            const { nodes } = await loadSubtree();
+
+            expect(nodes).toHaveLength(1);
+            expect(nodes[0]).toMatchObject({
+                id: "root/lk/m1",
+                learningObjectId: "m1",
+                editable: false,
+            });
+            expect(nodes[0].linkedRoot).toBeUndefined();
+            expect(nodes[0].children[0]).toMatchObject({
+                id: "root/lk/m1/mm1",
+                editable: false,
+            });
+            expect(nodes[0].children[0].linkedRoot).toBeUndefined();
+        });
+
+        it("returns no nodes when the linked object has no children", async () => {
+            const { nodes } = await loadSubtree();
+            expect(nodes).toEqual([]);
+        });
+
+        it("never requests children of a nanomodule", async () => {
+            children["lk"] = async () => [child("n1", NANOMODULE)];
+            await loadSubtree();
+            expect(getLearningObjectChildren).not.toHaveBeenCalledWith("n1");
+        });
+
+        it("does not ask for the children of a linked nanomodule", async () => {
+            await loadSubtree({ id: "lk", length: NANOMODULE });
+            expect(getLearningObjectChildren).not.toHaveBeenCalled();
+        });
+
+        it("cuts a child that is the linked object itself (cycle guard)", async () => {
+            children["lk"] = async () => [
+                child("lk", MODULE),
+                child("m1", MODULE),
+            ];
+            const { nodes } = await loadSubtree();
+            expect(nodes.map((n) => n.learningObjectId)).toEqual(["m1"]);
+        });
+
+        it("requests a shared child's children only once", async () => {
+            children["lk"] = async () => [
+                child("m1", MODULE),
+                child("m2", MODULE),
+            ];
+            children["m1"] = async () => [child("mm", MICROMODULE)];
+            children["m2"] = async () => [child("mm", MICROMODULE)];
+            await loadSubtree();
+            expect(
+                getLearningObjectChildren.mock.calls.filter(
+                    ([id]) => id === "mm",
+                ).length,
+            ).toBeLessThanOrEqual(1);
+        });
+
+        it("errors when a request fails, and leaves the main tree alone", async () => {
+            view.setTree([
+                {
+                    id: "root",
+                    name: "Root",
+                    length: COURSE,
+                    editable: true,
+                    children: [],
+                },
+            ]);
+            children["lk"] = async () => {
+                throw new Error("boom");
+            };
+            const result = await loadSubtree();
+            expect(result.error).toBeDefined();
+            expect(view.tree).toHaveLength(1);
+            expect(status()).not.toBe("error");
+        });
+    });
 });
+
+interface HierarchyNodeResult {
+    nodes?: import("./hierarchy-tree.types").HierarchyNode[];
+    error?: unknown;
+}

@@ -12,8 +12,9 @@ import { canHaveChildren, isValidChildLength } from "./hierarchy-length.util";
  * (sc-40640) fetches the real hierarchy and publishes it through `setTree`,
  * and `HierarchyEditService` (sc-40642) saves removes and moves around the
  * local changes made here. A newly created child is added with `addChild`
- * (sc-40236) once the API has saved it. Linking an existing object comes later:
- *   - sc-40237 link-existing
+ * (sc-40236) once the API has saved it. A linked released object (sc-40641) is
+ * added the same way, as a read-only node. Adding the author's own unreleased
+ * object comes later (sc-40237).
  *
  * It is NOT provided in root; the Hierarchy page provides it so its lifetime
  * matches the tab, consistent with how builder state is scoped.
@@ -305,6 +306,36 @@ export class HierarchyViewService {
         const node = findNode(this.treeSubject.value, nodeId);
 
         return !!node && node.editable && canHaveChildren(node.length);
+    }
+
+    /** Whether any node in the tree stands for the learning object `id`. */
+    containsLearningObject(id: string): boolean {
+        let found = false;
+        walk(this.treeSubject.value, (node) => {
+            if (learningObjectIdOf(node) === id) {
+                found = true;
+            }
+        });
+
+        return found;
+    }
+
+    /**
+     * Replace the children of the node `nodeId`, keeping everything else as it
+     * is. Used to attach the inherited subtree of a freshly linked object
+     * (sc-40641). Returns false when the node is unknown.
+     */
+    setChildrenOf(nodeId: string, children: HierarchyNode[]): boolean {
+        if (!findNode(this.treeSubject.value, nodeId)) {
+            return false;
+        }
+        this.treeSubject.next(
+            mapNodes(this.treeSubject.value, (node) =>
+                node.id === nodeId ? { ...node, children } : node,
+            ),
+        );
+
+        return true;
     }
 
     /**

@@ -222,19 +222,23 @@ describe("HierarchyNodeComponent", () => {
     });
 
     describe("menuActions composition", () => {
-        it("lists Add Child, Edit in Builder, Move, and Remove in that order", () => {
+        it("lists Add Child, Link Released, Edit in Builder, Move, and Remove in that order", () => {
             host.isRoot = false;
             host.node = makeNode({ cuid: "c-1", version: 0 });
             render();
             openMenu();
             expect(actionIds()).toEqual([
                 "add-child",
+                "link-existing",
                 "edit-in-builder",
                 "move",
                 "remove",
             ]);
             expect(menuItem("add-child").textContent).toContain(
                 "Add Child Object",
+            );
+            expect(menuItem("link-existing").textContent).toContain(
+                "Link Released Object",
             );
             expect(menuItem("edit-in-builder").textContent).toContain(
                 "Edit in Builder",
@@ -310,6 +314,39 @@ describe("HierarchyNodeComponent", () => {
             render();
             openMenu();
             menuItem("add-child").click();
+            fixture.detectChanges();
+            expect(host.emitted).toEqual([]);
+        });
+    });
+    describe("Link Released Object", () => {
+        it("is disabled when the predicate refuses (read-only, Nanomodule, or saving)", () => {
+            host.canAddChildPredicate = () => false;
+            render();
+            openMenu();
+            expect(menuItem("link-existing").disabled).toBe(true);
+        });
+        it("is available on the root", () => {
+            host.isRoot = true;
+            host.canAddChildPredicate = () => true;
+            render();
+            openMenu();
+            expect(menuItem("link-existing").disabled).toBe(false);
+        });
+        it("emits the link-existing intent with this node's id", () => {
+            host.node = makeNode({ id: "unit-foundations" });
+            render();
+            openMenu();
+            menuItem("link-existing").click();
+            fixture.detectChanges();
+            expect(host.emitted).toEqual([
+                { actionId: "link-existing", nodeId: "unit-foundations" },
+            ]);
+        });
+        it("does not emit when disabled", () => {
+            host.canAddChildPredicate = () => false;
+            render();
+            openMenu();
+            menuItem("link-existing").click();
             fixture.detectChanges();
             expect(host.emitted).toEqual([]);
         });
@@ -471,11 +508,11 @@ describe("HierarchyNodeComponent", () => {
             expect(root).toContain("Linked · Read only");
             expect(root).not.toContain("Inherited");
             expect(root).toContain(
-                "This object is linked and belongs to another author. Linked objects cannot be edited.",
+                "This released object is linked, so it is read-only here. It can only be changed by creating a revision of it.",
             );
             expect(child).toContain("Inherited · Read only");
             expect(child).toContain(
-                "This object is inherited and belongs to another author. Inherited objects cannot be edited.",
+                "This object comes with the linked object above it and cannot be edited here.",
             );
         });
 
@@ -512,8 +549,8 @@ describe("HierarchyNodeComponent", () => {
                     card.query(By.css(".linked-label")).nativeElement
                         .textContent,
                 ).toContain("Read only");
-                expect(card.nativeElement.textContent).toContain(
-                    "cannot be edited.",
+                expect(card.nativeElement.textContent).toMatch(
+                    /read-only here|cannot be edited here/,
                 );
             });
             const nodes = fixture.debugElement.queryAll(
