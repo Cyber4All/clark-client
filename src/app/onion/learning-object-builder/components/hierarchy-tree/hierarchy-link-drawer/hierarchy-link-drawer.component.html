@@ -1,0 +1,198 @@
+<section
+    class="link-drawer"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="link-drawer-title"
+    cdkTrapFocus
+    [cdkTrapFocusAutoCapture]="true"
+    [attr.aria-busy]="state === 'loading' || !!linkingId">
+    <header class="link-drawer__header">
+        <div class="link-drawer__heading">
+            <h2 class="link-drawer__title" id="link-drawer-title">
+                Link a released object
+            </h2>
+            <p class="link-drawer__intro">
+                Choose a released learning object to add under
+                <strong>{{ displayParentName }}</strong
+                >. It stays read-only here, because a released object can only
+                be changed by creating a revision of it.
+            </p>
+        </div>
+        <button
+            type="button"
+            class="link-drawer__close"
+            aria-label="Close"
+            (click)="onClose()">
+            <i class="far fa-times" aria-hidden="true"></i>
+        </button>
+    </header>
+
+    <form
+        class="link-drawer__filters"
+        role="search"
+        aria-label="Find a released object"
+        [formGroup]="form"
+        (submit)="$event.preventDefault()"
+        novalidate>
+        <div class="link-drawer__field">
+            <label for="link-drawer-text">Search</label>
+            <input
+                id="link-drawer-text"
+                type="search"
+                formControlName="text"
+                autocomplete="off"
+                placeholder="Name or description"
+                cdkFocusInitial
+                [attr.aria-describedby]="
+                    textTooShort ? 'link-drawer-summary' : null
+                " />
+        </div>
+
+        <fieldset class="link-drawer__field" *ngIf="lengths.length">
+            <legend>Length</legend>
+            <div class="link-drawer__lengths">
+                <label *ngFor="let length of lengths" class="link-drawer__chip">
+                    <input
+                        type="checkbox"
+                        [checked]="isLengthSelected(length)"
+                        (change)="
+                            onLengthToggle(length, $any($event.target).checked)
+                        " />
+                    <span>{{ length | titlecase }}</span>
+                </label>
+            </div>
+        </fieldset>
+
+        <div class="link-drawer__field">
+            <label for="link-drawer-topic">Topic</label>
+            <select
+                id="link-drawer-topic"
+                formControlName="topic"
+                [attr.aria-describedby]="
+                    topicsFailed ? 'link-drawer-topic-error' : null
+                ">
+                <option value="">All topics</option>
+                <option *ngFor="let topic of topics" [value]="topic._id">
+                    {{ topic.name }}
+                </option>
+            </select>
+            <p
+                *ngIf="topicsFailed"
+                class="link-drawer__note link-drawer__note--error"
+                id="link-drawer-topic-error">
+                Topics could not be loaded, so the topic filter is unavailable.
+            </p>
+        </div>
+
+        <button
+            *ngIf="filtersActive"
+            type="button"
+            class="link-drawer__clear"
+            (click)="onClearFilters()">
+            Clear filters
+        </button>
+    </form>
+
+    <div class="link-drawer__results">
+        <p
+            class="link-drawer__summary"
+            id="link-drawer-summary"
+            role="status"
+            aria-live="polite">
+            {{ summary }}
+            <ng-container *ngIf="linkedCount">
+                · {{ linkedCount }} linked so far
+            </ng-container>
+        </p>
+
+        <p
+            *ngIf="linkError"
+            class="link-drawer__note link-drawer__note--error"
+            role="alert">
+            {{ linkError }}
+        </p>
+
+        <div
+            *ngIf="state === 'loading'"
+            class="link-drawer__loading"
+            aria-hidden="true">
+            <span class="link-drawer__skeleton"></span>
+            <span class="link-drawer__skeleton"></span>
+            <span class="link-drawer__skeleton"></span>
+        </div>
+
+        <div *ngIf="state === 'error'" class="link-drawer__state" role="alert">
+            <p>Released objects could not be loaded.</p>
+            <button
+                type="button"
+                class="link-drawer__button link-drawer__button--ghost"
+                (click)="onRetry()">
+                Try again
+            </button>
+        </div>
+
+        <div
+            *ngIf="state === 'ready' && !candidates.length && !textTooShort"
+            class="link-drawer__state">
+            <p *ngIf="filtersActive">
+                No released objects match. Change or clear the filters to see
+                more.
+            </p>
+            <p *ngIf="!filtersActive">
+                There are no released objects that can be linked here.
+            </p>
+        </div>
+
+        <ul
+            *ngIf="state === 'ready' && candidates.length"
+            class="link-drawer__list">
+            <li
+                *ngFor="let candidate of candidates; trackBy: trackById"
+                class="link-drawer__item">
+                <div class="link-drawer__info">
+                    <p class="link-drawer__name">{{ candidate.name }}</p>
+                    <p class="link-drawer__meta">
+                        <span
+                            class="link-drawer__badge"
+                            [ngClass]="
+                                'link-drawer__badge--' + candidate.length
+                            "
+                            >{{ candidate.length | titlecase }}</span
+                        >
+                        <span *ngIf="isOwn(candidate)" class="link-drawer__own"
+                            >Your object</span
+                        >
+                        <span
+                            *ngIf="!isOwn(candidate) && authorLabel(candidate)">
+                            by {{ authorLabel(candidate) }}
+                        </span>
+                    </p>
+                    <p
+                        class="link-drawer__description"
+                        *ngIf="plainDescription(candidate) as description">
+                        {{ description }}
+                    </p>
+                </div>
+                <button
+                    type="button"
+                    class="link-drawer__button link-drawer__button--primary"
+                    [disabled]="!!linkingId"
+                    [attr.aria-label]="
+                        'Link ' + candidate.name + ' under ' + displayParentName
+                    "
+                    (click)="onLink(candidate)">
+                    {{ linkingId === candidate.id ? "Linking…" : "Link" }}
+                </button>
+            </li>
+        </ul>
+
+        <button
+            *ngIf="state === 'ready' && hasMore"
+            type="button"
+            class="link-drawer__button link-drawer__button--ghost link-drawer__more"
+            [disabled]="loadingMore"
+            (click)="onLoadMore()">
+            {{ loadingMore ? "Loading…" : "Show more" }}
+        </button>
+    </div>
+</section>

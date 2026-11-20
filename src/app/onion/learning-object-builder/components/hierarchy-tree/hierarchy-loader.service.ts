@@ -73,22 +73,8 @@ export class HierarchyLoaderService implements OnDestroy {
         this.loadSubscription?.unsubscribe();
         this.statusSubject.next("loading");
 
-        const viewer: HierarchyViewer = {
-            username: this.authService.username,
-            isAdminOrEditor: this.authService.isAdminOrEditor(),
-        };
-        // One request per learning object for this load (shared children).
-        const requests = new Map<string, Promise<LearningObject[]>>();
-        const fetchChildren = (id: string): Promise<LearningObject[]> => {
-            let request = requests.get(id);
-            if (!request) {
-                request =
-                    this.learningObjectService.getLearningObjectChildren(id);
-                requests.set(id, request);
-            }
-
-            return request;
-        };
+        const viewer = this.currentViewer();
+        const fetchChildren = this.cachedChildrenFetcher();
 
         this.loadSubscription = this.fetchChildren$({
             parentId: root.id,
@@ -121,6 +107,31 @@ export class HierarchyLoaderService implements OnDestroy {
         });
     }
 
+    /**
+     * Fetch the inherited subtree of a learning object that was just linked
+     * (sc-40641). `parentKey` is the occurrence id of the linked node, so each
+     * child gets the same id a full reload would give it.
+     *
+     * Everything returned is read-only: a linked object's relationships belong
+     * to that object, so none of its descendants is editable or a linked root.
+     * A failed request errors the returned stream.
+     */
+    loadLinkedSubtree(
+        linked: { id: string; length: LearningObject.Length },
+        parentKey: string,
+    ): Observable<HierarchyNode[]> {
+        return this.fetchChildren$({
+            parentId: linked.id,
+            parentKey,
+            parentLength: linked.length,
+            parentReadOnly: true,
+            ancestors: new Set<string>([linked.id]),
+            depth: 0,
+            viewer: this.currentViewer(),
+            fetchChildren: this.cachedChildrenFetcher(),
+        });
+    }
+
     /** Re-run the last load (used by the error state's Retry button). */
     retry(): void {
         if (this.lastRoot) {
@@ -131,6 +142,29 @@ export class HierarchyLoaderService implements OnDestroy {
     ngOnDestroy(): void {
         this.loadSubscription?.unsubscribe();
         this.statusSubject.complete();
+    }
+
+    private currentViewer(): HierarchyViewer {
+        return {
+            username: this.authService.username,
+            isAdminOrEditor: this.authService.isAdminOrEditor(),
+        };
+    }
+
+    /** One request per learning object for one load (shared children). */
+    private cachedChildrenFetcher(): (id: string) => Promise<LearningObject[]> {
+        const requests = new Map<string, Promise<LearningObject[]>>();
+
+        return (id: string): Promise<LearningObject[]> => {
+            let request = requests.get(id);
+            if (!request) {
+                request =
+                    this.learningObjectService.getLearningObjectChildren(id);
+                requests.set(id, request);
+            }
+
+            return request;
+        };
     }
 
     private fetchChildren$(ctx: {

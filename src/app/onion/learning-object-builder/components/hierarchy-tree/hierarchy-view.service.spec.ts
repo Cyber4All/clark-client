@@ -440,4 +440,93 @@ describe("HierarchyViewService (example-based)", () => {
             ).toBeUndefined();
         });
     });
+
+    describe("addChild with a linked, read-only child (sc-40641)", () => {
+        const linked = (): Omit<HierarchyNode, "id" | "children"> => ({
+            learningObjectId: "released-1",
+            cuid: "cuid-r1",
+            version: 2,
+            name: "Released module",
+            length: LearningObject.Length.MODULE,
+            editable: false,
+            linkedRoot: true,
+        });
+        it("adds it as a linked root that can be moved and removed but not edited", () => {
+            const added = service.addChild("unit-foundations", linked())!;
+            expect(added).toMatchObject({
+                id: "unit-foundations/released-1",
+                editable: false,
+                linkedRoot: true,
+            });
+            expect(service.canMove(added.id)).toBe(true);
+            expect(service.canAddChild(added.id)).toBe(false);
+        });
+        it("does not let anything be dropped into the linked node", () => {
+            const added = service.addChild("unit-foundations", linked())!;
+            const nano = find("nano-glossary")!;
+            expect(service.canDrop(nano, added)).toBe(false);
+        });
+    });
+
+    describe("containsLearningObject", () => {
+        it("finds the root, a deep descendant, and a node inside a linked subtree", () => {
+            expect(service.containsLearningObject("root")).toBe(true);
+            expect(service.containsLearningObject("mod-core-concepts")).toBe(
+                true,
+            );
+            expect(service.containsLearningObject("micro-detection")).toBe(
+                true,
+            );
+        });
+        it("is false for an object that is not in the tree", () => {
+            expect(service.containsLearningObject("not-there")).toBe(false);
+        });
+        it("matches on the learning object id, not the occurrence id", () => {
+            service.setTree([
+                {
+                    id: "r",
+                    learningObjectId: "r",
+                    name: "r",
+                    length: LearningObject.Length.COURSE,
+                    editable: true,
+                    children: [
+                        {
+                            id: "r/x",
+                            learningObjectId: "lo-x",
+                            name: "x",
+                            length: LearningObject.Length.UNIT,
+                            editable: true,
+                            children: [],
+                        },
+                    ],
+                },
+            ]);
+            expect(service.containsLearningObject("lo-x")).toBe(true);
+            expect(service.containsLearningObject("r/x")).toBe(false);
+        });
+    });
+
+    describe("setChildrenOf", () => {
+        const kid: HierarchyNode = {
+            id: "unit-foundations/kid",
+            learningObjectId: "kid",
+            name: "Kid",
+            length: LearningObject.Length.NANOMODULE,
+            editable: false,
+            children: [],
+        };
+        it("replaces only that node's children", () => {
+            const other = find("network-security");
+            expect(service.setChildrenOf("unit-foundations", [kid])).toBe(true);
+            expect(find("unit-foundations")!.children.map((c) => c.id)).toEqual(
+                ["unit-foundations/kid"],
+            );
+            expect(find(other!.id)).toEqual(other);
+        });
+        it("returns false and changes nothing for an unknown node", () => {
+            const before = service.tree;
+            expect(service.setChildrenOf("missing", [kid])).toBe(false);
+            expect(service.tree).toBe(before);
+        });
+    });
 });

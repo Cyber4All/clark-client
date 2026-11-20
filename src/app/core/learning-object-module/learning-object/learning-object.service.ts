@@ -443,11 +443,19 @@ export class LearningObjectService {
             .toPromise();
     }
 
-    // TODO: The UPDATE_LEARNING_OBJECT_CHILDREN is actually an add learning object children.
+    /**
+     * Add (or, with `remove`, unlink) children of a learning object.
+     *
+     * TODO: The UPDATE_LEARNING_OBJECT_CHILDREN route is actually an add.
+     *
+     * `hierarchyRootId` (add only, optional) tells the server which hierarchy
+     * is being edited so it can reject a child that is already inside it.
+     */
     setChildren(
         learningObjectId: string,
         children: string[],
         remove: boolean,
+        hierarchyRootId?: string,
     ): Promise<any> {
         const removeRoute =
             LEARNING_OBJECT_ROUTES.REMOVE_LEARNING_OBJECT_CHILD(
@@ -475,7 +483,10 @@ export class LearningObjectService {
             return this.http
                 .post(
                     addRoute,
-                    { childrenIds: children },
+                    {
+                        childrenIds: children,
+                        ...(hierarchyRootId ? { hierarchyRootId } : {}),
+                    },
                     {
                         headers: this.headers,
                         withCredentials: true,
