@@ -93,6 +93,8 @@ export class HierarchyLinkDrawerComponent implements OnInit, OnDestroy {
     total = 0;
     /** True while a next page is loading. */
     loadingMore = false;
+    /** True while the list is being refreshed after a link; paging waits for it. */
+    refreshing = false;
     /** Id of the result being saved; every Link button is locked meanwhile. */
     linkingId: string | null = null;
     /** Why the last link failed; cleared on the next attempt. */
@@ -192,7 +194,9 @@ export class HierarchyLinkDrawerComponent implements OnInit, OnDestroy {
     }
 
     onLoadMore(): void {
-        this.search(true);
+        if (!this.refreshing) {
+            this.search("more");
+        }
     }
 
     /** Whether the result belongs to the signed-in author. */
@@ -235,16 +239,26 @@ export class HierarchyLinkDrawerComponent implements OnInit, OnDestroy {
         this.link.emit(candidate);
     }
 
-    /** The tree saved the link: drop the result and count it. */
+    /**
+     * The tree saved the link: drop the result and count it, then refresh the
+     * search. Linking an object also takes everything inside it out of the
+     * results, because the server leaves out the whole hierarchy, so the
+     * results already showing can lose several entries at once and the list
+     * and the paging offset would no longer agree with the server. Asking the
+     * server again, for as many results as were showing, puts both back in
+     * step.
+     */
     markLinked(candidateId: string): void {
         this.linkingId = null;
         this.linkedCount++;
+        const shownBefore = this.candidates.length;
         if (this.candidates.some((candidate) => candidate.id === candidateId)) {
             this.candidates = this.candidates.filter(
                 (candidate) => candidate.id !== candidateId,
             );
             this.total = Math.max(0, this.total - 1);
         }
+        this.search("refresh", shownBefore);
     }
 
     /** The tree could not link it: unlock the buttons and say why. */
@@ -262,29 +276,36 @@ export class HierarchyLinkDrawerComponent implements OnInit, OnDestroy {
     }
 
     /**
-     * Fetch results for the current form. A new search replaces the list and
-     * cancels the one in flight; `more` appends the next page instead.
+     * Fetch results for the current form. Whatever search is in flight is
+     * cancelled first.
      *
-     * The next page is worked out from how many results are showing, not from
-     * a page counter: a result that was linked is gone from the server's list,
-     * which shifts every later page up by one. Asking for the page that holds
-     * the next unseen result and skipping ids already shown keeps the list
-     * free of gaps and duplicates.
+     * - `new` replaces the list with the first page.
+     * - `more` appends the next page. It is worked out from how many results
+     *   are showing (ids already shown are skipped), not from a page counter.
+     * - `refresh` replaces the list with the first `shownBefore` results
+     *   (rounded up to whole pages) and keeps the current list on screen until
+     *   they arrive. Because the list then always holds a whole number of
+     *   pages, or all that is left, `more` asks for the right page afterwards.
      */
-    private search(more = false): void {
+    private search(
+        mode: "new" | "more" | "refresh" = "new",
+        shownBefore = 0,
+    ): void {
         if (this.textTooShort) {
             return;
         }
         this.searchSubscription?.unsubscribe();
         const { text, topic, lengths } = this.form.getRawValue();
+        const more = mode === "more";
+        const refresh = mode === "refresh";
+        const pages = Math.max(1, Math.ceil(shownBefore / LINK_PAGE_SIZE));
         const page = more
             ? Math.floor(this.candidates.length / LINK_PAGE_SIZE) + 1
             : 1;
-        if (more) {
-            this.loadingMore = true;
-        } else {
+        this.loadingMore = more;
+        this.refreshing = refresh;
+        if (mode === "new") {
             this.state = "loading";
-            this.loadingMore = false;
         }
 
         this.searchSubscription = this.hierarchyService
@@ -296,7 +317,7 @@ export class HierarchyLinkDrawerComponent implements OnInit, OnDestroy {
                 // With no filter chosen, still limit to what the parent can hold.
                 length: lengths.length ? lengths : this.lengths,
                 currPage: page,
-                limit: LINK_PAGE_SIZE,
+                limit: refresh ? pages * LINK_PAGE_SIZE : LINK_PAGE_SIZE,
             })
             .subscribe({
                 next: (result) => {
@@ -314,14 +335,18 @@ export class HierarchyLinkDrawerComponent implements OnInit, OnDestroy {
                     this.total = result.total;
                     this.state = "ready";
                     this.loadingMore = false;
+                    this.refreshing = false;
                 },
                 error: () => {
                     this.loadingMore = false;
-                    if (!more) {
-                        this.state = "error";
-                    } else {
+                    this.refreshing = false;
+                    if (more) {
                         this.linkError =
                             "More results could not be loaded. Try again.";
+                    } else {
+                        // The list may no longer match the server, so do not
+                        // keep showing it; "Try again" searches afresh.
+                        this.state = "error";
                     }
                 },
             });

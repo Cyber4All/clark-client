@@ -34,7 +34,11 @@ Out of scope: adding the author's own unreleased objects (SC-40237), reorder, li
 - [x] (2026-11-20) Specs: mapper, loader, view service, edit service, node, drawer (32 tests), tree integration, and `hierarchy.service.spec.ts`. The hierarchy-tree and hierarchy service suites pass (393 passing across the wider run; see Outcomes for the unrelated failures). `tsc --noEmit -p src/tsconfig.app.json` is clean and Prettier passes on every changed file.
 - [x] (2026-11-20) Browser check against the real gateway and `clark-service` (Playwright, a non-admin author, local `onion` database) at 1280px and 390px; see Outcomes.
 
+- [x] (2026-11-20 21:40Z) Review follow-up: after a successful link the drawer asks the server again for as many results as were showing, so its list, total, and paging offset match the server. Specs: 8 new/changed drawer specs, tree spec mock now leaves out a linked object like the API. Checked against the real API: linking a released Unit with six Modules took the Module candidate count from 639 to 633, and a retried link returned 200 without a duplicate.
+
 ## Surprises & Discoveries
+
+- Observation (review): linking an object also takes everything inside it out of the candidate results, because the server leaves out the whole hierarchy. The first version removed only the linked object from the drawer's list and computed the next page from the list length. With 20 of 31 results loaded, linking a Unit whose six Modules were among them left the list 7 shorter than the server's, so the offset was wrong and "Show more" could disappear with unseen results left.
 
 - Observation: The gateway has no `hierarchy-candidates` route (not on main and not on the SC-40234 branch). Added in this story.
 - Observation: `POST /learning-objects/:id/children` validated almost nothing. SC-40235 only adds search. Server-side link validation was therefore added in `clark-service` here (see the service plan). One consequence for the client: re-parenting (SC-40642) adds under the new parent before removing from the old one, so "already in the hierarchy" is only enforced when the client sends `hierarchyRootId`, which only the link flow does.
@@ -69,6 +73,9 @@ Out of scope: adding the author's own unreleased objects (SC-40237), reorder, li
   Date/Author: 2026-11-20 / Kiro
 - Decision: The drawer is a right-side panel opened in a CDK overlay from the tree, the same mechanism as the other dialogs, with a `mode`-free, link-only API. SC-40237 will add a mode.
   Rationale: Owner decision. Keeps the SC-40237 change additive.
+  Date/Author: 2026-11-20 / Kiro
+
+- Decision (review): after a link, refresh the active search instead of patching the list. `markLinked` still removes the linked result at once, then repeats the search from page 1 asking for as many results as were showing, rounded up to whole pages. The old list stays on screen until the answer arrives (no skeleton), "Show more" waits while the refresh runs, a newer search the author starts replaces it, and a failed refresh shows the error state with Try again because the list may no longer match the server. Because the list then holds whole pages (or everything that is left), the next page is `floor(shown / 10) + 1` and lines up with the server again.
   Date/Author: 2026-11-20 / Kiro
 
 ## Outcomes & Retrospective
