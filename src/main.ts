@@ -73,21 +73,51 @@ Sentry.init({
     }),
 });
 
+// Web Storage can be missing entirely (ReferenceError) or throw on access
+// (SecurityError/QuotaExceededError) in some Safari privacy/restricted contexts.
+let storageAvailable = true;
+
+function readStoredVersion(): string | null {
+    try {
+        return globalThis.localStorage.getItem(VERSION_STORE);
+    } catch (error) {
+        storageAvailable = false;
+        console.warn(
+            `${appDisplayName}: localStorage unavailable, skipping version check.`,
+            error,
+        );
+        return null;
+    }
+}
+
+function writeStoredVersion(version: string): void {
+    try {
+        globalThis.localStorage.setItem(VERSION_STORE, version);
+    } catch (error) {
+        storageAvailable = false;
+        console.warn(
+            `${appDisplayName}: unable to persist app version to localStorage.`,
+            error,
+        );
+    }
+}
+
 // Get the version of the application the user last ran
-const userVersion = localStorage.getItem(VERSION_STORE);
+const userVersion = readStoredVersion();
 (() => {
     // Set current version of the application
-    localStorage.setItem(VERSION_STORE, appVersion);
+    writeStoredVersion(appVersion);
 
-    // Check the version of the application the user last ran; If mismatch clear cache via hard reload
-    userVersion !== appVersion
+    // Check the version of the application the user last ran; If mismatch clear cache via hard reload.
+    // Only reload when storage works, otherwise the version can never match and we would reload forever.
+    storageAvailable && userVersion !== appVersion
         ? location.reload()
         : console.log(
               `${appDisplayName} running version: ${appVersion} - Up to date.`,
           );
 })();
 
-if (userVersion === appVersion) {
+if (!storageAvailable || userVersion === appVersion) {
     bootstrapApplication(ClarkComponent, {
         providers: [
             importProvidersFrom(
