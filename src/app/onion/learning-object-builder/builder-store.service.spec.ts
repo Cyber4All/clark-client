@@ -30,3 +30,28 @@ describe("BuilderStore outcome update identity", () => {
         expect(store._outcomesMap.get(localId).id).toBe(localId);
     });
 });
+
+describe("BuilderStore removeEmptyOutcomes", () => {
+    it("does nothing when no learning object has been loaded", async () => {
+        const store = Object.create(BuilderStore.prototype);
+        store.fetch = jest.fn();
+        store.uriRetriever = { getLearningObject: jest.fn() };
+
+        await expect(store.removeEmptyOutcomes()).resolves.toBeUndefined();
+
+        expect(store.fetch).not.toHaveBeenCalled();
+        expect(store.uriRetriever.getLearningObject).not.toHaveBeenCalled();
+    });
+
+    it("stops when refreshing the learning object fails", async () => {
+        const store = Object.create(BuilderStore.prototype);
+        store._learningObject = { cuid: "abc", version: 0 };
+        store.fetch = jest.fn(async () => null);
+        store.uriRetriever = { getLearningObject: jest.fn() };
+
+        await expect(store.removeEmptyOutcomes()).resolves.toBeUndefined();
+
+        expect(store.fetch).toHaveBeenCalledWith("abc", 0);
+        expect(store.uriRetriever.getLearningObject).not.toHaveBeenCalled();
+    });
+});

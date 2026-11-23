@@ -412,8 +412,10 @@ export class BuilderNavbarComponent implements OnDestroy {
                 await this.fileService.updateReadme(this.learningObject.id),
             );
         }
-        // Remove outcomes that have null text
-        this.store.removeEmptyOutcomes();
+        // Remove outcomes that have null text (only possible once a learning object has loaded)
+        if (this.learningObject?.cuid) {
+            this.store.removeEmptyOutcomes();
+        }
         // Enforcing all files/folders are uploaded prior to leaving the builder (upload = 'true')
         if (
             this.store.upload !== undefined &&
