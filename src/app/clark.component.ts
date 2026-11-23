@@ -32,6 +32,7 @@ import { CookiesComponent } from "./components/cookies/cookies.component";
 import { SubscriptionComponent } from "./components/subscription/subscription.component";
 import { ChatbotContainerComponent } from "./shared/modules/chatbot/chatbot-container/chatbot-container.component";
 import { MaintenancePageComponent } from "./maintenance-page/maintenance-page.component";
+import * as Sentry from "@sentry/angular";
 
 @Component({
     selector: "clark-root",
@@ -153,21 +154,37 @@ export class ClarkComponent implements OnInit {
         });
     }
 
-    ngOnInit(): void {
-        this.utilityService.getDowntime().then((down) => {
-            this.downtime = {
-                isDown: !!down?.isDown,
-                message: down?.message || "",
-            };
-        });
-        // Determine if the application is currently under maintenance
-        setInterval(async () => {
-            this.utilityService.getDowntime().then((down) => {
+    /**
+     * Fetch the current downtime status. A failed check (e.g. network error)
+     * leaves the current downtime state untouched so the app keeps operating.
+     */
+    refreshDowntime(): Promise<void> {
+        return this.utilityService
+            .getDowntime()
+            .then((down) => {
                 this.downtime = {
                     isDown: !!down?.isDown,
                     message: down?.message || "",
                 };
+            })
+            .catch((error) => {
+                Sentry.addBreadcrumb({
+                    category: "downtime",
+                    level: "warning",
+                    message: "Downtime check failed",
+                    data: {
+                        errorType: error?.type ?? typeof error,
+                        status: error?.status,
+                    },
+                });
             });
+    }
+
+    ngOnInit(): void {
+        this.refreshDowntime();
+        // Determine if the application is currently under maintenance
+        setInterval(() => {
+            this.refreshDowntime();
         }, 300000); // 5 min interval
         // check to see if the current version is behind the latest verison
         // As of February 4, 2025 there is not a solution to this issue and it is clogging up observability errors so we are disabling it
