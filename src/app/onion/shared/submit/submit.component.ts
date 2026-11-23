@@ -55,7 +55,7 @@ import { EditChangelogComponent } from "../edit-changelog/edit-changelog.compone
 export class SubmitComponent implements OnInit {
     @Input() collection?: string;
     @Input() learningObject: LearningObject;
-    @Input() learningOutcomes: Map<string, Partial<LearningOutcome>>;
+    @Input() learningOutcomes?: Map<string, Partial<LearningOutcome>>;
     @Input() isHierarchySubmission = false;
     @Input() visible: boolean;
 
@@ -183,7 +183,7 @@ export class SubmitComponent implements OnInit {
             this.learningObject.description !== "" &&
             this.learningObject.name !== "" &&
             (this.learningObject.outcomes.length !== 0 ||
-                this.learningOutcomes.size !== 0) &&
+                (this.learningOutcomes?.size ?? 0) !== 0) &&
             this.learningObject.contributors.length !== 0
         );
     }
