@@ -21,6 +21,7 @@ const collection_routes: Routes = [
     {
         path: "xpcyber",
         component: XPCyberComponent,
+        data: { excludeFromTheme: true },
     },
     {
         path: "nice",
@@ -30,20 +31,24 @@ const collection_routes: Routes = [
     {
         path: "ncyte",
         component: CollectionNcyteComponent,
+        data: { excludeFromTheme: true },
     },
     {
         path: "ncyte/dashboard",
         component: NcyteDashboardComponent,
         canActivate: [NcyteDashboardGuard],
+        data: { excludeFromTheme: true },
     },
     {
         path: "cyberskills2work/dashboard",
         component: CyberskillsDashboardComponent,
         canActivate: [CyberSkillsGuard],
+        data: { excludeFromTheme: true },
     },
     {
         path: "502-project",
         component: Collection502Component,
+        data: { excludeFromTheme: true },
     },
     {
         path: "502_project",
@@ -52,10 +57,12 @@ const collection_routes: Routes = [
     {
         path: "secinj",
         component: SecurityInjectionsComponent,
+        data: { excludeFromTheme: true },
     },
     {
         path: "withcyber",
         component: TagWithCyberComponent,
+        data: { excludeFromTheme: true },
     },
     {
         path: "**",

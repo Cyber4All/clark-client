@@ -1,5 +1,3 @@
-@import "_vars.scss";
-
 .playlist-metadata-content {
     display: grid;
     gap: 10px;
@@ -9,7 +7,7 @@
         box-sizing: border-box;
         width: 100%;
         padding: 10px;
-        border: 1px solid $profile-border;
+        border: 1px solid var(--theme-border);
         border-radius: 5px;
         font: inherit;
     }
@@ -37,21 +35,21 @@ button {
     }
 
     &:focus-visible {
-        outline: 2px solid $light-blue;
+        outline: 2px solid var(--theme-focus);
         outline-offset: 3px;
     }
 }
 
 .primary-button {
-    background: $light-blue;
-    color: white;
+    background: var(--theme-action-primary);
+    color: var(--theme-action-on-primary);
 }
 
 .cancel-button {
-    background: $secondary-white-background;
-    color: $dark-grey;
+    background: var(--theme-foreground-subtle);
+    color: var(--theme-text-muted);
 }
 
 .form-error {
-    color: $error-red;
+    color: var(--theme-status-error);
 }

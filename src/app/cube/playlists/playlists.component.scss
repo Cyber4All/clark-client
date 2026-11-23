@@ -1,5 +1,3 @@
-@import "_vars.scss";
-
 .playlists-page {
     max-width: 1240px;
     margin: 0 auto;
@@ -15,7 +13,7 @@
 
     h1 {
         margin: 0 0 8px;
-        color: $darker-grey;
+        color: var(--theme-text-strong);
         font-size: 36px;
         line-height: 1.15;
     }
@@ -44,14 +42,14 @@
     }
 
     &:focus-visible {
-        outline: 2px solid $light-blue;
+        outline: 2px solid var(--theme-focus);
         outline-offset: 3px;
     }
 }
 
 .primary-button {
-    background: $light-blue;
-    color: white;
+    background: var(--theme-action-primary);
+    color: var(--theme-action-on-primary);
     white-space: nowrap;
 
     i {
@@ -61,8 +59,8 @@
 
 .eyebrow {
     margin: 0 0 8px;
-    color: $light-blue;
-    font-size: $small;
+    color: var(--theme-link);
+    font-size: 14px;
     font-weight: 600;
     letter-spacing: 1px;
     text-transform: uppercase;
@@ -71,13 +69,13 @@
 .intro {
     max-width: 620px;
     margin: 0;
-    color: $dark-grey;
+    color: var(--theme-text-muted);
     font-size: 16px;
     line-height: 1.6;
 }
 .result-count {
     flex: 0 0 auto;
-    color: $dark-grey;
+    color: var(--theme-text-muted);
     font-size: 13px;
     white-space: nowrap;
 }
@@ -100,20 +98,20 @@
 .status {
     margin: 0;
     padding: 60px 20px;
-    border: 1px solid $profile-border;
+    border: 1px solid var(--theme-border);
     border-radius: 12px;
-    background: $secondary-white-background;
-    color: $dark-grey;
+    background: var(--theme-foreground-subtle);
+    color: var(--theme-text-muted);
     text-align: center;
 
     i {
         margin-right: 8px;
-        color: $light-blue;
+        color: var(--theme-status-info);
     }
 }
 
 .status--error {
-    color: $error-red;
+    color: var(--theme-status-error);
 }
 
 @media (max-width: 900px) {

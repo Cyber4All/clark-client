@@ -2,12 +2,12 @@
 
 .contributor-pill {
     position: relative;
-    color: $light-blue;
+    color: var(--theme-link);
     text-decoration: underline;
 }
 
 .contributor-pill__dropdown-option {
-    color: $error-red;
+    color: var(--theme-status-error);
     font-size: $small;
     cursor: pointer;
     text-align: center;
@@ -16,19 +16,19 @@
 
     .svg-inline--fa,
     .icon {
-        color: $error-red;
+        color: var(--theme-status-error);
         margin-right: 3px;
         margin-left: 3px;
     }
 
     &:hover,
     &:focus {
-        color: white;
-        background: $error-red;
+        color: var(--theme-action-on-status);
+        background: var(--theme-status-error);
 
         .svg-inline--fa,
         .icon {
-            color: white;
+            color: var(--theme-action-on-status);
         }
     }
 }

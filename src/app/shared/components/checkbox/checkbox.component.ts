@@ -7,7 +7,7 @@ import {
     OnChanges,
     ChangeDetectorRef,
 } from "@angular/core";
-import { NgClass } from "@angular/common";
+import { NgClass, NgIf } from "@angular/common";
 import { ActivateDirective } from "../../directives/activate.directive";
 
 @Component({
@@ -23,12 +23,14 @@ import { ActivateDirective } from "../../directives/activate.directive";
                 disabled: disabled,
                 animating: animating,
             }">
-            <i class="fas fa-check"></i>
+            <span *ngIf="state" class="checkbox-check-wrapper">
+                <i class="fas fa-check"></i>
+            </span>
         </button>
     `,
     styleUrls: ["checkbox.component.scss"],
     standalone: true,
-    imports: [NgClass, ActivateDirective],
+    imports: [NgClass, NgIf, ActivateDirective],
 })
 export class CheckBoxComponent implements OnChanges {
     private _state = false;

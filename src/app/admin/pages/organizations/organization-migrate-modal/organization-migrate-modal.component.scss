@@ -13,7 +13,7 @@
     margin: 20px 0 28px;
     font-size: 1rem;
     line-height: 1.5;
-    color: rgba(0, 0, 0, 0.87);
+    color: var(--theme-text);
 }
 
 .migration-progress {
@@ -33,15 +33,15 @@
     gap: 12px;
     margin-bottom: 16px;
     padding-bottom: 12px;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    border-bottom: 1px solid var(--theme-border);
 }
 
 .step-heading__number {
     width: 32px;
     height: 32px;
     border-radius: 999px;
-    background: #1c70dd;
-    color: white;
+    background: var(--theme-action-primary);
+    color: var(--theme-action-on-primary);
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -52,7 +52,7 @@
 .step-heading__label {
     font-size: 1.05rem;
     font-weight: 600;
-    color: rgba(0, 0, 0, 0.87);
+    color: var(--theme-text);
 }
 
 .step-heading__back {
@@ -60,12 +60,12 @@
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    color: #1c70dd;
+    color: var(--theme-action-primary);
     cursor: pointer;
     font-weight: 600;
 
     &:disabled {
-        color: rgba(0, 0, 0, 0.38);
+        color: var(--theme-text-disabled);
         cursor: not-allowed;
     }
 }
@@ -94,18 +94,22 @@
     padding: 0 12px;
     margin-bottom: 16px;
     box-sizing: border-box;
-    border: 1px solid rgba(0, 0, 0, 0.18);
+    border: 1px solid var(--theme-border-strong);
     border-radius: 8px;
-    background: #fff;
+    background: var(--theme-foreground);
 
     &:focus-within {
-        border-color: #1c70dd;
-        background: rgba(28, 112, 221, 0.03);
+        border-color: var(--theme-focus);
+        background: color-mix(
+            in srgb,
+            var(--theme-action-primary) 3%,
+            var(--theme-foreground)
+        );
     }
 }
 
 .search-org-field__icon {
-    color: #1c70dd;
+    color: var(--theme-action-primary);
 }
 
 .search-org-field input {
@@ -114,12 +118,12 @@
     outline: none;
     background: transparent;
     font-size: 1rem;
-    color: rgba(0, 0, 0, 0.87);
+    color: var(--theme-text);
     padding: 0;
 }
 
 .search-org-field input::placeholder {
-    color: rgba(0, 0, 0, 0.54);
+    color: var(--theme-text-muted);
 }
 
 .organization-dropdown {
@@ -128,10 +132,10 @@
     left: 0;
     right: 0;
     z-index: 30;
-    background: white;
-    border: 1px solid rgba(0, 0, 0, 0.12);
+    background: var(--theme-foreground-raised);
+    border: 1px solid var(--theme-border);
     border-radius: 6px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    box-shadow: 0 8px 24px var(--theme-shadow);
     overflow: hidden;
 }
 
@@ -153,8 +157,8 @@
     padding: 16px;
     box-sizing: border-box;
     cursor: pointer;
-    background: white;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+    background: var(--theme-foreground-raised);
+    border-bottom: 1px solid var(--theme-border);
     transition: background-color 0.2s;
 
     &:last-child {
@@ -162,12 +166,12 @@
     }
 
     &:hover:not(.disabled) {
-        background-color: rgba(0, 0, 0, 0.04);
+        background-color: var(--theme-foreground-subtle);
     }
 
     &.selected {
-        background-color: rgba(63, 81, 181, 0.08);
-        border-left: 4px solid #3f51b5;
+        background-color: var(--theme-foreground-selected);
+        border-left: 4px solid var(--theme-action-primary);
     }
 
     &.disabled {
@@ -176,7 +180,7 @@
     }
 
     &:focus-visible {
-        outline: 2px solid #3f51b5;
+        outline: 2px solid var(--theme-focus);
         outline-offset: -2px;
     }
 }
@@ -192,7 +196,7 @@
     word-break: break-word;
 
     .verified-icon {
-        color: #4caf50;
+        color: var(--theme-status-success);
         font-size: 16px;
         flex: 0 0 auto;
     }
@@ -200,7 +204,7 @@
 
 .org-details {
     font-size: 0.875rem;
-    color: rgba(0, 0, 0, 0.6);
+    color: var(--theme-text-muted);
     overflow-wrap: anywhere;
     word-break: break-word;
 }
@@ -208,12 +212,12 @@
 .organization-dropdown__message {
     padding: 14px 16px;
     text-align: left;
-    color: rgba(0, 0, 0, 0.54);
+    color: var(--theme-text-muted);
     font-size: 0.875rem;
 }
 
 .organization-dropdown__message--error {
-    color: #d14343;
+    color: var(--theme-status-error);
 }
 
 .confirmation-section {
@@ -229,12 +233,12 @@
     margin-bottom: 16px;
     font-size: 1rem;
     line-height: 1.5;
-    color: rgba(0, 0, 0, 0.87);
+    color: var(--theme-text);
 }
 
 .confirm-warning {
     margin: 0 0 16px;
-    color: rgba(0, 0, 0, 0.62);
+    color: var(--theme-text-muted);
     font-size: 0.92rem;
     line-height: 1.45;
 }

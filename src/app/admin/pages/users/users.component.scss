@@ -1,7 +1,7 @@
 @import "_vars.scss";
 
 .collection-name {
-    color: $light-blue;
+    color: var(--theme-link);
 }
 
 .users-search {
@@ -44,12 +44,12 @@
     top: 0;
     bottom: 0;
 
-    $color: $dark-grey;
+    color: var(--theme-text-muted);
     font-size: $large;
     padding: 20px;
 
     .svg-inline--fa {
-        color: $light-blue;
+        color: var(--theme-action-primary);
         font-size: $larger;
         margin-bottom: 20px;
     }
@@ -72,6 +72,6 @@
 
 .privileges {
     .privileges__title {
-        color: $dark-grey !important;
+        color: var(--theme-text-strong) !important;
     }
 }

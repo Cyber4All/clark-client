@@ -2,6 +2,7 @@ import * as querystring from "querystring";
 
 export enum OrderBy {
     Name = "name",
+    Author = "author",
     Date = "date",
     Downloads = "downloads",
     Rating = "rating",

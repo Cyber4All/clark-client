@@ -5,33 +5,33 @@
 }
 
 .hierarchy-link__icon-container {
-    color: $light-blue;
+    color: var(--theme-link);
     margin-right: 5px;
 }
 
 .hierarchy-link__child-link-container {
-    color: $dark-grey;
+    color: var(--theme-text-muted);
 }
 
 .hierarchy-link__child-link-container__link {
-    color: $light-blue;
+    color: var(--theme-link);
 }
 
 .hierarchy-link__parent-child-separator {
-    color: $dark-grey;
+    color: var(--theme-text-muted);
     margin: 0;
     margin-right: 5px;
 }
 
 .hierarchy-link__parent-link-container {
-    color: $dark-grey;
+    color: var(--theme-text-muted);
 }
 
 .hierarchy-link__parent-link-container__link {
-    color: $light-blue;
+    color: var(--theme-link);
 }
 
 .hierarchy-link__plus-more-link-container {
-    color: $light-blue;
+    color: var(--theme-link);
     text-decoration: underline;
 }

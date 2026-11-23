@@ -6,6 +6,7 @@ import { AuthService } from "../auth-module/auth.service";
 import { Observable, throwError } from "rxjs";
 import { Blog } from "app/components/blogs/types/blog";
 import { catchError } from "rxjs/operators";
+import packageJson from "@package";
 
 export class Downtime {
     constructor(
@@ -54,11 +55,9 @@ export class UtilityService {
      * @memberof AuthService
      */
     async checkClientVersion(): Promise<void | Partial<{ message: string }>> {
-        // Application version information
-        const { version } = require("../../../../package.json");
         try {
             await this.http
-                .get(UTILITY_ROUTES.GET_CLIENT_VERSION(version), {
+                .get(UTILITY_ROUTES.GET_CLIENT_VERSION(packageJson.version), {
                     withCredentials: true,
                     responseType: "text",
                 })

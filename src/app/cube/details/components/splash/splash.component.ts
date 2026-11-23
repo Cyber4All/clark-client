@@ -1,6 +1,8 @@
 import {
     Component,
     Input,
+    Output,
+    EventEmitter,
     OnInit,
     AfterViewInit,
     HostListener,
@@ -49,6 +51,9 @@ export class SplashComponent implements OnInit, AfterViewInit {
     @Input() averageRating: number;
     @Input() reviewsCount: number;
     @Input() link: string;
+    @Input() loggedIn: boolean;
+    @Input() canRate = false;
+    @Output() selectedRating = new EventEmitter<number>();
 
     showPanel = false;
 

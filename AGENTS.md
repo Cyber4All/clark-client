@@ -257,6 +257,9 @@ When building UI:
 - prefer consistency with nearby UX patterns over inventing new visual conventions
 - keep feature-specific styling local where possible
 - avoid spreading one-off style overrides across many files
+- use the semantic CSS custom properties defined in `src/styles/theme/_tokens.scss` for colors in new or touched component styles (for example, `var(--theme-text)`, `var(--theme-foreground-raised)`, and `var(--theme-action-primary)`)
+- choose tokens by meaning rather than copying a matching hex value; add a shared token when a reusable semantic role is missing, and avoid new hard-coded palette colors or Sass color variables in component styles
+- preserve intentional page-specific branding where it has its own documented styling contract
 
 If a shared component is modified:
 

@@ -5,7 +5,12 @@
     width: inherit;
     &:before {
         content: "";
-        background: linear-gradient(90deg, white, $light-blue, white);
+        background: linear-gradient(
+            90deg,
+            var(--theme-background),
+            var(--theme-action-primary),
+            var(--theme-background)
+        );
         position: absolute;
         top: 0;
         bottom: 0;
@@ -19,11 +24,11 @@
     &:after {
         content: "";
         background: repeating-linear-gradient(
-            white,
-            rgba(255, 255, 255, 0),
-            rgba(255, 255, 255, 0),
-            rgba(255, 255, 255, 0),
-            white
+            var(--theme-background),
+            transparent,
+            transparent,
+            transparent,
+            var(--theme-background)
         );
         position: absolute;
         top: 0;

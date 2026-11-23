@@ -12,11 +12,7 @@
         box-sizing: border-box;
         padding: 20px;
         position: absolute;
-        background: linear-gradient(
-            45deg,
-            darken($light-blue, 5),
-            lighten($light-blue, 5)
-        );
+        background: var(--theme-action-primary);
         &:after {
             content: "";
             background: white;
@@ -30,14 +26,14 @@
         }
 
         .banner-title {
-            color: white;
+            color: var(--theme-action-on-primary);
             font-size: $larger;
             font-weight: normal;
             padding: 0px;
             margin: 0px;
         }
         .banner-sub {
-            color: white;
+            color: var(--theme-action-on-primary);
             opacity: 0.85;
             font-size: $normal;
             padding: 0px;
@@ -48,7 +44,7 @@
     .content-header {
         margin-top: 4.5em;
         font-size: $large;
-        color: $dark-grey;
+        color: var(--theme-text-strong);
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -60,7 +56,7 @@
         max-height: 150px;
         transition: background 0.1s ease;
         font-size: $small;
-        color: $darker-grey;
+        color: var(--theme-text);
     }
 
     .object-dropdown {

@@ -11,14 +11,14 @@
 
 // Style for all titles within the resuable containers
 .title {
-    color: $light-blue;
+    color: var(--theme-link);
     font-size: $large;
     font-weight: 600;
     padding-bottom: 20px;
 }
 // Style for all directions within the resuable containers
 .directions {
-    color: $dark-grey;
+    color: var(--theme-text-muted);
     font-size: $normal;
     margin-bottom: 20px;
 
@@ -30,9 +30,9 @@
 
 .metadata-container__error {
     margin-top: 10px;
-    color: $error-red;
+    color: var(--theme-status-error);
 }
 
 .metadata-container__error--warning {
-    color: orange;
+    color: var(--theme-status-warning);
 }

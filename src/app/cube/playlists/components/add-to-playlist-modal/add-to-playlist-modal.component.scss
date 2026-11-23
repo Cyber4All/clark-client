@@ -1,11 +1,11 @@
 @import "_vars.scss";
 
 .playlist-modal {
-    color: $dark-grey;
+    color: var(--theme-text-muted);
 
     h2 {
         margin: 0 0 8px;
-        color: $darker-grey;
+        color: var(--theme-text-strong);
         font-size: $largest;
     }
 
@@ -28,39 +28,39 @@
     gap: 14px;
     width: 100%;
     padding: 12px 14px;
-    border: 1px solid $light-grey;
+    border: 1px solid var(--theme-border);
     border-radius: 4px;
-    background: white;
+    background: var(--theme-foreground-raised);
     color: inherit;
     font: inherit;
     text-align: left;
     cursor: pointer;
 
     &.selected {
-        border-color: $light-blue;
-        background: rgba($light-blue, 0.08);
+        border-color: var(--theme-action-primary);
+        background: var(--theme-foreground-selected);
     }
 
     &.already-added {
-        border-color: $light-grey;
-        background: $light-grey;
-        color: $medium-grey;
+        border-color: var(--theme-border);
+        background: var(--theme-foreground-subtle);
+        color: var(--theme-text-disabled);
         cursor: not-allowed;
         opacity: 0.8;
 
         .playlist-copy strong {
-            color: $medium-grey;
+            color: var(--theme-text-disabled);
         }
     }
 
     &:focus-visible {
-        outline: 2px solid $light-blue;
+        outline: 2px solid var(--theme-focus);
         outline-offset: 2px;
     }
 
     > .svg-inline--fa {
         margin-left: auto;
-        color: $light-blue;
+        color: var(--theme-action-primary);
         font-size: $larger;
     }
 }
@@ -68,13 +68,13 @@
 .selection-control {
     width: 18px;
     height: 18px;
-    border: 2px solid $medium-grey;
+    border: 2px solid var(--theme-border-strong);
     border-radius: 50%;
     box-sizing: border-box;
 }
 
 .playlist-option.selected .selection-control {
-    border: 6px solid $light-blue;
+    border: 6px solid var(--theme-action-primary);
 }
 
 .playlist-copy {
@@ -83,7 +83,7 @@
     flex-direction: column;
 
     strong {
-        color: $darker-grey;
+        color: var(--theme-text-strong);
     }
 
     span {
@@ -102,7 +102,7 @@
     padding: 0;
     border: 0;
     background: transparent;
-    color: $light-blue;
+    color: var(--theme-link);
     font: inherit;
     cursor: pointer;
 

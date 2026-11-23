@@ -48,6 +48,7 @@ const clark_routes: Routes = [
             import("app/collection/collection.module").then(
                 (m) => m.CollectionModule,
             ),
+        data: { excludeFromTheme: true },
     },
     {
         path: "preview/code",
@@ -69,7 +70,11 @@ const clark_routes: Routes = [
         component: UnauthorizedComponent,
         data: { title: "Unauthorized" },
     },
-    { path: "secinj", component: SecurityInjectionsComponent },
+    {
+        path: "secinj",
+        component: SecurityInjectionsComponent,
+        data: { excludeFromTheme: true },
+    },
     {
         path: "",
         loadChildren: () =>

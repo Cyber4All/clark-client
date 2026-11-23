@@ -7,13 +7,15 @@ import {
 } from "@angular/core";
 import { NgStyle, NgFor, NgIf } from "@angular/common";
 import { TipDirective } from "../../directives/tip.directive";
+import { EventEmitter, Output } from "@angular/core";
+import { ActivateDirective } from "../../directives/activate.directive";
 
 @Component({
     selector: "clark-rating-stars",
     templateUrl: "./rating-stars.component.html",
     styleUrls: ["./rating-stars.component.scss"],
     standalone: true,
-    imports: [NgStyle, TipDirective, NgFor, NgIf],
+    imports: [NgStyle, TipDirective, NgFor, NgIf, ActivateDirective],
 })
 export class RatingStarsComponent implements OnInit, OnChanges {
     /**
@@ -41,9 +43,16 @@ export class RatingStarsComponent implements OnInit, OnChanges {
      */
     @Input() size: number;
 
-    iterableCount: Array<any>;
+    @Input() interactive = false;
 
+    @Input() loggedIn: boolean;
+
+    @Output() selectedRating = new EventEmitter<number>();
+
+    iterableCount: number[];
     styles: { fontSize?: string } = {};
+
+    activeHover = -1;
 
     constructor() {}
 
@@ -61,8 +70,31 @@ export class RatingStarsComponent implements OnInit, OnChanges {
         }
     }
 
+    get roundedReview(): number {
+        return parseFloat((this.rating ?? 0).toFixed(1));
+    }
+
     get calculateBarWidth(): string {
+        const displayedRating =
+            this.activeHover > -1 ? this.activeHover + 1 : (this.rating ?? 0);
         // subtracting 2px from full bar appears to achieve closest result
-        return `calc(${(this.rating / this.count) * 100}% - 2px)`;
+        return `calc(${(displayedRating / this.count) * 100}% - 2px)`;
+    }
+
+    setHover(i: number) {
+        if (this.interactive && this.loggedIn) {
+            this.activeHover = i;
+        }
+    }
+
+    selectRating(value: number) {
+        if (this.interactive && this.loggedIn) {
+            this.selectedRating.emit(value);
+        }
+    }
+
+    reset() {
+        // reset the hover
+        this.activeHover = -1;
     }
 }
