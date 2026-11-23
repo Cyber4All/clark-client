@@ -68,4 +68,51 @@ describe("LearningObjectService", () => {
             },
         ]);
     });
+
+    it("does not assign failed resource responses to the learning object", () => {
+        const warnSpy = jest
+            .spyOn(console, "warn")
+            .mockImplementation(() => {});
+        let result: LearningObject | undefined;
+
+        service
+            .fetchLearningObjectWithResources(
+                { cuidInfo: { cuid: "object-cuid", version: undefined } },
+                ["children", "outcomes"],
+            )
+            .subscribe((object) => {
+                result = object as LearningObject;
+            });
+
+        httpMock
+            .expectOne(`${environment.apiURL}/learning-objects/object-cuid`)
+            .flush([
+                {
+                    id: "object-id",
+                    cuid: "object-cuid",
+                    version: 1,
+                    status: LearningObject.Status.RELEASED,
+                    name: "Object",
+                    description: "Description",
+                    resourceUris: {
+                        children: "http://test/children",
+                        outcomes: "http://test/outcomes",
+                    },
+                },
+            ]);
+
+        httpMock
+            .expectOne("http://test/children")
+            .error(new ProgressEvent("error"), { status: 0 });
+        httpMock.expectOne("http://test/outcomes").flush([]);
+
+        expect(result).toBeInstanceOf(LearningObject);
+        expect(Array.isArray(result.children)).toBe(true);
+        expect(result.children).toHaveLength(0);
+        expect(warnSpy).toHaveBeenCalledWith(
+            expect.stringContaining("children"),
+            expect.objectContaining({ status: 0 }),
+        );
+        warnSpy.mockRestore();
+    });
 });

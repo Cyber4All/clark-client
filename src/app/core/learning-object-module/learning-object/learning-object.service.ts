@@ -36,6 +36,15 @@ export const CALLBACKS = {
     },
 };
 
+/**
+ * Returns true when a resource fetched through `fetchUri` failed.
+ * `fetchUri` converts request/callback errors into values via `catchError`,
+ * so failures must be filtered out before being assigned to a learning object.
+ */
+export function isFailedResource(data: unknown): boolean {
+    return data instanceof HttpErrorResponse || data instanceof Error;
+}
+
 export interface LearningObjectBuildRequest {
     fields: Array<"name" | "description" | "learningOutcomes">;
 }
@@ -232,6 +241,19 @@ export class LearningObjectService {
                             }),
                         )
                         .subscribe((resource) => {
+                            if (isFailedResource(resource.data)) {
+                                console.warn(
+                                    `Failed to load learning object resource "${resource.name}"`,
+                                    {
+                                        learningObjectId: object.id,
+                                        status: (resource.data as any)?.status,
+                                        url: (resource.data as any)?.url,
+                                        message: (resource.data as any)
+                                            ?.message,
+                                    },
+                                );
+                                return;
+                            }
                             object[resource.name] = resource.data;
                         });
                 } else {
