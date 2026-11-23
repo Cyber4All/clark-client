@@ -384,11 +384,6 @@ export class LearningObjectBuilderComponent
         }
     }
 
-    get errorState(): boolean {
-        this.errorMessage = this.validator.nextError;
-
-        return this.validator.submissionMode && !this.validator.submittable;
-    }
 
     /**
      * Determines whether or not a Learning Object is in the Review Stage.
