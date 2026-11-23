@@ -143,12 +143,6 @@
                                     Materials
                                 </li>
                                 <li
-                                    *ngIf="actionPermissions('submit')"
-                                    (activate)="submit.emit()">
-                                    <i class="fa-regular fa-eye"></i>Submit for
-                                    Review
-                                </li>
-                                <li
                                     *ngIf="actionPermissions('submitHierarchy')"
                                     (activate)="submitHierarchy.emit()">
                                     <i class="fa fa-level-down"></i>Submit Full
