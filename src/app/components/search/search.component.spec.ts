@@ -1,25 +1,48 @@
-import { waitForAsync, ComponentFixture, TestBed } from "@angular/core/testing";
-
 import { SearchComponent } from "./search.component";
 
-describe("SearchComponent", () => {
-    let component: SearchComponent;
-    let fixture: ComponentFixture<SearchComponent>;
+describe("Browse text search sorting", () => {
+    it.each([-1, 1])(
+        "preserves rating direction %s and filters while resetting pagination",
+        (sortType) => {
+            const navigate = jest.fn();
+            const component = new SearchComponent(
+                { navigate } as any,
+                {
+                    snapshot: {
+                        queryParams: {
+                            orderBy: "rating",
+                            sortType,
+                            currPage: 3,
+                            topics: "topic-1",
+                        },
+                    },
+                } as any,
+                {} as any,
+            );
+            component.performSearch({ value: " security ", blur: jest.fn() });
+            expect(navigate).toHaveBeenCalledWith(["/browse"], {
+                queryParams: {
+                    orderBy: "rating",
+                    sortType,
+                    currPage: 1,
+                    topics: "topic-1",
+                    text: "security",
+                },
+            });
+        },
+    );
 
-    beforeEach(waitForAsync(() => {
-        TestBed.configureTestingModule({
-            imports: [SearchComponent],
-            teardown: { destroyAfterEach: false },
-        }).compileComponents();
-    }));
-
-    beforeEach(() => {
-        fixture = TestBed.createComponent(SearchComponent);
-        component = fixture.componentInstance;
-        fixture.detectChanges();
-    });
-
-    it("should create", () => {
-        expect(component).toBeTruthy();
-    });
+    it.each(["date", "downloads", undefined])(
+        "preserves legacy relevance behavior for %s",
+        (orderBy) => {
+            const navigate = jest.fn();
+            const component = new SearchComponent(
+                { navigate } as any,
+                { snapshot: { queryParams: { orderBy } } } as any,
+                {} as any,
+            );
+            component.performSearch({ value: "security", blur: jest.fn() });
+            expect(navigate.mock.calls[0][1].queryParams.orderBy).toBe("none");
+        },
+    );
 });

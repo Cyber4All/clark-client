@@ -490,6 +490,38 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
         this.cd.detectChanges();
     }
 
+    /**
+     * Keeps the selected-sort label synchronized with URL query parameters.
+     * This is used on initial load and browser back/forward navigation.
+     */
+    private updateSortText(): void {
+        if (this.query.orderBy === OrderBy.None) {
+            this.sortText = "";
+        } else if (
+            this.query.orderBy === OrderBy.Rating &&
+            this.query.sortType === SortType.Descending
+        ) {
+            this.sortText = "Average Rating (Highest)";
+        } else if (
+            this.query.orderBy === OrderBy.Rating &&
+            this.query.sortType === SortType.Ascending
+        ) {
+            this.sortText = "Average Rating (Lowest)";
+        } else if (
+            this.query.orderBy === OrderBy.Downloads &&
+            this.query.sortType === SortType.Descending
+        ) {
+            this.sortText = "Most Downloaded";
+        } else if (
+            this.query.orderBy === OrderBy.Date &&
+            this.query.sortType === SortType.Ascending
+        ) {
+            this.sortText = "Oldest";
+        } else {
+            this.sortText = "Newest";
+        }
+    }
+
     toggleSort(val) {
         if (val !== null) {
             if (val === "dd") {
@@ -504,8 +536,17 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
                 this.sortText = "Most Downloaded";
                 this.query.orderBy = OrderBy.Downloads;
                 this.query.sortType = SortType.Descending;
+            } else if (val === "rh") {
+                this.sortText = "Average Rating (Highest)";
+                this.query.orderBy = OrderBy.Rating;
+                this.query.sortType = SortType.Descending;
+            } else if (val === "rl") {
+                this.sortText = "Average Rating (Lowest)";
+                this.query.orderBy = OrderBy.Rating;
+                this.query.sortType = SortType.Ascending;
             }
             // remove date filters if previously set
+            this.query.currPage = 1;
             delete this.query.start;
             delete this.query.end;
 
@@ -565,6 +606,7 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
             status: [LearningObject.Status.RELEASED],
             tags: toStringArray(params.tags),
         };
+        this.updateSortText();
     }
 
     async fetchLearningObjects(query: Query) {

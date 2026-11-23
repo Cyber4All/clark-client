@@ -12,6 +12,7 @@ import { takeUntil, filter } from "rxjs/operators";
 import { NavbarService } from "app/core/client-module/navbar.service";
 import { FormsModule } from "@angular/forms";
 import { ActivateDirective } from "../../shared/directives/activate.directive";
+import { OrderBy } from "../../interfaces/query";
 
 @Component({
     selector: "clark-search",
@@ -109,12 +110,14 @@ export class SearchComponent implements OnInit, OnDestroy {
             searchbar.blur();
 
             const params = {
-                // Keep the current filters and sorts but start at 1 when searching by text
-                // Disable any other sorting
+                // Keep explicit rating sorting; other searches retain relevance ordering.
                 ...this.route.snapshot.queryParams,
                 text,
                 currPage: 1,
-                orderBy: "none",
+                orderBy:
+                    this.route.snapshot.queryParams.orderBy === OrderBy.Rating
+                        ? OrderBy.Rating
+                        : OrderBy.None,
             };
 
             this.router.navigate(["/browse"], {
