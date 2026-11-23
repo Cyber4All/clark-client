@@ -1,8 +1,8 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
 import { UntypedFormGroup, FormsModule } from "@angular/forms";
-import { MatchValidator } from "app/shared/validators/MatchValidator";
-import { AuthValidationService } from "app/core/auth-module/auth-validation.service";
-import { AuthService } from "app/core/auth-module/auth.service";
+import { AuthValidationService } from "../../core/auth-module/auth-validation.service";
+import { AuthService } from "../../core/auth-module/auth.service";
+import { MatchValidator } from "../../shared/validators/MatchValidator";
 import { debounce, takeUntil } from "rxjs/operators";
 import { Subject, interval } from "rxjs";
 import {
@@ -61,8 +61,6 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy {
 
     emails: UntypedFormGroup;
 
-    emailInUse = true;
-    emailErrorMsg = "";
     private ngUnsubscribe = new Subject<void>();
 
     constructor(
@@ -104,10 +102,6 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy {
      * Displays an error banner if an error is thrown.
      */
     submit(): void {
-        // Validate the email first
-        this.validateEmail();
-
-        // Check if the form is valid
         if (this.emails.valid) {
             this.authService
                 .initiateResetPassword(this.emails.get("email").value)
@@ -122,33 +116,8 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy {
                     },
                 );
         } else {
-            // Handle form invalid state
             this.toggleButton();
         }
-    }
-
-    private validateEmail(): void {
-        const emails = this.emails.get("email");
-
-        // Clear any previous errors
-        emails.setErrors(null);
-
-        this.authService
-            .emailInUse(emails.value)
-            .then((res: any) => {
-                this.emailInUse = res.identifierInUse;
-                if (this.emailInUse) {
-                    this.emailErrorMsg = "This email is already registered!";
-                    emails.setErrors({ emailInUse: true });
-                } else {
-                    this.emailErrorMsg = "";
-                }
-            })
-            .catch((err) => {
-                const parsedError = JSON.parse(err);
-                this.errorMessage = parsedError.message;
-                this.authValidationService.showError();
-            });
     }
 
     ngOnDestroy(): void {
