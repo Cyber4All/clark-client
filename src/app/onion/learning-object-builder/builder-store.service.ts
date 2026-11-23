@@ -621,7 +621,6 @@ export class BuilderStore {
             case BUILDER_ACTIONS.CHANGE_STATUS:
                 if (this.savedCorrectly) {
                     return await this.changeStatus(data.status, data.reason);
-                } else {
                 }
             case BUILDER_ACTIONS.TOGGLE_BUNDLE:
                 return await this.toggleBundle(data);
