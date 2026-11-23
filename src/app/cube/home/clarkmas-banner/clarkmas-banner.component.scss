@@ -1,0 +1,120 @@
+:host {
+    display: block;
+}
+
+.banner {
+    // Fixed campaign colors sampled from the supplied mockup.
+    --clarkmas-background-start: #011f48;
+    --clarkmas-background-end: #1e6094;
+    --clarkmas-text: #e4edf7;
+    --clarkmas-action-background: #fcc456;
+    --clarkmas-action-text: #011f48;
+
+    position: relative;
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+    // Match the desktop splash's 315px video, vertical padding, and border.
+    min-height: 536px;
+    padding: 44px 5.15vw;
+    background: linear-gradient(
+        90deg,
+        var(--clarkmas-background-start),
+        var(--clarkmas-background-end)
+    );
+    color: var(--clarkmas-text);
+}
+
+.banner__content {
+    position: relative;
+    z-index: 1;
+    width: min(50.7vw, 44rem);
+}
+
+.banner__title {
+    margin: 0;
+
+    img {
+        display: block;
+        width: 100%;
+        height: auto;
+    }
+}
+
+.banner__description {
+    max-width: min(42vw, 37.5rem);
+    margin: clamp(16px, 1.7vw, 24px) 0;
+    font-size: clamp(1rem, 1.55vw, 2rem);
+    line-height: 1.3;
+    letter-spacing: 0.03em;
+}
+
+.banner__action {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    min-height: 44px;
+    padding: 0.85em 1em;
+    border: 1px solid var(--clarkmas-action-text);
+    border-radius: 0.55em;
+    background-color: var(--clarkmas-action-background);
+    color: var(--clarkmas-action-text);
+    font-family: inherit;
+    font-size: clamp(1rem, 1.45vw, 1.875rem);
+    font-weight: 700;
+    line-height: 1.2;
+    text-align: center;
+
+    &:visited {
+        color: var(--clarkmas-action-text);
+    }
+
+    &:focus-visible {
+        outline: 2px solid var(--clarkmas-text);
+        outline-offset: 3px;
+    }
+}
+
+.banner__village {
+    position: absolute;
+    right: 5.8%;
+    bottom: 64px;
+    width: min(46.6%, 44rem);
+    // Every village SVG uses the same viewBox to preserve layer alignment.
+    aspect-ratio: 2416 / 1312;
+    pointer-events: none;
+
+    img {
+        position: absolute;
+        inset: 0;
+        display: block;
+        width: 100%;
+        height: 100%;
+    }
+}
+
+@media (max-width: 767px) {
+    .banner {
+        display: block;
+        min-height: auto;
+        padding: 36px 5.15vw 28px;
+    }
+
+    .banner__content {
+        width: min(100%, 34rem);
+    }
+
+    .banner__description {
+        max-width: 40ch;
+        margin: 20px 0;
+    }
+
+    .banner__village {
+        position: relative;
+        right: auto;
+        bottom: auto;
+        width: min(100%, 34rem);
+        margin: 24px auto 0;
+    }
+}
