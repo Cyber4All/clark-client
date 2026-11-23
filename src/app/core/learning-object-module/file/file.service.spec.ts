@@ -8,6 +8,73 @@ import type {
 } from "./file-processing-status.types";
 import { FILE_METADATA_ROUTES } from "./file.routes";
 
+describe("FileService explorer operations", () => {
+    const learningObjectId = "507f1f77bcf86cd799439011";
+    const fileId = "507f1f77bcf86cd799439012";
+    let patch: jest.Mock;
+    let service: FileService;
+
+    beforeEach(() => {
+        patch = jest.fn(() => of(undefined));
+        service = new FileService({ patch } as unknown as HttpClient);
+    });
+
+    it("renames a file through the authenticated rename endpoint", async () => {
+        await service
+            .renameFile(learningObjectId, fileId, "guide.pdf")
+            .toPromise();
+
+        expect(patch).toHaveBeenCalledWith(
+            FILE_METADATA_ROUTES.RENAME_LEARNING_OBJECT_FILE(
+                learningObjectId,
+                fileId,
+            ),
+            { name: "guide.pdf" },
+            expect.objectContaining({ withCredentials: true }),
+        );
+    });
+
+    it("moves a file through the authenticated move endpoint", async () => {
+        await service
+            .moveFile(learningObjectId, fileId, "unit-one")
+            .toPromise();
+
+        expect(patch).toHaveBeenCalledWith(
+            FILE_METADATA_ROUTES.MOVE_LEARNING_OBJECT_FILE(
+                learningObjectId,
+                fileId,
+            ),
+            { destinationPath: "unit-one" },
+            expect.objectContaining({ withCredentials: true }),
+        );
+    });
+
+    it("renames a folder through the authenticated folder endpoint", async () => {
+        await service
+            .renameFolder(learningObjectId, "old/unit", "lesson")
+            .toPromise();
+
+        expect(patch).toHaveBeenCalledWith(
+            FILE_METADATA_ROUTES.RENAME_LEARNING_OBJECT_FOLDER(
+                learningObjectId,
+            ),
+            { path: "old/unit", name: "lesson" },
+            expect.objectContaining({ withCredentials: true }),
+        );
+    });
+
+    it("passes service failures to the caller", (done) => {
+        patch.mockReturnValue(throwError(new Error("service unavailable")));
+
+        service.renameFile(learningObjectId, fileId, "guide.pdf").subscribe({
+            error: (error) => {
+                expect(error.message).toBe("service unavailable");
+                done();
+            },
+        });
+    });
+});
+
 describe("FileService previews", () => {
     let service: FileService;
     let openSpy: jest.SpyInstance;

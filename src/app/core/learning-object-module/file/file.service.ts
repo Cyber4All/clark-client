@@ -453,6 +453,59 @@ export class FileService {
             .toPromise();
     }
 
+    renameFile(
+        learningObjectId: string,
+        fileId: string,
+        name: string,
+    ): Observable<void> {
+        return this.patchFileOperation(
+            FILE_METADATA_ROUTES.RENAME_LEARNING_OBJECT_FILE(
+                learningObjectId,
+                fileId,
+            ),
+            { name },
+        );
+    }
+
+    moveFile(
+        learningObjectId: string,
+        fileId: string,
+        destinationPath: string,
+    ): Observable<void> {
+        return this.patchFileOperation(
+            FILE_METADATA_ROUTES.MOVE_LEARNING_OBJECT_FILE(
+                learningObjectId,
+                fileId,
+            ),
+            { destinationPath },
+        );
+    }
+
+    renameFolder(
+        learningObjectId: string,
+        path: string,
+        name: string,
+    ): Observable<void> {
+        return this.patchFileOperation(
+            FILE_METADATA_ROUTES.RENAME_LEARNING_OBJECT_FOLDER(
+                learningObjectId,
+            ),
+            { path, name },
+        );
+    }
+
+    private patchFileOperation(
+        route: string,
+        body: Record<string, string>,
+    ): Observable<void> {
+        return this.http
+            .patch<void>(route, body, {
+                headers: this.headers,
+                withCredentials: true,
+            })
+            .pipe(catchError(this.handleError));
+    }
+
     // Updates the README of a learning object
     async updateReadme(id: string): Promise<any> {
         return await this.http

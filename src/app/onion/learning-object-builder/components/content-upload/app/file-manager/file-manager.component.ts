@@ -14,9 +14,41 @@ import { DirectoryNode } from "app/shared/modules/filesystem/DirectoryNode";
 import { LearningObject } from "@entity";
 import { takeUntil, take } from "rxjs/operators";
 import { FileBrowserComponent } from "../../../../../../shared/modules/filesystem/file-browser/file-browser.component";
-import { NgIf } from "@angular/common";
+import { NgFor, NgIf } from "@angular/common";
 import { ContextMenuComponent } from "../../../../../../shared/modules/contextmenu/context-menu/context-menu.component";
 import { ActivateDirective } from "../../../../../../shared/directives/activate.directive";
+import { PopupComponent } from "../../../../../../shared/modules/popups/popup.component";
+import { ReactiveFormsModule, UntypedFormControl } from "@angular/forms";
+import { FileService } from "app/core/learning-object-module/file/file.service";
+import { ToastrOvenService } from "app/shared/modules/toaster/notification.service";
+
+const INVALID_MATERIAL_NAME_CHARACTERS = /[&$@=;\/\\:+,?{^}%`"[\]~#|<>*]/;
+
+export function validateMaterialName(
+    name: string,
+    originalName: string,
+    isFile: boolean,
+): string | null {
+    const trimmedName = name.trim();
+    if (!trimmedName) return "A name is required.";
+    if (
+        trimmedName === "." ||
+        trimmedName === ".." ||
+        INVALID_MATERIAL_NAME_CHARACTERS.test(trimmedName)
+    ) {
+        return "The name contains an invalid character.";
+    }
+    if (trimmedName === originalName) return "Enter a different name.";
+    if (isFile && getExtension(trimmedName) !== getExtension(originalName)) {
+        return "The file extension cannot be changed.";
+    }
+    return null;
+}
+
+function getExtension(name: string): string {
+    const lastDot = name.lastIndexOf(".");
+    return lastDot > 0 ? name.slice(lastDot).toLowerCase() : "";
+}
 
 export interface FileEdit {
     id?: string;
@@ -33,11 +65,15 @@ export interface FileEdit {
     imports: [
         FileBrowserComponent,
         NgIf,
+        NgFor,
         ContextMenuComponent,
         ActivateDirective,
+        PopupComponent,
+        ReactiveFormsModule,
     ],
 })
 export class FileManagerComponent implements OnInit, OnDestroy {
+    @Input() learningObjectId: string;
     @Input()
     files$: BehaviorSubject<LearningObject.Material.File[]> =
         new BehaviorSubject<LearningObject.Material.File[]>([]);
@@ -69,6 +105,11 @@ export class FileManagerComponent implements OnInit, OnDestroy {
     menuItem: any;
     showNewOptions: boolean;
     showFileOptions: boolean;
+    operation: "rename" | "move";
+    operationLoading = false;
+    operationError = "";
+    operationControl = new UntypedFormControl("");
+    folderDestinations: string[] = [];
 
     componentDestroyed$ = new Subject<void>();
 
@@ -80,7 +121,10 @@ export class FileManagerComponent implements OnInit, OnDestroy {
         this.directoryTree,
     );
 
-    constructor() {}
+    constructor(
+        private fileService: FileService,
+        private toaster: ToastrOvenService,
+    ) {}
 
     ngOnInit() {
         this.files$
@@ -135,17 +179,236 @@ export class FileManagerComponent implements OnInit, OnDestroy {
         return item instanceof DirectoryNode;
     }
 
+    openOperation(operation: "rename" | "move"): void {
+        this.operation = operation;
+        if (operation === "rename") {
+            this.operationControl.setValue(
+                this.isDirectory(this.menuItem)
+                    ? this.menuItem.getName()
+                    : this.menuItem.name,
+            );
+        } else {
+            this.folderDestinations = [""];
+            this.collectFolderDestinations(
+                this.directoryTree.traversePath([]),
+                this.folderDestinations,
+            );
+            this.operationControl.setValue(
+                this.getParentPath(
+                    this.menuItem.fullPath || this.menuItem.name,
+                ),
+            );
+        }
+        this.operationError = "";
+        this.closeContextMenu(true);
+    }
+
+    cancelOperation(): void {
+        if (this.operationLoading) return;
+        this.operation = undefined;
+        this.operationError = "";
+        this.menuItem = undefined;
+    }
+
+    submitOperation(event: SubmitEvent): void {
+        event.preventDefault();
+        if (this.operationLoading) return;
+        void (this.operation === "rename"
+            ? this.submitRename()
+            : this.submitMove());
+    }
+
+    async submitRename(): Promise<void> {
+        if (this.operationLoading) return;
+
+        const item = this.menuItem;
+        if (!item) {
+            this.operationError =
+                "The selected item is no longer available. Close this dialog and try again.";
+            return;
+        }
+        const isFolder = this.isDirectory(item);
+        const originalName = isFolder ? item.getName() : item.name;
+        const name = `${this.operationControl.value || ""}`.trim();
+        const validationError = validateMaterialName(
+            name,
+            originalName,
+            !isFolder,
+        );
+        if (validationError) {
+            this.operationError = validationError;
+            return;
+        }
+        if (this.destinationNameExists(item, name)) {
+            this.operationError = "An item with that name already exists here.";
+            return;
+        }
+
+        await this.runOperation(
+            () =>
+                isFolder
+                    ? this.fileService
+                          .renameFolder(
+                              this.learningObjectId,
+                              item.getPath(),
+                              name,
+                          )
+                          .toPromise()
+                    : this.fileService
+                          .renameFile(this.learningObjectId, item._id, name)
+                          .toPromise(),
+            () => this.applyRename(item, name),
+            "Renamed",
+        );
+    }
+
+    async submitMove(): Promise<void> {
+        if (this.operationLoading) return;
+
+        const file = this.menuItem as LearningObject.Material.File;
+        if (!file) {
+            this.operationError =
+                "The selected file is no longer available. Close this dialog and try again.";
+            return;
+        }
+        const destinationPath = `${this.operationControl.value || ""}`;
+        const currentParent = this.getParentPath(file.fullPath || file.name);
+        if (destinationPath === currentParent) {
+            this.operationError = "Choose a different destination.";
+            return;
+        }
+        const destination = this.directoryTree.traversePath(
+            destinationPath ? destinationPath.split("/") : [],
+        );
+        if (destination?.getFiles().some((item) => item.name === file.name)) {
+            this.operationError =
+                "A file with that name already exists in the destination.";
+            return;
+        }
+
+        await this.runOperation(
+            () =>
+                this.fileService
+                    .moveFile(this.learningObjectId, file._id, destinationPath)
+                    .toPromise(),
+            () => {
+                file.fullPath = destinationPath
+                    ? `${destinationPath}/${file.name}`
+                    : file.name;
+                this.refreshFiles();
+            },
+            "Moved",
+        );
+    }
+
+    private async runOperation(
+        createRequest: () => Promise<unknown>,
+        applyChange: () => void,
+        successTitle: string,
+    ): Promise<void> {
+        if (this.operationLoading) return;
+
+        this.operationLoading = true;
+        this.operationError = "";
+        try {
+            await createRequest();
+            applyChange();
+            this.toaster.success(
+                successTitle,
+                "The file explorer was updated.",
+            );
+            this.operation = undefined;
+            this.menuItem = undefined;
+        } catch (error) {
+            this.operationError =
+                error?.error?.message ||
+                error?.message ||
+                "The change could not be saved. Please try again.";
+        } finally {
+            this.operationLoading = false;
+        }
+    }
+
+    private applyRename(
+        item: DirectoryNode | LearningObject.Material.File,
+        name: string,
+    ): void {
+        if (!(item instanceof DirectoryNode)) {
+            const parentPath = this.getParentPath(item.fullPath || item.name);
+            item.name = name;
+            item.fullPath = parentPath ? `${parentPath}/${name}` : name;
+            this.refreshFiles();
+            return;
+        }
+
+        const oldPath = item.getPath();
+        const parentPath = this.getParentPath(oldPath);
+        const newPath = parentPath ? `${parentPath}/${name}` : name;
+        this.files$.value.forEach((file) => {
+            if (file.fullPath?.startsWith(`${oldPath}/`)) {
+                file.fullPath = `${newPath}${file.fullPath.slice(oldPath.length)}`;
+            }
+        });
+        const descriptions = this.folderMeta$.value || [];
+        descriptions.forEach((folder) => {
+            if (
+                folder.path === oldPath ||
+                folder.path.startsWith(`${oldPath}/`)
+            ) {
+                folder.path = `${newPath}${folder.path.slice(oldPath.length)}`;
+            }
+        });
+        this.folderMeta$.next([...descriptions]);
+        this.refreshFiles();
+    }
+
+    private refreshFiles(): void {
+        this.files$.next([...(this.files$.value || [])]);
+    }
+
+    private destinationNameExists(
+        item: DirectoryNode | LearningObject.Material.File,
+        name: string,
+    ): boolean {
+        const parent =
+            item instanceof DirectoryNode
+                ? item.getParent()
+                : this.directoryTree.traversePath(
+                      this.getParentPath(item.fullPath || item.name)
+                          .split("/")
+                          .filter(Boolean),
+                  );
+        return (
+            parent?.getFolders().some((folder) => folder.getName() === name) ||
+            parent?.getFiles().some((file) => file.name === name)
+        );
+    }
+
+    private collectFolderDestinations(
+        node: DirectoryNode,
+        destinations: string[],
+    ): void {
+        node.getFolders().forEach((folder) => {
+            destinations.push(folder.getPath());
+            this.collectFolderDestinations(folder, destinations);
+        });
+    }
+
+    private getParentPath(path: string): string {
+        return path.includes("/") ? path.slice(0, path.lastIndexOf("/")) : "";
+    }
+
     /**
      * Closes all context menus
      *
      * @memberof FileManagerComponent
      */
-    closeContextMenu() {
+    closeContextMenu(preserveItem = false) {
         this.showNewOptions = false;
         this.showFileOptions = false;
         this.menuAnchor = undefined;
 
-        if (!this.editDescription) {
+        if (!this.editDescription && !preserveItem && !this.operation) {
             this.menuItem = undefined;
         }
     }

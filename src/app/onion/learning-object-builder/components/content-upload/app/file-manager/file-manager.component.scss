@@ -112,6 +112,53 @@
     text-align: center;
 }
 
+.file-operation-dialog {
+    box-sizing: border-box;
+    min-width: 420px;
+    padding: 24px;
+
+    label,
+    input,
+    select {
+        display: block;
+        width: 100%;
+    }
+
+    input,
+    select {
+        box-sizing: border-box;
+        margin-top: 8px;
+        padding: 10px;
+    }
+
+    .operation-error {
+        color: $error-red;
+        margin: 8px 0 0;
+    }
+
+    .btn-group {
+        margin-top: 20px;
+    }
+
+    .operation-spinner {
+        display: inline-block;
+        width: 12px;
+        height: 12px;
+        margin-right: 8px;
+        border: 2px solid rgba(255, 255, 255, 0.45);
+        border-top-color: white;
+        border-radius: 50%;
+        vertical-align: -2px;
+        animation: operation-spinner-rotate 0.75s linear infinite;
+    }
+}
+
+@keyframes operation-spinner-rotate {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
 .description-popup-inner {
     min-width: 500px;
 

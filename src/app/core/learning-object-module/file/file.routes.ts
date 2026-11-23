@@ -24,6 +24,24 @@ export const FILE_METADATA_ROUTES = {
         )}/materials/files/${encodeURIComponent(fileId)}`;
     },
 
+    RENAME_LEARNING_OBJECT_FILE(learningObjectId: string, fileId: string) {
+        return `${environment.apiURL}/learning-objects/${encodeURIComponent(
+            learningObjectId,
+        )}/materials/files/${encodeURIComponent(fileId)}/rename`;
+    },
+
+    MOVE_LEARNING_OBJECT_FILE(learningObjectId: string, fileId: string) {
+        return `${environment.apiURL}/learning-objects/${encodeURIComponent(
+            learningObjectId,
+        )}/materials/files/${encodeURIComponent(fileId)}/move`;
+    },
+
+    RENAME_LEARNING_OBJECT_FOLDER(learningObjectId: string) {
+        return `${environment.apiURL}/learning-objects/${encodeURIComponent(
+            learningObjectId,
+        )}/materials/folders/rename`;
+    },
+
     DELETE_LEARNING_OBJECT_FILE_METADATA(
         learningObjectId: string,
         fileId: string,
