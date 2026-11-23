@@ -150,6 +150,17 @@
                             text: 'Learning Outcomes',
                         }"></ng-container>
                 </li>
+                <li>
+                    <ng-container
+                        aria-label="Hierarchy Link"
+                        [ngTemplateOutlet]="navItemTemplate"
+                        [ngTemplateOutletContext]="{
+                            disabled: !canRoute('hierarchy'),
+                            link: 'hierarchy',
+                            text: 'Hierarchy',
+                            disabledTip: disabledTip(),
+                        }"></ng-container>
+                </li>
             </ul>
             <div class="builder-navbar-wrapper__saving-indicator">
                 <span
@@ -190,7 +201,8 @@
     #navItemTemplate
     let-link="link"
     let-disabled="disabled"
-    let-text="text">
+    let-text="text"
+    let-disabledTip="disabledTip">
     <a
         *ngIf="!disabled"
         [ngClass]="{ new: isNewRoute(link) }"
@@ -198,6 +210,16 @@
         routerLinkActive="active"
         (activate)="triggerRouteClick(link)"
         >{{ text }}</a
+    >
+    <a
+        [attr.aria-label]="disabledTip"
+        *ngIf="disabled"
+        class="disabled"
+        [tip]="disabledTip"
+        tipPosition="top"
+        [tipWrap]="true"
+        (activate)="triggerBlockedRouteClick()"
+        ><i class="fas fa-lock"></i>{{ text }}</a
     >
 </ng-template>
 

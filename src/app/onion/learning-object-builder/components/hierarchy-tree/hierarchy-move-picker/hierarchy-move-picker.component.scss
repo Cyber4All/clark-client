@@ -1,0 +1,376 @@
+@import "_vars.scss";
+
+:host {
+    display: block;
+    min-width: 0;
+}
+
+.hierarchy-move-picker {
+    --ink: #{$darker-grey};
+    --muted: #{$dark-grey};
+    --accent: #{$light-blue};
+    --line: #{$light-grey};
+    --connector: #d9dee5;
+    // Unavailable text stays at 4.9:1 on white so it is readable, but sits
+    // clearly below the ink of rows that can be picked.
+    --unavailable: #667180;
+    --unavailable-icon: #a4adb8;
+    --step: 22px;
+    display: flex;
+    flex-direction: column;
+    width: 760px;
+    max-width: calc(100vw - 32px);
+    max-height: calc(100dvh - 48px);
+    box-sizing: border-box;
+    overflow-y: auto;
+    border-radius: 12px;
+    background: #fff;
+    box-shadow: 0 20px 64px rgba(15, 35, 50, 0.22);
+    color: var(--ink);
+    font-size: 14px;
+    line-height: 1.5;
+
+    &,
+    * {
+        box-sizing: border-box;
+    }
+    button,
+    select {
+        font: inherit;
+    }
+    button,
+    select,
+    &__list,
+    &__option {
+        &:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: -2px;
+        }
+    }
+    &__header {
+        flex-shrink: 0;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 32px;
+        gap: 12px 16px;
+        padding: 24px;
+    }
+    &__eyebrow {
+        margin: 0 0 4px;
+        color: var(--muted);
+        font-size: 12px;
+        font-weight: 500;
+    }
+    &__heading {
+        margin: 0;
+        font-size: 22px;
+        font-weight: 600;
+        line-height: 1.3;
+        overflow-wrap: anywhere;
+    }
+    &__close {
+        width: 32px;
+        height: 32px;
+        padding: 0;
+        border: 0;
+        border-radius: 6px;
+        background: transparent;
+        color: var(--muted);
+        cursor: pointer;
+        &:hover {
+            background: $primary-white;
+        }
+    }
+    &__body {
+        min-height: 208px;
+        display: flex;
+        flex-direction: column;
+        padding: 16px 24px;
+        background: $secondary-white-background;
+        border-block: 1px solid var(--line);
+    }
+    &__tree-heading {
+        margin-bottom: 12px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 4px 12px;
+        align-items: baseline;
+        p {
+            margin: 0;
+            font-weight: 600;
+        }
+        > span {
+            color: var(--muted);
+            font-size: 12px;
+        }
+    }
+    &__list {
+        min-height: 100px;
+        max-height: 360px;
+        overflow: auto;
+        margin: 0;
+        padding: 8px;
+        list-style: none;
+        background: #fff;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+    }
+    &__option {
+        position: relative;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        min-height: 52px;
+        padding: 8px 12px 8px calc(12px + var(--depth) * var(--step));
+        border: 1px solid transparent;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: border-color 120ms ease;
+        &:focus-visible {
+            outline-color: var(--ink);
+        }
+        &.is-available {
+            background: #fff;
+            border-radius: 0;
+            .hierarchy-move-picker__option-name,
+            .hierarchy-move-picker__node-icon {
+                color: var(--ink);
+            }
+            &:hover {
+                background: #f3f4f6;
+            }
+        }
+        &.is-selected {
+            background: #edf5ff;
+            border-radius: 6px;
+            &:focus-visible {
+                outline-color: var(--accent);
+            }
+            border-color: var(--accent);
+            &:hover {
+                background: #edf5ff;
+                border-color: var(--accent);
+            }
+            .hierarchy-move-picker__availability {
+                color: #245b94;
+                font-weight: 600;
+            }
+        }
+        &[aria-disabled="true"] {
+            cursor: default;
+            // A quiet, continuous wash rather than a separate card per row.
+            background: #fafafa;
+            border-radius: 0;
+            .hierarchy-move-picker__option-name {
+                color: var(--unavailable);
+                font-weight: 400;
+            }
+            .hierarchy-move-picker__node-icon {
+                color: var(--unavailable-icon);
+            }
+        }
+        // The object being moved is the subject of the dialog: full ink on a
+        // neutral fill, with its "Moving" chip.
+        &.is-moving {
+            cursor: default;
+            background: $ternary-white-background;
+            .hierarchy-move-picker__option-name {
+                color: var(--ink);
+                font-weight: 600;
+            }
+            .hierarchy-move-picker__node-icon {
+                color: $dark-grey;
+            }
+        }
+    }
+    &__destination-arrow {
+        flex: 0 0 auto;
+        color: var(--ink);
+        font-size: 14px;
+    }
+    &__availability {
+        flex: 0 0 auto;
+        display: inline-flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 6px;
+        min-width: 110px;
+        color: #42566b;
+        font-size: 12px;
+        &.is-blocked {
+            min-width: 0;
+            color: var(--unavailable);
+            cursor: help;
+            &:focus-visible {
+                outline: 2px solid var(--ink);
+                outline-offset: 3px;
+            }
+        }
+        i {
+            font-size: 12px;
+        }
+    }
+    &__guide,
+    &__branch {
+        position: absolute;
+        pointer-events: none;
+    }
+    // Bridge the row borders so sibling spines join without a gap.
+    &__guide {
+        left: calc(19px + var(--level) * var(--step));
+        top: -1px;
+        bottom: -1px;
+        &.continues {
+            border-left: 1px solid var(--connector);
+        }
+    }
+    &__branch {
+        left: calc(19px + (var(--depth) - 1) * var(--step));
+        top: -1px;
+        bottom: -1px;
+        width: 14px;
+        &::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            border-left: 1px solid var(--connector);
+        }
+        &::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            width: 14px;
+            border-top: 1px solid var(--connector);
+        }
+        &.is-last::before {
+            bottom: 50%;
+        }
+    }
+    &__node-icon {
+        flex: 0 0 16px;
+        font-size: 15px;
+        color: var(--muted);
+    }
+    &__identity {
+        flex: 1;
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 1px;
+    }
+    &__meta {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 4px 8px;
+    }
+    &__option-name {
+        font-weight: 500;
+        overflow-wrap: anywhere;
+    }
+    &__option-badge {
+        font-size: 12px;
+        color: var(--unavailable);
+    }
+    &__option-hint {
+        flex: 0 0 auto;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        font-size: 12px;
+        color: var(--muted);
+        white-space: nowrap;
+    }
+    &__moving-label {
+        flex: 0 0 auto;
+        padding: 2px 7px;
+        border-radius: 4px;
+        background: $dark-white;
+        color: $dark-grey;
+        font-size: 11px;
+        font-weight: 600;
+    }
+    &__actions {
+        flex-shrink: 0;
+        display: flex;
+        justify-content: flex-end;
+        gap: 8px;
+        padding: 16px 24px 20px;
+    }
+    &__button {
+        min-height: 38px;
+        padding: 8px 18px;
+        border: 1px solid transparent;
+        border-radius: 6px;
+        font-weight: 600;
+        cursor: pointer;
+        &--ghost {
+            background: #fff;
+            border-color: $profile-border;
+            color: var(--ink);
+            &:hover {
+                background: $secondary-white-background;
+            }
+        }
+        &--primary {
+            background: $light-blue;
+            color: #fff;
+            &:hover:not(:disabled) {
+                background: darken($light-blue, 10%);
+            }
+            &:disabled {
+                background: $light-grey;
+                color: $dark-grey;
+                cursor: not-allowed;
+            }
+        }
+    }
+    &__empty {
+        margin: 0;
+        padding: 20px 0;
+        color: var(--muted);
+    }
+    &__error {
+        margin: 16px 24px 0;
+        padding: 10px 12px;
+        background: rgba($error-red, 0.06);
+        color: darken($error-red, 10%);
+        border-radius: 6px;
+    }
+}
+
+@media (max-width: 540px) {
+    .hierarchy-move-picker {
+        --step: 14px;
+        max-width: calc(100vw - 16px);
+        max-height: calc(100dvh - 24px);
+        &__header {
+            padding: 16px;
+        }
+        &__heading {
+            font-size: 19px;
+        }
+        &__body {
+            padding: 12px;
+        }
+        &__list {
+            padding: 4px;
+        }
+        &__option {
+            gap: 6px;
+            padding-right: 8px;
+        }
+        &__availability {
+            min-width: 0;
+            max-width: 76px;
+            line-height: 1.3;
+            text-align: right;
+        }
+        &__actions {
+            padding: 16px;
+        }
+        &__error {
+            margin-inline: 16px;
+        }
+    }
+}
