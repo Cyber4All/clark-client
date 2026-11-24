@@ -6,7 +6,7 @@ import { LearningObject } from "@entity";
 import { HierarchyViewService } from "./hierarchy-view.service";
 import { HierarchyLoaderService } from "./hierarchy-loader.service";
 import { HierarchyNode, NewChildRequest } from "./hierarchy-tree.types";
-import { builderIdentity } from "./hierarchy-node.mapper";
+import { authorIdentity, builderIdentity } from "./hierarchy-node.mapper";
 import { canHaveChildren, isValidChildLength } from "./hierarchy-length.util";
 
 /**
@@ -418,6 +418,7 @@ export class HierarchyEditService {
             const added = this.viewService.addChild(parentNodeId, {
                 learningObjectId: childId,
                 ...builderIdentity(candidate),
+                ...authorIdentity(candidate),
                 name: candidate.name,
                 length: candidate.length,
                 editable: false,

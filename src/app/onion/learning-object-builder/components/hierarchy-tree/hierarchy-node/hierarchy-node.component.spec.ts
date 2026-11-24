@@ -222,7 +222,7 @@ describe("HierarchyNodeComponent", () => {
     });
 
     describe("menuActions composition", () => {
-        it("lists Add Child, Link Released, Edit in Builder, Move, and Remove in that order", () => {
+        it("lists Add Child, Link Released, Edit in Builder, View Details, Move, and Remove in that order", () => {
             host.isRoot = false;
             host.node = makeNode({ cuid: "c-1", version: 0 });
             render();
@@ -231,6 +231,7 @@ describe("HierarchyNodeComponent", () => {
                 "add-child",
                 "link-existing",
                 "edit-in-builder",
+                "view-details",
                 "move",
                 "remove",
             ]);
@@ -243,12 +244,15 @@ describe("HierarchyNodeComponent", () => {
             expect(menuItem("edit-in-builder").textContent).toContain(
                 "Edit in Builder",
             );
+            expect(menuItem("view-details").textContent).toContain(
+                "View Details Page",
+            );
             expect(menuItem("move").textContent).toContain("Move Object");
             expect(menuItem("remove").textContent).toContain(
                 "Remove from Hierarchy",
             );
         });
-        it("enables every item for an editable, movable node that can hold children and has a Builder address", () => {
+        it("enables every item an editable, movable node can use (it has a Builder, not a details page)", () => {
             host.isRoot = false;
             host.node = makeNode({ cuid: "c-1", version: 0 });
             host.canMovePredicate = () => true;
@@ -256,8 +260,9 @@ describe("HierarchyNodeComponent", () => {
             render();
             openMenu();
             for (const item of overlayMenuItems()) {
-                expect(item.disabled).toBe(false);
-                expect(item.getAttribute("aria-disabled")).not.toBe("true");
+                const viewDetails =
+                    item.getAttribute("data-action-id") === "view-details";
+                expect(item.disabled).toBe(viewDetails);
             }
         });
         it("renders Move and Remove present-but-disabled when the predicate says not movable", () => {
@@ -347,6 +352,68 @@ describe("HierarchyNodeComponent", () => {
             render();
             openMenu();
             menuItem("link-existing").click();
+            fixture.detectChanges();
+            expect(host.emitted).toEqual([]);
+        });
+    });
+    describe("View Details Page", () => {
+        const linked = (over: Record<string, unknown> = {}) =>
+            makeNode({
+                editable: false,
+                linkedRoot: true,
+                cuid: "c-1",
+                version: 3,
+                authorUsername: "bob",
+                ...over,
+            } as any);
+
+        it("is enabled for a linked node with an author, cuid and version", () => {
+            host.node = linked();
+            render();
+            openMenu();
+            expect(menuItem("view-details").disabled).toBe(false);
+        });
+        it("is disabled for an editable node, which opens its Builder instead", () => {
+            host.node = makeNode({
+                cuid: "c-1",
+                version: 3,
+                authorUsername: "bob",
+            } as any);
+            render();
+            openMenu();
+            expect(menuItem("view-details").disabled).toBe(true);
+            expect(menuItem("edit-in-builder").disabled).toBe(false);
+        });
+        it.each(["authorUsername", "cuid", "version"])(
+            "is disabled without the %s",
+            (missing) => {
+                host.node = linked({ [missing]: undefined });
+                render();
+                openMenu();
+                expect(menuItem("view-details").disabled).toBe(true);
+            },
+        );
+        it("is disabled on the root", () => {
+            host.isRoot = true;
+            host.node = linked();
+            render();
+            openMenu();
+            expect(menuItem("view-details").disabled).toBe(true);
+        });
+        it("emits the view-details intent with this node's id", () => {
+            host.node = linked({ id: "linked-1" });
+            render();
+            openMenu();
+            menuItem("view-details").click();
+            fixture.detectChanges();
+            expect(host.emitted).toEqual([
+                { actionId: "view-details", nodeId: "linked-1" },
+            ]);
+        });
+        it("does not emit when disabled", () => {
+            render();
+            openMenu();
+            menuItem("view-details").click();
             fixture.detectChanges();
             expect(host.emitted).toEqual([]);
         });

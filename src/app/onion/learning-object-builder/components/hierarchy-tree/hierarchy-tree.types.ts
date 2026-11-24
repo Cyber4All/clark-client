@@ -45,6 +45,13 @@ export interface HierarchyNode {
     cuid?: string;
     version?: number;
 
+    /**
+     * Username of the author. With {@link cuid} and {@link version} it builds
+     * the public details page address (`/details/:username/:cuid/:version`),
+     * which a read-only (linked or inherited) node opens instead of a Builder.
+     */
+    authorUsername?: string;
+
     /** Display name of the learning object. */
     name: string;
 
@@ -103,14 +110,16 @@ export type AddChildAction = "create-new" | "add-existing";
  * unlink a child. `"add-child"` (sc-40236) creates a new learning object as a
  * child of the node. `"link-existing"` (sc-40641) searches released learning
  * objects and links one as a read-only child. `"edit-in-builder"` opens the
- * node's Builder in a new tab.
+ * node's Builder in a new tab. `"view-details"` opens a read-only node's
+ * public details page in a new tab.
  */
 export type NodeActionId =
     | "move"
     | "remove"
     | "add-child"
     | "link-existing"
-    | "edit-in-builder";
+    | "edit-in-builder"
+    | "view-details";
 
 /** A single rendered Action_Menu item for a node row. */
 export interface NodeAction {

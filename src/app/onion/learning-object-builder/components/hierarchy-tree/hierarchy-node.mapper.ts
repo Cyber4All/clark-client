@@ -48,6 +48,18 @@ export function builderIdentity(
 }
 
 /**
+ * The author's username, when known, for the details page address. Only
+ * present values are returned so nodes do not carry `undefined` keys.
+ */
+export function authorIdentity(
+    payload: Pick<LearningObject, "author">,
+): Pick<HierarchyNode, "authorUsername"> {
+    const username = payload.author?.username;
+
+    return username ? { authorUsername: username } : {};
+}
+
+/**
  * Map one API child into the tree view-model (without its children).
  *
  * `key` is the unique occurrence key for this appearance in the tree (see
@@ -68,6 +80,7 @@ export function toHierarchyNode(
             id: key,
             learningObjectId: payload.id,
             ...builderIdentity(payload),
+            ...authorIdentity(payload),
             name: payload.name,
             length: payload.length,
             editable: false,
@@ -80,6 +93,7 @@ export function toHierarchyNode(
         id: key,
         learningObjectId: payload.id,
         ...builderIdentity(payload),
+        ...authorIdentity(payload),
         name: payload.name,
         length: payload.length,
         editable,

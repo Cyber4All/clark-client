@@ -36,6 +36,8 @@ Out of scope: adding the author's own unreleased objects (SC-40237), reorder, li
 
 - [x] (2026-11-20 21:40Z) Review follow-up: after a successful link the drawer asks the server again for as many results as were showing, so its list, total, and paging offset match the server. Specs: 8 new/changed drawer specs, tree spec mock now leaves out a linked object like the API. Checked against the real API: linking a released Unit with six Modules took the Module candidate count from 639 to 633, and a retried link returned 200 without a duplicate.
 
+- [x] (2026-11-24) "View Details Page" action: a linked or inherited (read-only) node opens its public details page at the linked version in a new tab. Nodes now carry `authorUsername` (mapper and `link()`); `NodeActionId` adds `"view-details"`. Specs for the mapper, node menu, and tree; checked in the browser on a linked Unit and one of its inherited Modules.
+
 ## Surprises & Discoveries
 
 - Observation (review): linking an object also takes everything inside it out of the candidate results, because the server leaves out the whole hierarchy. The first version removed only the linked object from the drawer's list and computed the next page from the list length. With 20 of 31 results loaded, linking a Unit whose six Modules were among them left the list 7 shorter than the server's, so the offset was wrong and "Show more" could disappear with unseen results left.
@@ -77,6 +79,9 @@ Out of scope: adding the author's own unreleased objects (SC-40237), reorder, li
 
 - Decision (review): after a link, refresh the active search instead of patching the list. `markLinked` still removes the linked result at once, then repeats the search from page 1 asking for as many results as were showing, rounded up to whole pages. The old list stays on screen until the answer arrives (no skeleton), "Show more" waits while the refresh runs, a newer search the author starts replaces it, and a failed refresh shows the error state with Try again because the list may no longer match the server. Because the list then holds whole pages (or everything that is left), the next page is `floor(shown / 10) + 1` and lines up with the server again.
   Date/Author: 2026-11-20 / Kiro
+
+- Decision (2026-11-24): a read-only node opens `/details/:username/:cuid/:version` through a menu item "View Details Page", in a new tab (like "Edit in Builder"), and only for read-only nodes with an author, cuid, and version. Editable nodes open their Builder instead, because the details page shows released objects only. The version is included so the page matches the revision the hierarchy links to.
+  Date/Author: 2026-11-24 / Kiro
 
 ## Outcomes & Retrospective
 

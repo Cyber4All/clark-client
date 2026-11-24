@@ -100,6 +100,7 @@ describe("hierarchy-node.mapper", () => {
             ).toEqual({
                 id: "c1",
                 learningObjectId: "c1",
+                authorUsername: "alice",
                 name: "Child",
                 length: LearningObject.Length.MODULE,
                 editable: true,
@@ -152,6 +153,27 @@ describe("hierarchy-node.mapper", () => {
             );
             expect(node.id).toBe("root/u9/c1");
             expect(node.learningObjectId).toBe("c1");
+        });
+    });
+    describe("author username for the details page", () => {
+        it("is carried on editable, linked, and inherited nodes", () => {
+            const viewerAlice = viewer({ username: "alice" });
+            expect(toHierarchyNode(payload(), viewerAlice).authorUsername).toBe(
+                "alice",
+            );
+            expect(toHierarchyNode(payload(), viewer()).authorUsername).toBe(
+                "alice",
+            );
+            expect(
+                toHierarchyNode(payload(), viewerAlice, true).authorUsername,
+            ).toBe("alice");
+        });
+        it("is left out when the author is not known", () => {
+            const node = toHierarchyNode(
+                payload({ author: undefined }),
+                viewer(),
+            );
+            expect("authorUsername" in node).toBe(false);
         });
     });
     describe("builderIdentity", () => {

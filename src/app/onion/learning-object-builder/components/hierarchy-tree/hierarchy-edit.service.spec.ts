@@ -960,6 +960,7 @@ describe("HierarchyEditService", () => {
                 name: `released-${id}`,
                 length,
                 status: LearningObject.Status.RELEASED,
+                author: { username: "bob" },
                 ...over,
             }) as unknown as LearningObject;
 
@@ -1001,6 +1002,7 @@ describe("HierarchyEditService", () => {
                 learningObjectId: "rel",
                 cuid: "cuid-rel",
                 version: 3,
+                authorUsername: "bob",
                 name: "released-rel",
                 length: MODULE,
                 editable: false,

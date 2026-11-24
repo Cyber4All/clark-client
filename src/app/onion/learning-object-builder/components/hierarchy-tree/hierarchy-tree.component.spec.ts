@@ -1230,6 +1230,132 @@ describe("HierarchyTreeComponent (integration)", () => {
             ).toBeDefined();
         }));
 
+        describe("viewing the details page of a read-only node", () => {
+            const chooseViewDetails = (nodeId: string): void => {
+                triggerFor(nodeId).click();
+                flush();
+                fixture.detectChanges();
+                overlayMenuItems()
+                    .find(
+                        (item) =>
+                            item.getAttribute("data-action-id") ===
+                            "view-details",
+                    )!
+                    .click();
+                flush();
+            };
+            let openSpy: jest.SpyInstance;
+            beforeEach(() => {
+                openSpy = jest
+                    .spyOn(window, "open")
+                    .mockImplementation(() => null);
+            });
+            afterEach(() => openSpy.mockRestore());
+
+            it("opens the linked object's public details page, at the linked version, in a new tab", fakeAsync(() => {
+                linkViaMenu("unit-foundations");
+                escapeKey();
+                flush();
+                fixture.detectChanges();
+
+                chooseViewDetails("unit-foundations/rel-1");
+
+                expect(openSpy).toHaveBeenCalledWith(
+                    "/details/bob/cuid-rel-1/1",
+                    "_blank",
+                    "noopener",
+                );
+            }));
+
+            it("also opens an inherited object inside a linked subtree", fakeAsync(() => {
+                loadLinkedSubtree.mockReturnValue(
+                    of([
+                        {
+                            id: "unit-foundations/rel-1/inh",
+                            learningObjectId: "inh",
+                            cuid: "cuid-inh",
+                            version: 0,
+                            authorUsername: "carol",
+                            name: "Inherited micro",
+                            length: LearningObject.Length.MICROMODULE,
+                            editable: false,
+                            children: [],
+                        },
+                    ]),
+                );
+                linkViaMenu("unit-foundations");
+                escapeKey();
+                flush();
+                viewService.toggleExpanded("unit-foundations/rel-1");
+                fixture.detectChanges();
+
+                chooseViewDetails("unit-foundations/rel-1/inh");
+
+                expect(openSpy).toHaveBeenCalledWith(
+                    "/details/carol/cuid-inh/0",
+                    "_blank",
+                    "noopener",
+                );
+            }));
+
+            it("encodes the parts of the address", fakeAsync(() => {
+                viewService.setTree([
+                    {
+                        ...buildSpecTree()[0],
+                        children: [
+                            {
+                                id: "root/odd",
+                                learningObjectId: "odd",
+                                cuid: "cu id/1",
+                                version: 2,
+                                authorUsername: "a b/c",
+                                name: "Odd",
+                                length: LearningObject.Length.MODULE,
+                                editable: false,
+                                linkedRoot: true,
+                                children: [],
+                            },
+                        ],
+                    },
+                ]);
+                fixture.detectChanges();
+
+                chooseViewDetails("root/odd");
+
+                expect(openSpy).toHaveBeenCalledWith(
+                    "/details/a%20b%2Fc/cu%20id%2F1/2",
+                    "_blank",
+                    "noopener",
+                );
+            }));
+
+            it("is not offered on an editable node, which has a Builder", fakeAsync(() => {
+                triggerFor("unit-foundations").click();
+                flush();
+                fixture.detectChanges();
+                const item = overlayMenuItems().find(
+                    (i) => i.getAttribute("data-action-id") === "view-details",
+                )!;
+                expect(item.disabled).toBe(true);
+                item.click();
+                flush();
+                expect(openSpy).not.toHaveBeenCalled();
+            }));
+
+            it("opens nothing for a read-only node without a details address", fakeAsync(() => {
+                // "incident-response" in the fixture has no author, cuid or version.
+                triggerFor("incident-response").click();
+                flush();
+                fixture.detectChanges();
+                const item = overlayMenuItems().find(
+                    (i) => i.getAttribute("data-action-id") === "view-details",
+                )!;
+                expect(item.disabled).toBe(true);
+                (component as any).openDetails("incident-response");
+                expect(openSpy).not.toHaveBeenCalled();
+            }));
+        });
+
         it("closes on Escape and returns focus to the row's menu button", fakeAsync(() => {
             chooseLink("unit-foundations");
             escapeKey();

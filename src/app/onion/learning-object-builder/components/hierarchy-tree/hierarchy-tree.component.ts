@@ -410,6 +410,11 @@ export class HierarchyTreeComponent implements OnInit, OnChanges, OnDestroy {
 
             return;
         }
+        if (payload.actionId === "view-details") {
+            this.openDetails(payload.nodeId);
+
+            return;
+        }
         if (
             payload.actionId !== "move" &&
             payload.actionId !== "remove" &&
@@ -458,6 +463,31 @@ export class HierarchyTreeComponent implements OnInit, OnChanges, OnDestroy {
         }
         window.open(
             `/onion/learning-object-builder/${encodeURIComponent(node.cuid)}/${node.version}`,
+            "_blank",
+            "noopener",
+        );
+    }
+
+    /**
+     * Open the public details page of the read-only node `nodeId` in a new
+     * tab, at the version the hierarchy links to. An editable node opens its
+     * Builder instead, the root is already open, and a node without an
+     * author, cuid, and version has no details address; all are ignored.
+     */
+    private openDetails(nodeId: string): void {
+        const node = findInTree(this.viewService.tree, nodeId);
+        if (
+            !node ||
+            node.editable ||
+            !node.authorUsername ||
+            !node.cuid ||
+            typeof node.version !== "number" ||
+            this.viewService.parentIdOf(nodeId) === undefined
+        ) {
+            return;
+        }
+        window.open(
+            `/details/${encodeURIComponent(node.authorUsername)}/${encodeURIComponent(node.cuid)}/${node.version}`,
             "_blank",
             "noopener",
         );
