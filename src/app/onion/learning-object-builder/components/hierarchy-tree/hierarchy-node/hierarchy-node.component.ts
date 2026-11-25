@@ -181,8 +181,8 @@ export class HierarchyNodeComponent {
     /** Tooltip explaining the read-only label. */
     get linkedTooltip(): string {
         return this.isInherited
-            ? "This object is inherited and belongs to another author. Inherited objects cannot be edited."
-            : "This object is linked and belongs to another author. Linked objects cannot be edited.";
+            ? "This object comes with the linked object above it and cannot be edited here."
+            : "This released object is linked, so it is read-only here. It can only be changed by creating a revision of it.";
     }
     get hasChildren(): boolean {
         return !!this.node?.children?.length;
@@ -231,10 +231,29 @@ export class HierarchyNodeComponent {
     }
 
     /**
+     * Whether this node can open its public details page: it is read-only
+     * (linked or inherited, so there is no Builder to open) and known by
+     * author, cuid and version. The root is the object already open in this
+     * tab, so it is not offered.
+     */
+    get canViewDetails(): boolean {
+        return (
+            !this.isRoot &&
+            !this.node.editable &&
+            !!this.node.authorUsername &&
+            !!this.node.cuid &&
+            typeof this.node.version === "number"
+        );
+    }
+
+    /**
      * Action Menu items. All are always listed and are disabled, not hidden,
      * when they do not apply:
-     *   - Add Child Object: editable nodes that can hold children.
+     *   - Add Child Object and Link Released Object: editable nodes that can
+     *     hold children.
      *   - Edit in Builder: editable nodes other than the root; opens a new tab.
+     *   - View Details Page: read-only (linked or inherited) nodes; opens the
+     *     public details page in a new tab.
      *   - Move Object and Remove from Hierarchy: nodes that can move (never the
      *     root, never inside a linked subtree). Remove only unlinks the child;
      *     the learning object stays in the library.
@@ -248,10 +267,22 @@ export class HierarchyNodeComponent {
                 disabled: !this.canAddChild,
             },
             {
+                id: "link-existing",
+                label: "Link Released Object",
+                icon: "far fa-link",
+                disabled: !this.canAddChild,
+            },
+            {
                 id: "edit-in-builder",
                 label: "Edit in Builder",
                 icon: "far fa-external-link",
                 disabled: !this.canEditInBuilder,
+            },
+            {
+                id: "view-details",
+                label: "View Details Page",
+                icon: "far fa-eye",
+                disabled: !this.canViewDetails,
             },
             {
                 id: "move",

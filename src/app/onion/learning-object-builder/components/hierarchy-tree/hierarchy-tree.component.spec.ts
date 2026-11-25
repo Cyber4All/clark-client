@@ -16,8 +16,11 @@ import { HierarchyViewService } from "./hierarchy-view.service";
 import { HierarchyLoaderService } from "./hierarchy-loader.service";
 import { HierarchyEditService } from "./hierarchy-edit.service";
 import { LearningObjectService } from "../../../../core/learning-object-module/learning-object/learning-object.service";
+import { AuthService } from "../../../../core/auth-module/auth.service";
+import { HierarchyService } from "../../../../core/learning-object-module/hierarchy/hierarchy.service";
+import { TopicsService } from "../../../../core/learning-object-module/topics/topics.service";
 import { LearningObject } from "@entity";
-import { of } from "rxjs";
+import { of, throwError } from "rxjs";
 import { HierarchyNode } from "./hierarchy-tree.types";
 
 // The real service imports via the bare "app/..." path, which this repo's Jest
@@ -55,6 +58,8 @@ describe("HierarchyTreeComponent (integration)", () => {
     let notifications: { success: jest.Mock; error: jest.Mock };
     let liveAnnouncer: { announce: jest.Mock };
     let setChildren: jest.Mock;
+    let loadLinkedSubtree: jest.Mock;
+    let searchLinkCandidates: jest.Mock;
     let checkNameAvailability: jest.Mock;
     let createObject: jest.Mock;
     let saveObject: jest.Mock;
@@ -227,6 +232,16 @@ describe("HierarchyTreeComponent (integration)", () => {
         saveObject = jest.fn().mockResolvedValue({});
         deleteObject = jest.fn().mockResolvedValue({});
         loaderRetry = jest.fn();
+        loadLinkedSubtree = jest.fn(() => of([]));
+        // Like the API, leave out an object once it has been linked.
+        searchLinkCandidates = jest.fn(() => {
+            const linked = setChildren.mock.calls.map(([, ids]) => ids[0]);
+            const learningObjects = [releasedModule("rel-1")].filter(
+                (candidate) => !linked.includes(candidate.id),
+            );
+
+            return of({ learningObjects, total: learningObjects.length });
+        });
         TestBed.configureTestingModule({
             imports: [HierarchyTreeComponent, NoopAnimationsModule],
             providers: [
@@ -253,11 +268,21 @@ describe("HierarchyTreeComponent (integration)", () => {
                         status$: of("ready"),
                         load: () => view.setTree(buildSpecTree()),
                         retry: loaderRetry,
+                        loadLinkedSubtree,
                     }),
                     deps: [HierarchyViewService],
                 },
                 { provide: ToastrOvenService, useValue: notifications },
                 { provide: LiveAnnouncer, useValue: liveAnnouncer },
+                { provide: AuthService, useValue: { username: "alice" } },
+                {
+                    provide: HierarchyService,
+                    useValue: { searchLinkCandidates },
+                },
+                {
+                    provide: TopicsService,
+                    useValue: { getTopics: jest.fn().mockResolvedValue([]) },
+                },
             ],
         }).compileComponents();
     }));
@@ -1014,6 +1039,375 @@ describe("HierarchyTreeComponent (integration)", () => {
             expect(setChildren).not.toHaveBeenCalled();
         }));
     });
+    describe("linking a released object (sc-40641)", () => {
+        const drawer = (): HTMLElement | null =>
+            document.querySelector<HTMLElement>(
+                ".cdk-overlay-container .link-drawer",
+            );
+        const resultButtons = (): HTMLButtonElement[] =>
+            Array.from(
+                document.querySelectorAll<HTMLButtonElement>(
+                    ".cdk-overlay-container .link-drawer__item button",
+                ),
+            );
+        const drawerAlert = (): string =>
+            document
+                .querySelector(
+                    '.cdk-overlay-container .link-drawer__note[role="alert"]',
+                )
+                ?.textContent?.trim() ?? "";
+        function chooseLink(nodeId: string): void {
+            triggerFor(nodeId).click();
+            flush();
+            fixture.detectChanges();
+            const link = overlayMenuItems().find(
+                (item) =>
+                    item.getAttribute("data-action-id") === "link-existing",
+            );
+            if (!link) {
+                throw new Error(`Link menu item not found for ${nodeId}`);
+            }
+            link.click();
+            flush();
+            fixture.detectChanges();
+        }
+        /** Open the drawer under `nodeId` and press Link on the first result. */
+        function linkViaMenu(nodeId: string): void {
+            chooseLink(nodeId);
+            resultButtons()[0].click();
+            flush();
+            fixture.detectChanges();
+        }
+        const escapeKey = () =>
+            document
+                .querySelector(".cdk-overlay-container .cdk-overlay-pane")!
+                .dispatchEvent(
+                    new KeyboardEvent("keydown", {
+                        key: "Escape",
+                        keyCode: 27,
+                        bubbles: true,
+                    }),
+                );
+
+        it("opens a drawer for the parent and searches released objects in this hierarchy", fakeAsync(() => {
+            chooseLink("unit-foundations");
+
+            expect(drawer()).toBeTruthy();
+            expect(drawer()!.getAttribute("role")).toBe("dialog");
+            expect(drawer()!.textContent).toContain("Foundations Unit");
+            expect(searchLinkCandidates).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    parentId: "unit-foundations",
+                    hierarchyRootId: "root",
+                }),
+            );
+            expect(setChildren).not.toHaveBeenCalled();
+        }));
+
+        it("offers Link Released Object only where a child can be added", fakeAsync(() => {
+            for (const [nodeId, disabled] of [
+                ["unit-foundations", false],
+                ["root", false],
+                ["nano-glossary", true],
+                ["incident-response", true],
+                ["micro-detection", true],
+            ] as const) {
+                triggerFor(nodeId).click();
+                flush();
+                fixture.detectChanges();
+                const item = overlayMenuItems().find(
+                    (i) => i.getAttribute("data-action-id") === "link-existing",
+                )!;
+                expect(item.disabled).toBe(disabled);
+                triggerFor(nodeId).click();
+                flush();
+                fixture.detectChanges();
+            }
+            expect(drawer()).toBeNull();
+        }));
+
+        it("links the chosen object at once as a read-only child, saved with the hierarchy root", fakeAsync(() => {
+            linkViaMenu("unit-foundations");
+
+            expect(setChildren).toHaveBeenCalledWith(
+                "unit-foundations",
+                ["rel-1"],
+                false,
+                "root",
+            );
+            const row = fixture.nativeElement.querySelector(
+                '.node-row[data-node-id="unit-foundations/rel-1"]',
+            ) as HTMLElement;
+            expect(row).toBeTruthy();
+            expect(row.textContent).toContain("Linked · Read only");
+            expect(row.textContent).toContain("Released rel-1");
+            expect(viewService.canMove("unit-foundations/rel-1")).toBe(true);
+            expect(viewService.canAddChild("unit-foundations/rel-1")).toBe(
+                false,
+            );
+        }));
+
+        it("confirms with a toast and an announcement, keeps the drawer open, and drops the linked result", fakeAsync(() => {
+            linkViaMenu("unit-foundations");
+
+            expect(notifications.success).toHaveBeenCalledWith(
+                "Object linked",
+                "“Released rel-1” was linked under “Foundations Unit”. It is read-only here.",
+            );
+            expect(liveAnnouncer.announce).toHaveBeenCalledWith(
+                expect.stringContaining("was linked under"),
+                "polite",
+            );
+            expect(drawer()).toBeTruthy();
+            expect(resultButtons().length).toBe(0);
+            // The drawer asked the API again, so its list and paging match.
+            expect(searchLinkCandidates).toHaveBeenCalledTimes(2);
+        }));
+
+        it("shows the linked object's inherited objects under it", fakeAsync(() => {
+            loadLinkedSubtree.mockReturnValue(
+                of([
+                    {
+                        id: "unit-foundations/rel-1/inh",
+                        learningObjectId: "inh",
+                        name: "Inherited micro",
+                        length: LearningObject.Length.MICROMODULE,
+                        editable: false,
+                        children: [],
+                    },
+                ]),
+            );
+            linkViaMenu("unit-foundations");
+            // Like a loaded hierarchy, a linked branch starts collapsed.
+            viewService.toggleExpanded("unit-foundations/rel-1");
+            fixture.detectChanges();
+
+            const row = fixture.nativeElement.querySelector(
+                '.node-row[data-node-id="unit-foundations/rel-1/inh"]',
+            ) as HTMLElement;
+            expect(row).toBeTruthy();
+            expect(row.textContent).toContain("Inherited · Read only");
+        }));
+
+        it("rolls the row back and keeps the drawer, with the reason, when the save fails", fakeAsync(() => {
+            const before = JSON.stringify(viewService.tree);
+            setChildren.mockRejectedValueOnce({ status: 500 });
+            linkViaMenu("unit-foundations");
+
+            expect(JSON.stringify(viewService.tree)).toBe(before);
+            expect(drawer()).toBeTruthy();
+            expect(resultButtons().length).toBe(1);
+            expect(resultButtons()[0].disabled).toBe(false);
+            expect(drawerAlert()).toContain("could not be linked");
+            expect(notifications.error).toHaveBeenCalledWith(
+                "Link failed",
+                expect.stringContaining("your hierarchy was left as it was"),
+            );
+            expect(notifications.success).not.toHaveBeenCalled();
+        }));
+
+        it("explains a rejection from the API (400 and 403)", fakeAsync(() => {
+            setChildren.mockRejectedValueOnce({ status: 400 });
+            linkViaMenu("unit-foundations");
+            expect(drawerAlert()).toContain("may already be in this hierarchy");
+
+            setChildren.mockRejectedValueOnce({ status: 403 });
+            resultButtons()[0].click();
+            flush();
+            fixture.detectChanges();
+            expect(drawerAlert()).toContain("don't have permission");
+        }));
+
+        it("reloads the hierarchy when the inherited objects could not be loaded", fakeAsync(() => {
+            loadLinkedSubtree.mockReturnValue(
+                throwError(() => new Error("down")),
+            );
+            linkViaMenu("unit-foundations");
+
+            expect(loaderRetry).toHaveBeenCalledTimes(1);
+            expect(
+                findNode(viewService.tree, "unit-foundations/rel-1"),
+            ).toBeDefined();
+        }));
+
+        describe("viewing the details page of a read-only node", () => {
+            const chooseViewDetails = (nodeId: string): void => {
+                triggerFor(nodeId).click();
+                flush();
+                fixture.detectChanges();
+                overlayMenuItems()
+                    .find(
+                        (item) =>
+                            item.getAttribute("data-action-id") ===
+                            "view-details",
+                    )!
+                    .click();
+                flush();
+            };
+            let openSpy: jest.SpyInstance;
+            beforeEach(() => {
+                openSpy = jest
+                    .spyOn(window, "open")
+                    .mockImplementation(() => null);
+            });
+            afterEach(() => openSpy.mockRestore());
+
+            it("opens the linked object's public details page, at the linked version, in a new tab", fakeAsync(() => {
+                linkViaMenu("unit-foundations");
+                escapeKey();
+                flush();
+                fixture.detectChanges();
+
+                chooseViewDetails("unit-foundations/rel-1");
+
+                expect(openSpy).toHaveBeenCalledWith(
+                    "/details/bob/cuid-rel-1/1",
+                    "_blank",
+                    "noopener",
+                );
+            }));
+
+            it("also opens an inherited object inside a linked subtree", fakeAsync(() => {
+                loadLinkedSubtree.mockReturnValue(
+                    of([
+                        {
+                            id: "unit-foundations/rel-1/inh",
+                            learningObjectId: "inh",
+                            cuid: "cuid-inh",
+                            version: 0,
+                            authorUsername: "carol",
+                            name: "Inherited micro",
+                            length: LearningObject.Length.MICROMODULE,
+                            editable: false,
+                            children: [],
+                        },
+                    ]),
+                );
+                linkViaMenu("unit-foundations");
+                escapeKey();
+                flush();
+                viewService.toggleExpanded("unit-foundations/rel-1");
+                fixture.detectChanges();
+
+                chooseViewDetails("unit-foundations/rel-1/inh");
+
+                expect(openSpy).toHaveBeenCalledWith(
+                    "/details/carol/cuid-inh/0",
+                    "_blank",
+                    "noopener",
+                );
+            }));
+
+            it("encodes the parts of the address", fakeAsync(() => {
+                viewService.setTree([
+                    {
+                        ...buildSpecTree()[0],
+                        children: [
+                            {
+                                id: "root/odd",
+                                learningObjectId: "odd",
+                                cuid: "cu id/1",
+                                version: 2,
+                                authorUsername: "a b/c",
+                                name: "Odd",
+                                length: LearningObject.Length.MODULE,
+                                editable: false,
+                                linkedRoot: true,
+                                children: [],
+                            },
+                        ],
+                    },
+                ]);
+                fixture.detectChanges();
+
+                chooseViewDetails("root/odd");
+
+                expect(openSpy).toHaveBeenCalledWith(
+                    "/details/a%20b%2Fc/cu%20id%2F1/2",
+                    "_blank",
+                    "noopener",
+                );
+            }));
+
+            it("is not offered on an editable node, which has a Builder", fakeAsync(() => {
+                triggerFor("unit-foundations").click();
+                flush();
+                fixture.detectChanges();
+                const item = overlayMenuItems().find(
+                    (i) => i.getAttribute("data-action-id") === "view-details",
+                )!;
+                expect(item.disabled).toBe(true);
+                item.click();
+                flush();
+                expect(openSpy).not.toHaveBeenCalled();
+            }));
+
+            it("opens nothing for a read-only node without a details address", fakeAsync(() => {
+                // "incident-response" in the fixture has no author, cuid or version.
+                triggerFor("incident-response").click();
+                flush();
+                fixture.detectChanges();
+                const item = overlayMenuItems().find(
+                    (i) => i.getAttribute("data-action-id") === "view-details",
+                )!;
+                expect(item.disabled).toBe(true);
+                (component as any).openDetails("incident-response");
+                expect(openSpy).not.toHaveBeenCalled();
+            }));
+        });
+
+        it("closes on Escape and returns focus to the row's menu button", fakeAsync(() => {
+            chooseLink("unit-foundations");
+            escapeKey();
+            flush();
+            fixture.detectChanges();
+
+            expect(drawer()).toBeNull();
+            expect(document.activeElement).toBe(triggerFor("unit-foundations"));
+        }));
+
+        it("closes from its close button and from a backdrop click, without saving anything", fakeAsync(() => {
+            chooseLink("unit-foundations");
+            document
+                .querySelector<HTMLButtonElement>(
+                    ".cdk-overlay-container .link-drawer__close",
+                )!
+                .click();
+            flush();
+            fixture.detectChanges();
+            expect(drawer()).toBeNull();
+
+            chooseLink("unit-foundations");
+            backdrop()!.click();
+            flush();
+            fixture.detectChanges();
+            expect(drawer()).toBeNull();
+            expect(setChildren).not.toHaveBeenCalled();
+        }));
+
+        it("does not close while a link is saving", fakeAsync(() => {
+            let finish!: () => void;
+            setChildren.mockReturnValueOnce(
+                new Promise<void>((resolve) => (finish = resolve)),
+            );
+            linkViaMenu("unit-foundations");
+            escapeKey();
+            fixture.detectChanges();
+            expect(drawer()).toBeTruthy();
+
+            finish();
+            flush();
+            fixture.detectChanges();
+        }));
+
+        it("replaces an open drawer when another is opened, and disposes it on destroy", fakeAsync(() => {
+            chooseLink("unit-foundations");
+            expect(document.querySelectorAll(".link-drawer").length).toBe(1);
+            fixture.destroy();
+            flush();
+            expect(document.querySelectorAll(".link-drawer").length).toBe(0);
+        }));
+    });
     describe("adding a new child", () => {
         /** The open add-child dialog, or null. */
         function addDialog(): HTMLElement | null {
@@ -1462,6 +1856,19 @@ function findNode(
 }
 
 /** Small local tree used to drive the move flows: nested moves, alternate parents, and a linked root. */
+/** A released Module as the candidate search returns it. */
+function releasedModule(id: string): LearningObject {
+    return {
+        id,
+        cuid: `cuid-${id}`,
+        version: 1,
+        name: `Released ${id}`,
+        length: LearningObject.Length.MODULE,
+        status: LearningObject.Status.RELEASED,
+        author: { username: "bob", name: "Bob" },
+    } as unknown as LearningObject;
+}
+
 function buildSpecTree(): HierarchyNode[] {
     const { COURSE, UNIT, MODULE, MICROMODULE, NANOMODULE } =
         LearningObject.Length;
