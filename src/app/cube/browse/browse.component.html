@@ -127,6 +127,22 @@
                                 (click)="toggleSort('w')">
                                 Most Downloaded
                             </li>
+                            <li
+                                [ngClass]="{
+                                    selected:
+                                        sortText === 'Average Rating (Highest)',
+                                }"
+                                (click)="toggleSort('rh')">
+                                Average Rating (Highest)
+                            </li>
+                            <li
+                                [ngClass]="{
+                                    selected:
+                                        sortText === 'Average Rating (Lowest)',
+                                }"
+                                (click)="toggleSort('rl')">
+                                Average Rating (Lowest)
+                            </li>
                         </ul>
                     </div>
                 </div>
