@@ -89,9 +89,6 @@ export class DashboardItemComponent implements OnInit, OnChanges {
     // fired when the edit children option is selected from the context menu
     @Output()
     editChildren: EventEmitter<void> = new EventEmitter();
-    // fired when the submit for review option is selected from the context menu
-    @Output()
-    submit: EventEmitter<void> = new EventEmitter();
     // Fired when the submit hierarachy option is selected from the context menu
     @Output()
     submitHierarchy: EventEmitter<void> = new EventEmitter();
